@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trang Thông Tin Đơn Vị</title>  
+  <link rel="stylesheet" href="./main.css">
+</head>
+
+<body>
+
+  <!-- DIV nền -->
+  <div id="background"></div>
+
+  <header>
+    <h1>Trang thông tin tuyên truyền Trung Đoàn 6, BCH QS Thành phố Huế</h1>
+    <button class="login-btn" onclick="window.location.href='login.html'">Đăng nhập quản lý</button>
+  </header>
+
+  
+  <div class="container">
+    <div class="dangKyTham">
+      <h2>Đăng ký vào thăm quân nhân</h2>
+      <form id="visitForm">
+        <label>Họ tên khách:</label>
+        <input type="text" id="hoten" placeholder="Nhập họ tên" required />
+
+        <label>Số CCCD:</label>
+        <input type="text" id="cccd" placeholder="Nhập CCCD" required />
+
+        <label>Mối quan hệ:</label>
+        <input type="text" id="quanhe" placeholder="Nhập quan hệ" required />
+
+        <label>Tên quân nhân muốn thăm:</label>
+        <input type="text" id="quannhan" placeholder="Nhập tên quân nhân" required />
+
+        <label>Số điện thoại:</label>
+        <input type="text" id="sdt" placeholder="Nhập số điện thoại" required />
+
+        <label>Tỉnh/Thành phố:</label>
+        <select id="tinhthanh" required>
+          <option value="">-- Chọn tỉnh/thành phố --</option>
+        </select>
+
+        <label>Xã/Phường:</label>
+        <select id="xaphuong" required>
+          <option value="">-- Chọn xã/phường --</option>
+        </select>
+        <label>Đơn vị:</label>
+        <input type="text" id="donvi" placeholder="Nhập đơn vị" required />
+
+        <button type="submit">Gửi đăng ký</button>
+      </form>
+      <p id="status"></p>
+    </div>
+    <!-- Card Quy định thăm gặp -->
+    <div class="info-quyDinh" id="qd">
+      <div class="quyDinh card" style="height: 50%;">
+        <h2>Quy định thăm gặp</h2>
+        <ul>
+          <li>Mang CCCD/định danh hợp lệ.</li>
+          <li>Tuân thủ hướng dẫn của cán bộ trực.</li>
+          <li>Không chụp ảnh tại khu vực cấm.</li>
+        </ul>
+      </div>
+      <div class="dangKyThamThan-mess" id="mess-thamthan"></div>
+    </div>
+  </div>
+
+  <section>
+    <!-- Card Giới thiệu -->
+    <div class="card" id="gth">
+      <h2>Giới thiệu</h2>
+      <p>Trung đoàn 6, thuộc Bộ Chỉ huy Quân sự tỉnh Thừa Thiên Huế, có tên truyền thống là “Đoàn Phú Xuân anh hùng”,
+        được thành lập năm 1965. Trong kháng chiến chống Mỹ, đơn vị tham gia nhiều trận đánh lớn, đặc biệt là Chiến dịch
+        Mậu Thân 1968 tại Huế. Sau giải phóng, Trung đoàn 6 tham gia huấn luyện, sẵn sàng chiến đấu, giúp dân xây dựng
+        nông thôn mới và các hoạt động dân sinh. Đơn vị nhiều lần được tặng Huân chương Quân công và danh hiệu “Đơn vị
+        Quyết thắng”, là biểu tượng tinh thần dũng cảm, kiên cường và phục vụ đất nước
+
+        .</p>
+    </div>
+
+    <!-- Card Ảnh Đơn Vị -->
+    <div class="card" id="anh">
+      <h2>Ảnh Đơn Vị</h2>
+      <div class="image-row">
+        <div class="image-item">
+          <img src="anh1.jpg" alt="Ảnh 1">
+          <p>Lao động giúp dân</p>
+        </div>
+        <div class="image-item">
+          <img src="anh2.jpg" alt="Ảnh 2">
+          <p>Kiểm tra đánh thuốc nổ</p>
+        </div>
+        <div class="image-item">
+          <img src="anh3.jpg" alt="Ảnh 3">
+          <p>Đồng hành cùng chiến sĩ</p>
+        </div>
+        <div class="image-item">
+          <img src="anh4.jpg" alt="Ảnh 4">
+          <p>Mô hình bát nước thao trường</p>
+        </div>
+        <div class="image-item">
+          <img src="anh5.jpg" alt="Ảnh 5">
+          <p>Công tác dân vận</p>
+        </div>
+        <div class="image-item">
+          <img src="anh6.jpg" alt="Ảnh 6">
+          <p>Lễ tuyên thệ CSM</p>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  </section>
+</body>
+
+  <script>    
+  // API đơn vị hành chính VN
+  const api = "https://provinces.open-api.vn/api/?depth=3";
+
+  const tinhSelect = document.getElementById("tinhthanh");
+  const xaSelect = document.getElementById("xaphuong");
+
+  fetch(api)
+    .then((res) => res.json())
+    .then((data) => {
+      // Đổ tỉnh/thành
+      data.forEach((tinh) => {
+        const opt = document.createElement("option");
+        opt.value = tinh.code;
+        opt.textContent = tinh.name;
+        tinhSelect.appendChild(opt);
+      });
+
+      // Khi chọn tỉnh -> load xã/phường
+      tinhSelect.addEventListener("change", () => {
+        xaSelect.innerHTML = '<option value="">-- Chọn xã/phường --</option>';
+
+        const selectedTinh = data.find((t) => t.code == tinhSelect.value);
+        if (!selectedTinh) return;
+
+        selectedTinh.districts.forEach((h) => {
+          h.wards.forEach((xa) => {
+            const opt = document.createElement("option");
+            opt.value = xa.name;
+            opt.textContent = xa.name;
+            xaSelect.appendChild(opt);
+          });
+        });
+      });
+    });
+  </script>
+  <script src="./src.js"></script>
+
+</html>

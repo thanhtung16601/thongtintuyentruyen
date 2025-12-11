@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý Admin</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <div id="background"></div>
+    <div class="btn-group">
+      <a class="logout" href="../">Đăng xuất</a>
+    </div>
+    <div class="container">
+      <h2>Quản lý Đơn Đăng Ký</h2>
+      <table id="adminTable">
+        <thead>
+          <tr>
+            <th>Họ tên</th>
+            <th>CCCD</th>
+            <th>Quan hệ</th>
+            <th>Quân nhân</th>
+            <th>SĐT</th>
+            <th>Tỉnh/Thành</th>
+            <th>Xã/Phường</th>
+            <th>Đơn vị</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody id="adminBody">
+          <tr>
+            <td colspan="10">Đang tải...</td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="chart-container">
+        <canvas id="statusChart"></canvas>
+        <canvas id="provinceChart"></canvas>
+        <canvas id="unitChart"></canvas>
+      </div>
+    </div>
+  </body>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="./script.js"></script>
+</html>

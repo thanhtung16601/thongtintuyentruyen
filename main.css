@@ -1,0 +1,296 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* DIV nền */
+#background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("background.jpg") no-repeat center center fixed;
+  background-size: cover;
+  z-index: -1;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  color: #000;
+}
+
+header {
+  padding: 20px;
+  text-align: center;
+  backdrop-filter: blur(5px);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  color: #ffe9c7;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #ffe9c7;
+}
+
+.login-btn {
+  position: fixed;
+  top: 0.5cm;
+  right: 0.5cm;
+  width: 3cm;
+  height: 2cm;
+  background: #003366;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  z-index: 1001;
+  font-size: 1rem;
+}
+
+.login-btn:hover {
+  background: #0055aa;
+}
+
+section {
+  max-width: 900px;
+  margin: 30px auto 30px;
+  padding: 10px;
+}
+
+.card {
+  background: rgba(0, 33, 33, 0.4);
+  /* nền mờ xanh đen */
+  backdrop-filter: blur(15px);
+  padding: 25px;
+  margin: 20px 0;
+  border-radius: 20px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+  color: #fff;
+  /* chữ nội dung sáng màu */
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Chỉ đổi màu chữ tiêu đề 3 card chính */
+#gth h2,
+#anh h2,
+#qd h2 {
+  color: #f5f5dc;
+  /* trắng ngà */
+}
+
+p,
+ul {
+  line-height: 1.6;
+  color: #fff;
+}
+
+ul li {
+  margin-bottom: 8px;
+}
+
+iframe {
+  border-radius: 12px;
+  width: 100%;
+  height: 315px;
+}
+
+/* CSS cho 6 ảnh trong card "Ảnh Đơn Vị" */
+.image-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.image-item {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-item img {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+  height: 150px;
+}
+
+.image-item p {
+  margin-top: 5px;
+  text-align: center;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.image-item p {
+  margin-top: 5px;
+  text-align: center;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.image-item p {
+  margin-top: 5px;
+  text-align: center;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 1.4rem;
+  }
+
+  .card {
+    padding: 15px;
+    margin: 15px 10px;
+  }
+
+  iframe {
+    height: 200px;
+  }
+
+  .image-item {
+    width: 48%;
+    margin-bottom: 10px;
+  }
+}
+
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 120px auto 40px;
+  padding: 25px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  transition: 0.3s ease;
+}
+
+.container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+/* Container tổng */
+.container {
+  width: 90%;
+  max-width: 900px;
+  padding: 25px 30px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Tiêu đề */
+.container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #ffe9c7;
+}
+
+/* Form GRID */
+.container form {
+  display: grid;
+  grid-template-columns: max-content;
+  gap: 15px 20px;
+}
+
+/* Label */
+.container label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+
+/* Input + Select */
+.container input,
+.container select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+}
+
+.container input:focus,
+.container select:focus {
+  border-color: #00d9ff;
+  box-shadow: 0 0 6px #00d9ff;
+}
+
+/* Nút gửi */
+.container button {
+  grid-column: span 2;
+  padding: 12px;
+  background: #007bff;
+  border: none;
+  font-size: 1.2rem;
+  color: #fff;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.container button:hover {
+  background: #005fcc;
+}
+
+/* Status text */
+#status {
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Responsive mobile */
+@media (max-width: 600px) {
+  header {
+    position: relative;
+    overflow: hidden;
+  }
+  .login-btn {
+    position: relative;
+    width: 100vw;
+  }
+
+  .container {
+    padding: 20px;
+    flex-wrap: wrap;
+    margin-top: 50px;
+  }
+
+  .container button {
+    grid-column: span 1;
+  }
+  .container form {
+    grid-template-columns: none;
+  }
+  .info-quyDinh {
+    height: fit-content;
+  }
+}
