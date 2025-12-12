@@ -20,23 +20,31 @@ function loadData() {
 function renderTable() {
   const body = document.getElementById("adminBody");
   body.innerHTML = "";
-  console.log(data);
+
   data.forEach((row, index) => {
-    body.innerHTML += `<tr>
-      <td>${row.hoten || ""}</td>
-      <td>${row.cccd || ""}</td>
-      <td>${row.quanhe || ""}</td>
-      <td>${row.quannhan || ""}</td>
-      <td>${row.sdt || ""}</td>
-      <td>${row.tinhthanhpho || ""}</td>
-      <td>${row.xahuyen || ""}</td>
-      <td>${row.donvi || ""}</td>
-      <td>${row.trangthai || "waiting"}</td>
-      <td>
-        <button class="btn-duyet" onclick="duyet(${index})">Duyệt</button>
-        <button class="btn-xoa" onclick="xoa(${index})">Xóa</button>
-      </td>
-    </tr>`;
+    body.innerHTML += `
+      <tr>
+        <td>${row.hoten || ""}</td>
+        <td>${row.cccd || ""}</td>
+        <td>${row.quanhe || ""}</td>
+        <td>${row.quannhan || ""}</td>
+        <td>${row.sdt || ""}</td>
+        <td>${row.tinhthanhpho || ""}</td>
+        <td>${row.xahuyen || ""}</td>
+        <td>${row.donvi || ""}</td>
+        <td>${row.trangthai || "Waiting"}</td>
+        <td>
+          ${
+            row.trangthai == "Confirm" || row.trangthai == "Đã duyệt"
+              ? `<button class="btn-xoa" style="width: 100%;"  onclick="xoa(${index})">Delete</button>`
+              : `
+                <button class="btn-duyet" onclick="duyet(${index})">Confirm</button>
+                <button class="btn-xoa" onclick="xoa(${index})">Delete</button>
+              `
+          }
+        </td>
+      </tr>
+    `;
   });
 }
 
@@ -48,7 +56,7 @@ function duyet(index) {
       body: JSON.stringify({
         action: "update",
         row: index,
-        trangthai: "done",
+        trangthai: "Confirm",
       }),
     }
   )
