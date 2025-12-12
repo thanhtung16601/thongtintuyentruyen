@@ -294,3 +294,54 @@ iframe {
     height: fit-content;
   }
 }
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  padding: 20px 25px;
+  border-radius: 10px;
+  width: 320px;
+  text-align: center;
+  animation: popupShow 0.3s ease;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  color: #fff;
+}
+
+.popup-btn {
+  margin-top: 15px;
+  padding: 8px 15px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.popup-btn-close {
+  background-color: #e74c3c;
+}
+
+@keyframes popupShow {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

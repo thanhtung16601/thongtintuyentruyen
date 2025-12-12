@@ -1,3 +1,6 @@
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbyOqQzjfJWyEoRwRXqL4vf3fsSlpkK92QPdlRwKmlB18YiWa1JfuM0Daw_ZDN3d4yCS/exec";
+
 document.getElementById("visitForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -17,27 +20,28 @@ document.getElementById("visitForm").addEventListener("submit", function (e) {
 
 function addPeople(formData) {
   // Gửi dữ liệu lên server
-  fetch(
-    "https://script.google.com/macros/s/AKfycbxHbbs0-qi0VwpZfApOmA6HwpFdSWqVHCuxs-4O2ospRvblXAHGX2cghqvs-jmr_Z7-uw/exec",
-    {
-      method: "POST",
-      body: JSON.stringify(formData),
-    }
-  )
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify(formData),
+  })
     .then((data) => {
-      document.getElementById("mess-thamthan").innerHTML =
-        "Đăng ký thành công! Chờ phê duyệt.";
+      showPopup("Đăng ký thành công! Chờ phê duyệt.");
       return data;
     })
     .catch((err) => {
-      document.getElementById("mess-thamthan").innerHTML =
-        "Đăng ký thất bại! vui lòng thử lại.";
+      showPopup("Đăng ký thất bại! vui lòng thử lại.");
       return err;
     })
     .finally(() => {
-      setTimeout(() => {
-        document.getElementById("visitForm").reset();
-        document.getElementById("mess-thamthan").innerHTML = "";
-      }, 5500);
+      document.getElementById("visitForm").reset();
     });
+}
+
+function showPopup(message) {
+  document.getElementById("popupMessage").textContent = message;
+  document.getElementById("popup").style.display = "flex";
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
 }

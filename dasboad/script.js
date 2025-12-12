@@ -1,9 +1,9 @@
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbyOqQzjfJWyEoRwRXqL4vf3fsSlpkK92QPdlRwKmlB18YiWa1JfuM0Daw_ZDN3d4yCS/exec";
 let data = [];
 
 function loadData() {
-  fetch(
-    "https://script.google.com/macros/s/AKfycbxHbbs0-qi0VwpZfApOmA6HwpFdSWqVHCuxs-4O2ospRvblXAHGX2cghqvs-jmr_Z7-uw/exec"
-  )
+  fetch(API_URL)
     .then((res) => res.json())
     .then((d) => {
       data = d;
@@ -35,48 +35,65 @@ function renderTable() {
         <td>${row.trangthai || "Waiting"}</td>
         <td>
           ${
-            row.trangthai == "Confirm" || row.trangthai == "Đã duyệt"
-              ? `<button class="btn-xoa" style="width: 100%;"  onclick="xoa(${index})">Delete</button>`
-              : `
-                <button class="btn-duyet" onclick="duyet(${index})">Confirm</button>
-                <button class="btn-xoa" onclick="xoa(${index})">Delete</button>
-              `
+            row.trangthai == "Confirm"
+              ? `<button class="btn-xoa" style="width: 100%;" onclick="showPopup(${index})">Delete</button>`
+              : `<button class="btn-duyet" style="width: 100%;" onclick="duyet(${index})">Confirm</button>`
           }
         </td>
       </tr>
     `;
   });
+
+  totalVisiter(); // <== THÊM DÒNG NÀY
 }
 
-function duyet(index) {
-  fetch(
-    "https://script.google.com/macros/s/AKfycbxHbbs0-qi0VwpZfApOmA6HwpFdSWqVHCuxs-4O2ospRvblXAHGX2cghqvs-jmr_Z7-uw/exec",
-    {
-      method: "POST",
-      body: JSON.stringify({
-        action: "update",
-        row: index,
-        trangthai: "Confirm",
-      }),
-    }
-  )
+function totalVisiter() {
+  const daDuyet = data.filter((x) => x.trangthai === "Confirm").length;
+  const chuaDuyet = data.filter((x) => x.trangthai !== "Confirm").length;
+  const tong = data.length;
+
+  document.getElementById("tk-confirm").textContent = daDuyet;
+  document.getElementById("tk-wait").textContent = chuaDuyet;
+  document.getElementById("tk-total").textContent = tong;
+}
+
+function duyet(i) {
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      action: "update",
+      row: i,
+      trangthai: "Confirm",
+    }),
+  })
     .then(() => loadData())
     .catch((err) => console.error("Lỗi duyệt:", err));
 }
 
-function xoa(index) {
-  if (confirm("Xóa đơn?")) {
-    fetch(
-      "https://script.google.com/macros/s/AKfycbxHbbs0-qi0VwpZfApOmA6HwpFdSWqVHCuxs-4O2ospRvblXAHGX2cghqvs-jmr_Z7-uw/exec",
-      {
-        method: "POST",
-        body: JSON.stringify({ action: "delete", row: index }),
-      }
-    )
-      .then(() => loadData())
-      .catch((err) => console.error("Lỗi xóa:", err));
-  }
+function iDelete(i) {
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({ action: "delete", row: i }),
+  })
+    .then(() => loadData())
+    .catch((err) => console.error("Lỗi xóa:", err));
 }
 
+let i = 0;
+function showPopup(index) {
+  i = index;
+  document.getElementById("popupMessage").textContent =
+    "Bạn có muốn xoá không?";
+  document.getElementById("popup").style.display = "flex";
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+function confirmPopup() {
+  iDelete(i);
+  document.getElementById("popup").style.display = "none";
+}
+
+//================================
 loadData();
-//setInterval(loadData, 2000); // Realtime 2s

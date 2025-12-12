@@ -124,34 +124,44 @@
   const xaSelect = document.getElementById("xahuyen");
 
   fetch(api)
-    .then((res) => res.json())
-    .then((data) => {
-      // Đổ tỉnh/thành
-      data.forEach((tinh) => {
-        const opt = document.createElement("option");
-        opt.value = tinh.code;
-        opt.textContent = tinh.name;
-        tinhSelect.appendChild(opt);
-      });
+  .then((res) => res.json())
+  .then((data) => {
+    // Đổ tỉnh/thành
+    data.forEach((tinh) => {
+      const opt = document.createElement("option");
+      opt.value = tinh.name;        // Dùng tên thay vì code
+      opt.textContent = tinh.name;
+      tinhSelect.appendChild(opt);
+    });
 
-      // Khi chọn tỉnh -> load xã/phường
-      tinhSelect.addEventListener("change", () => {
-        xaSelect.innerHTML = '<option value="">-- Chọn xã/phường --</option>';
+    tinhSelect.addEventListener("change", () => {
+      xaSelect.innerHTML = '<option value="">-- Chọn xã/phường --</option>';
 
-        const selectedTinh = data.find((t) => t.code == tinhSelect.value);
-        if (!selectedTinh) return;
+      const selectedTinh = data.find((t) => t.name == tinhSelect.value);
+      if (!selectedTinh) return;
 
-        selectedTinh.districts.forEach((h) => {
-          h.wards.forEach((xa) => {
-            const opt = document.createElement("option");
-            opt.value = xa.name;
-            opt.textContent = xa.name;
-            xaSelect.appendChild(opt);
-          });
+      selectedTinh.districts.forEach((h) => {
+        h.wards.forEach((xa) => {
+          const opt = document.createElement("option");
+          opt.value = xa.name;
+          opt.textContent = xa.name;
+          xaSelect.appendChild(opt);
         });
       });
     });
+  });
   </script>
   <script src="./src.js"></script>
 
 </html>
+<!-- Popup -->
+<div id="popup" class="popup">
+  <div class="popup-content">
+    <h3>Thông báo</h3>
+    <p id="popupMessage">Nội dung popup...</p>
+
+    <button onclick="closePopup()" class="popup-btn popup-btn-close">
+      Close
+    </button>
+  </div>
+</div>
