@@ -8,33 +8,36 @@ document.getElementById("visitForm").addEventListener("submit", function (e) {
     quannhan: document.getElementById("quannhan").value,
     sdt: document.getElementById("sdt").value,
     tinhthanhpho: document.getElementById("tinhthanh").value,
-    xaphuong: document.getElementById("xaphuong").value,
+    xahuyen: document.getElementById("xahuyen").value,
     donvi: document.getElementById("donvi").value,
     thoigian: new Date().toLocaleString(),
   };
-
-  addDatatoExcel(formData);
-  console.log(formData);
-  document.getElementById("mess-thamthan").innerHTML =
-    "Đăng ký thành công! Chờ phê duyệt.";
-
-  setTimeout(() => {
-    document.getElementById("visitForm").reset();
-    document.getElementById("mess-thamthan").innerHTML = "";
-  }, 5500);
+  addPeople(formData);
 });
 
-// Gửi POST
-function addDatatoExcel(data) {
+function addPeople(formData) {
+  // Gửi dữ liệu lên server
   fetch(
     "https://script.google.com/macros/s/AKfycbxHbbs0-qi0VwpZfApOmA6HwpFdSWqVHCuxs-4O2ospRvblXAHGX2cghqvs-jmr_Z7-uw/exec",
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(formData),
     }
   )
-    .then((response) => response.json())
-    .then((res) => console.log("Đã gửi thành công:", res))
-    .catch((err) => console.error("Gửi thất bại:", err));
+    .then((data) => {
+      document.getElementById("mess-thamthan").innerHTML =
+        "Đăng ký thành công! Chờ phê duyệt.";
+      return data;
+    })
+    .catch((err) => {
+      document.getElementById("mess-thamthan").innerHTML =
+        "Đăng ký thất bại! vui lòng thử lại.";
+      return err;
+    })
+    .finally(() => {
+      setTimeout(() => {
+        document.getElementById("visitForm").reset();
+        document.getElementById("mess-thamthan").innerHTML = "";
+      }, 5500);
+    });
 }

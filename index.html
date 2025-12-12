@@ -44,7 +44,7 @@
         </select>
 
         <label>Xã/Phường:</label>
-        <select id="xaphuong" required>
+        <select id="xahuyen" required>
           <option value="">-- Chọn xã/phường --</option>
         </select>
         <label>Đơn vị:</label>
@@ -121,7 +121,7 @@
   const api = "https://provinces.open-api.vn/api/?depth=3";
 
   const tinhSelect = document.getElementById("tinhthanh");
-  const xaSelect = document.getElementById("xaphuong");
+  const xaSelect = document.getElementById("xahuyen");
 
   fetch(api)
     .then((res) => res.json())
