@@ -33,6 +33,14 @@ h2 {
   color: #222;
 }
 
+#reloadBtn {
+  margin: 0.5em;
+  box-shadow: #222222c4 0px 0px 6px 0px;
+}
+#reloadBtn:hover {
+  background-color: #006be0;
+}
+
 /* Bảng */
 table {
   width: 100%;

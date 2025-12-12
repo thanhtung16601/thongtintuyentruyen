@@ -24,35 +24,34 @@
       <h2>Đăng ký vào thăm quân nhân</h2>
       <form id="visitForm">
         <label>Họ tên khách:</label>
-        <input type="text" id="hoten" placeholder="Nhập họ tên" required />
+        <input type="text" id="hoten" placeholder="Nhập họ tên" />
 
         <label>Số CCCD:</label>
-        <input type="text" id="cccd" placeholder="Nhập CCCD" required />
+        <input type="text" id="cccd" placeholder="Nhập CCCD" />
 
         <label>Mối quan hệ:</label>
-        <input type="text" id="quanhe" placeholder="Nhập quan hệ" required />
+        <input type="text" id="quanhe" placeholder="Nhập quan hệ"  />
 
         <label>Tên quân nhân muốn thăm:</label>
-        <input type="text" id="quannhan" placeholder="Nhập tên quân nhân" required />
+        <input type="text" id="quannhan" placeholder="Nhập tên quân nhân"  />
 
         <label>Số điện thoại:</label>
-        <input type="text" id="sdt" placeholder="Nhập số điện thoại" required />
+        <input type="text" id="sdt" placeholder="Nhập số điện thoại" />
 
         <label>Tỉnh/Thành phố:</label>
-        <select id="tinhthanh" required>
+        <select id="tinhthanh" >
           <option value="">-- Chọn tỉnh/thành phố --</option>
         </select>
 
         <label>Xã/Phường:</label>
-        <select id="xahuyen" required>
+        <select id="xahuyen">
           <option value="">-- Chọn xã/phường --</option>
         </select>
         <label>Đơn vị:</label>
-        <input type="text" id="donvi" placeholder="Nhập đơn vị" required />
+        <input type="text" id="donvi" placeholder="Nhập đơn vị" />
 
         <button type="submit">Gửi đăng ký</button>
       </form>
-      <p id="status"></p>
     </div>
     <!-- Card Quy định thăm gặp -->
     <div class="info-quyDinh" id="qd">
@@ -64,7 +63,12 @@
           <li>Không chụp ảnh tại khu vực cấm.</li>
         </ul>
       </div>
-      <div class="dangKyThamThan-mess" id="mess-thamthan"></div>
+      <div class="check-container">
+  <input type="text" id="searchCode" placeholder="Nhập mã xác nhận..." />
+  <button id="btnCheck" onclick="checkInfoStatus()">Kiểm tra</button>
+</div>
+
+<div class="dangKyThamThan-info" id="info-thamthan"></div>
     </div>
   </div>
 
@@ -115,42 +119,45 @@
 
   </section>
 </body>
-
-  <script>    
-  // API đơn vị hành chính VN
-  const api = "https://provinces.open-api.vn/api/?depth=3";
-
+<script>
   const tinhSelect = document.getElementById("tinhthanh");
   const xaSelect = document.getElementById("xahuyen");
 
-  fetch(api)
-  .then((res) => res.json())
-  .then((data) => {
-    // Đổ tỉnh/thành
-    data.forEach((tinh) => {
-      const opt = document.createElement("option");
-      opt.value = tinh.name;        // Dùng tên thay vì code
-      opt.textContent = tinh.name;
-      tinhSelect.appendChild(opt);
-    });
-
-    tinhSelect.addEventListener("change", () => {
-      xaSelect.innerHTML = '<option value="">-- Chọn xã/phường --</option>';
-
-      const selectedTinh = data.find((t) => t.name == tinhSelect.value);
-      if (!selectedTinh) return;
-
-      selectedTinh.districts.forEach((h) => {
-        h.wards.forEach((xa) => {
-          const opt = document.createElement("option");
-          opt.value = xa.name;
-          opt.textContent = xa.name;
-          xaSelect.appendChild(opt);
-        });
+  // 1. Lấy danh sách 34 tỉnh
+  fetch("https://34tinhthanh.com/api/provinces")
+    .then(res => res.json())
+    .then(provinces => {
+      // Đổ dropdown TỈNH
+      provinces.forEach(tinh => {
+        const opt = document.createElement("option");
+        opt.value = tinh.province_code;
+        opt.textContent = tinh.name;
+        tinhSelect.appendChild(opt);
       });
-    });
-  });
-  </script>
+
+      // 2. Khi chọn TỈNH -> load XÃ
+      tinhSelect.addEventListener("change", () => {
+        const provinceCode = tinhSelect.value;
+
+        xaSelect.innerHTML = '<option value="">-- Chọn xã/phường --</option>';
+
+        if (!provinceCode) return;
+
+        fetch(`https://34tinhthanh.com/api/wards?province_code=${provinceCode}`)
+          .then(res => res.json())
+          .then(wards => {
+            wards.forEach(xa => {
+              const opt = document.createElement("option");
+              opt.value = xa.ward_name;
+              opt.textContent = xa.ward_name;
+              xaSelect.appendChild(opt);
+            });
+          });
+      });
+    })
+    .catch(err => console.error("Lỗi tải tỉnh/thành:", err));
+</script>
+
   <script src="./src.js"></script>
 
 </html>

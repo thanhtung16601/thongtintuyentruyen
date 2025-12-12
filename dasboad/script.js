@@ -2,13 +2,14 @@ const API_URL =
   "https://script.google.com/macros/s/AKfycbyOqQzjfJWyEoRwRXqL4vf3fsSlpkK92QPdlRwKmlB18YiWa1JfuM0Daw_ZDN3d4yCS/exec";
 let data = [];
 
+document.getElementById("reloadBtn").addEventListener("click", loadData);
 function loadData() {
   fetch(API_URL)
     .then((res) => res.json())
     .then((d) => {
       data = d;
       renderTable();
-      //drawCharts();
+      renderPostman(DATA_POST);
     })
     .catch((err) => {
       console.error("Lỗi fetch data:", err);
@@ -32,12 +33,12 @@ function renderTable() {
         <td>${row.tinhthanhpho || ""}</td>
         <td>${row.xahuyen || ""}</td>
         <td>${row.donvi || ""}</td>
-        <td>${row.trangthai || "Waiting"}</td>
+        <td>${row.trangthai || "đăng ký"}</td>
         <td>
           ${
-            row.trangthai == "Confirm"
-              ? `<button class="btn-xoa" style="width: 100%;" onclick="showPopup(${index})">Delete</button>`
-              : `<button class="btn-duyet" style="width: 100%;" onclick="duyet(${index})">Confirm</button>`
+            row.trangthai == "đã xác nhận"
+              ? `<button class="btn-xoa" style="width: 100%;" onclick="showPopup(${index})">Loại bỏ</button>`
+              : `<button class="btn-duyet" style="width: 100%;" onclick="duyet(${index})">Xác nhận</button>`
           }
         </td>
       </tr>
@@ -48,8 +49,8 @@ function renderTable() {
 }
 
 function totalVisiter() {
-  const daDuyet = data.filter((x) => x.trangthai === "Confirm").length;
-  const chuaDuyet = data.filter((x) => x.trangthai !== "Confirm").length;
+  const daDuyet = data.filter((x) => x.trangthai === "đã xác nhận").length;
+  const chuaDuyet = data.filter((x) => x.trangthai !== "đã xác nhận").length;
   const tong = data.length;
 
   document.getElementById("tk-confirm").textContent = daDuyet;
@@ -63,7 +64,7 @@ function duyet(i) {
     body: JSON.stringify({
       action: "update",
       row: i,
-      trangthai: "Confirm",
+      trangthai: "đã xác nhận",
     }),
   })
     .then(() => loadData())
@@ -94,6 +95,8 @@ function confirmPopup() {
   iDelete(i);
   document.getElementById("popup").style.display = "none";
 }
-
 //================================
 loadData();
+// setInterval(() => {
+//   loadData();
+// }, 2000);
