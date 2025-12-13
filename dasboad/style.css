@@ -247,3 +247,54 @@ button {
   font-size: large;
   text-align: center;
 }
+
+/* Wrapper tạo scroll */
+.table-wrapper {
+  max-height: 50vh;
+  overflow-y: auto;
+  border-radius: 12px;
+}
+
+/* Table cơ bản */
+#adminTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  font-size: 15px;
+}
+
+/* Header cố định */
+#adminTable thead > tr {
+  position: sticky;
+  top: 0;
+  background: #f5f7fa;
+  z-index: 10;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Cell */
+#adminTable thead > tr,
+#adminTable td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+
+/* Thanh cuộn mượt */
+.table-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 6px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+.d-none {
+  display: none;
+}

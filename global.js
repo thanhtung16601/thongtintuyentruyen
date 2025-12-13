@@ -53,5 +53,14 @@ function generateVisitCode(cccd, dateObj) {
   const mi = String(dateObj.getMinutes()).padStart(2, "0");
   const ss = String(dateObj.getSeconds()).padStart(2, "0");
 
-  return `${last4}-${mm}${dd}${yy}-${hh}${mi}${ss}`;
+  return `${last4}-${mm}${dd}${yy}-${random6Chars()}`;
+}
+
+function random6Chars() {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let result = "";
+  for (let i = 0; i < 6; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
 }

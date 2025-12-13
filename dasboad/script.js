@@ -103,12 +103,32 @@ function renderTable() {
         <td>
           ${
             row.trangthai === "đã xác nhận"
-              ? `<button class="btn-xoa" style="width:100%" onclick="showPopup(${index})">
-                  Loại bỏ
-                </button>`
-              : `<button class="btn-duyet" style="width:100%" onclick="duyet(${index})">
-                  Xác nhận
-                </button>`
+              ? `
+            <button 
+              class="btn-xoa d-none"
+              style="width:100%"
+              onclick="showPopup('${row.visitCode}')"
+            >
+              Loại bỏ
+            </button>
+          `
+              : `
+            <button 
+              class="btn-duyet"
+              style="width:100%"
+              onclick="iConfirm('${row.visitCode}')"
+            >
+              Xác nhận
+            </button>
+
+            <button 
+              class="btn-xoa"
+              style="width:100%; margin-top: 1rem;"
+              onclick="showPopup('${row.visitCode}')"
+            >
+              Từ chối
+            </button>
+          `
           }
         </td>
       </tr>
@@ -147,14 +167,14 @@ function totalVisiter() {
 
 /**
  * Duyệt đăng ký (chuyển trạng thái sang "đã xác nhận")
- * @param {number} i - index của dòng dữ liệu
+ * @param {number} visitCode - index của dòng dữ liệu
  */
-function duyet(i) {
+function iConfirm(visitCode) {
   fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({
       action: "update",
-      row: i,
+      visitCode,
       trangthai: "đã xác nhận",
     }),
   })
@@ -164,14 +184,14 @@ function duyet(i) {
 
 /**
  * Xoá đăng ký khỏi hệ thống
- * @param {number} i - index của dòng dữ liệu
+ * @param {number} visitCode - index của dòng dữ liệu
  */
-function iDelete(i) {
+function iDelete(visitCode) {
   fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({
       action: "delete",
-      row: i,
+      visitCode,
     }),
   })
     .then(() => loadData())
@@ -190,7 +210,7 @@ function iDelete(i) {
 function showPopup(index) {
   i = index;
   document.getElementById("popupMessage").textContent =
-    "Bạn có muốn xoá không?";
+    "Bạn có muốn từ chối không?";
   document.getElementById("popup").style.display = "flex";
 }
 
@@ -239,6 +259,9 @@ function searchTable(keyword = "") {
       String(row.trangthai || "")
         .toLowerCase()
         .includes(key) ||
+      String(formatDateTimeVN(row.ngaytham) || "")
+        .toLowerCase()
+        .includes(key) ||
       String(row.visitCode || "")
         .toLowerCase()
         .includes(key)
@@ -254,12 +277,21 @@ function searchTable(keyword = "") {
     body.innerHTML += `
       <tr id="${row.visitCode}">
         <td>${row.hoten || ""}</td>
+
         <td>${row.cccd || ""}</td>
+
         <td>${row.sdt || ""}</td>
-        <td>${row.tinhthanhpho || ""} - ${row.xahuyen || ""}</td>
+
+        <td>
+          ${row.tinhthanhpho || ""} <br>
+          <small>${row.xahuyen || ""}</small>
+        </td>
+
         <td>${row.quanhe || ""}</td>
+
         <td>${row.quannhan || ""}</td>
 
+        <!-- GỘP: ĐƠN VỊ + NGÀY THĂM + TRẠNG THÁI -->
         <td>
           <div><b>Đơn vị:</b> ${row.donvi || ""}</div>
           <div><b>Ngày thăm:</b> ${formatDateTimeVN(row.ngaytham) || ""}</div>
@@ -279,17 +311,41 @@ function searchTable(keyword = "") {
           </div>
         </td>
 
-        <td>
-          ${
-            row.trangthai === "đã xác nhận"
-              ? `<button class="btn-xoa" style="width:100%" onclick="showPopup(${index})">Loại bỏ</button>`
-              : `<button class="btn-duyet" style="width:100%" onclick="duyet(${index})">Xác nhận</button>`
-          }
+        <td>${
+          row.trangthai === "đã xác nhận"
+            ? `
+            <button 
+              class="btn-xoa d-none"
+              style="width:100%"
+              onclick="showPopup('${row.visitCode}')"
+            >
+              Loại bỏ
+            </button>
+          `
+            : `
+            <button 
+              class="btn-duyet"
+              style="width:100%"
+              onclick="iConfirm('${row.visitCode}')"
+            >
+              Xác nhận
+            </button>
+
+            <button 
+              class="btn-xoa"
+              style="width:100%; margin-top: 1rem;"
+              onclick="showPopup('${row.visitCode}')"
+            >
+              Từ chối
+            </button>
+          `
+        }
         </td>
       </tr>
     `;
   });
 
+  data = filteredData;
   totalVisiter();
 }
 
