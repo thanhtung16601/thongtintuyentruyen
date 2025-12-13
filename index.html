@@ -123,32 +123,32 @@
   const tinhSelect = document.getElementById("tinhthanh");
   const xaSelect = document.getElementById("xahuyen");
 
-  // 1. Lấy danh sách 34 tỉnh
   fetch("https://34tinhthanh.com/api/provinces")
     .then(res => res.json())
     .then(provinces => {
-      // Đổ dropdown TỈNH
+
       provinces.forEach(tinh => {
         const opt = document.createElement("option");
-        opt.value = tinh.province_code;
-        opt.textContent = tinh.name;
+        opt.value = tinh.name;        // ✅ LƯU TÊN TỈNH
+        opt.textContent = tinh.name; // hiển thị tên
+        opt.dataset.code = tinh.province_code; // giữ code để dùng nội bộ
         tinhSelect.appendChild(opt);
       });
 
-      // 2. Khi chọn TỈNH -> load XÃ
       tinhSelect.addEventListener("change", () => {
-        const provinceCode = tinhSelect.value;
-
         xaSelect.innerHTML = '<option value="">-- Chọn xã/phường --</option>';
 
-        if (!provinceCode) return;
+        const selectedOption = tinhSelect.selectedOptions[0];
+        if (!selectedOption) return;
+
+        const provinceCode = selectedOption.dataset.code; // lấy code từ dataset
 
         fetch(`https://34tinhthanh.com/api/wards?province_code=${provinceCode}`)
           .then(res => res.json())
           .then(wards => {
             wards.forEach(xa => {
               const opt = document.createElement("option");
-              opt.value = xa.ward_name;
+              opt.value = xa.ward_name;      // ✅ tên xã
               opt.textContent = xa.ward_name;
               xaSelect.appendChild(opt);
             });
