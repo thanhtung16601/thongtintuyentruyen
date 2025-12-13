@@ -50,6 +50,9 @@
         <label>Đơn vị:</label>
         <input type="text" id="donvi" placeholder="Nhập đơn vị" />
 
+        <label>Ngày giờ thăm:</label>
+        <input type="datetime-local" id="ngaytham" />
+
         <button type="submit">Gửi đăng ký</button>
       </form>
     </div>
@@ -64,7 +67,7 @@
         </ul>
       </div>
       <div class="check-container">
-  <input type="text" id="searchCode" placeholder="Nhập mã xác nhận..." />
+  <input type="text" id="searchCode" placeholder="Nhập mã kiểm tra..." />
   <button id="btnCheck" onclick="checkInfoStatus()">Kiểm tra</button>
 </div>
 
@@ -158,17 +161,32 @@
     .catch(err => console.error("Lỗi tải tỉnh/thành:", err));
 </script>
 
+  <script src="./global.js"></script>
+  <script src="./api.js"></script>
   <script src="./src.js"></script>
 
 </html>
 <!-- Popup -->
-<div id="popup" class="popup">
+ <div id="popup" class="popup">
   <div class="popup-content">
     <h3>Thông báo</h3>
-    <p id="popupMessage">Nội dung popup...</p>
 
-    <button onclick="closePopup()" class="popup-btn popup-btn-close">
-      Close
-    </button>
+    <p id="popupMessage"></p>
+
+    <p style="font-weight: bold; color: #0a7cff;">
+      <span id="popupMessage-code"></span>
+      <i id="codeText"></i>
+    </p>
+
+    <div style="display: flex; gap: 10px; justify-content: center;">
+      <button onclick="copyCode()" class="popup-btn popup-btn-copy">
+        Sao chép code
+      </button>
+
+      <button onclick="closePopup()" class="popup-btn popup-btn-close">
+        Đóng
+      </button>
+    </div>
   </div>
 </div>
+

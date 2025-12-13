@@ -1,3 +1,35 @@
+/**
+ * =========================================================
+ * CẤU HÌNH API & DỮ LIỆU BÀI ĐĂNG
+ * =========================================================
+ */
+
+/**
+ * API Google Apps Script
+ * - Dùng để:
+ *   + Gửi dữ liệu đăng ký thăm thân (POST)
+ *   + Lấy danh sách đăng ký / duyệt / xóa (GET)
+ *
+ * @constant {string}
+ * @author NgocKhanh
+ */
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbyQoEIdjbx_xPIjeYPcY9uRhperE171d-YpGsnBg3ReblIjDQIpgSepeJJvKrsw_7SBtA/exec";
+
+/**
+ * Danh sách bài đăng / thông báo nội bộ
+ * - Dùng để hiển thị bảng quản lý bài viết
+ * - Có thể thay thế bằng dữ liệu từ API sau này
+ *
+ * @typedef {Object} Post
+ * @property {number} id       - ID bài đăng
+ * @property {string} image    - URL hình ảnh minh họa
+ * @property {string} content  - Nội dung bài đăng
+ * @property {string} date     - Ngày đăng (dd/mm/yyyy hh:mm)
+ *
+ * @type {Post[]}
+ * @author NgocKhanh
+ */
 const DATA_POST = [
   {
     id: 1,

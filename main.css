@@ -381,3 +381,12 @@ iframe {
   background: #005fcc;
   border-color: #005fcc;
 }
+
+.popup-btn-copy {
+  background: #0a7cff;
+  color: #fff;
+}
+
+.popup-btn-copy:hover {
+  background: #055ec4;
+}
