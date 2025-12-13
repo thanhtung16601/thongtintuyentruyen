@@ -244,28 +244,28 @@ function checkVisitCode() {
         showPopup("❌ Không tìm thấy mã kiểm tra!");
         return;
       }
-
       const message = `
-        <div style="line-height:1.8; text-align:left">
-          <div style="font-size:16px; font-weight:600; color:#16a34a; margin-bottom:8px">
-            ✔️ Tìm thấy đăng ký
-          </div>
+  <div style="line-height:1.8; text-align:left">
+    <div style="font-size:16px; font-weight:600; color:#16a34a; margin-bottom:8px">
+      ✔️ Tìm thấy đăng ký
+    </div>
 
-          <div>👤 <b>Họ tên:</b> ${found.hoten}</div>
-          <div>🪖 <b>Quân nhân:</b> ${found.quannhan}</div>
-          <div>🏢 <b>Đơn vị:</b> ${found.donvi}</div>
-          <div>📅 <b>Ngày thăm:</b> ${formatDateTimeVN(found.ngaytham)}</div>
+    <div>👤 <b>Họ tên:</b> ${found.hoten}</div>
+    <div>🪖 <b>Quân nhân:</b> ${found.quannhan}</div>
+    <div>🏢 <b>Đơn vị:</b> ${found.donvi}</div>
+    <div>📅 <b>Ngày thăm:</b> ${formatDateTimeVN(found.ngaytham)}</div>
 
-          <div>
-            📌 <b>Trạng thái:</b>
-            <span style="color:${
-              found.trangthai === "đã xác nhận" ? "green" : "orange"
-            }; font-weight:600">
-              ${found.trangthai || "đăng ký"}
-            </span>
-          </div>
-        </div>
-      `;
+    <div>
+      📌 <b>Trạng thái:</b>
+      <span style="
+        color:${found.trangthai === "đã xác nhận" ? "#16a34a" : "#f59e0b"};
+        font-weight:600
+      ">
+        ${found.trangthai === "đã xác nhận" ? "Đã xác nhận" : "Chờ xác nhận"}
+      </span>
+    </div>
+  </div>
+`;
 
       showPopup(message, found.visitCode);
     })
