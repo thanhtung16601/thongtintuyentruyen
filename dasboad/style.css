@@ -17,7 +17,7 @@ body {
 }
 /* Khung chính */
 .container {
-  max-width: 80vw;
+  max-width: 60vw;
   min-height: 5vh;
   margin: 25px auto;
   background: white;
