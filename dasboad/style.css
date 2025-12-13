@@ -228,6 +228,7 @@ button {
   border-radius: 20px;
   overflow: hidden;
   background: #fff;
+  box-shadow: #222222c4 0px 0px 6px 0px;
 }
 
 /* Input search */
@@ -310,7 +311,7 @@ button {
 
 /* Wrapper tạo scroll */
 .table-wrapper {
-  max-height: 50vh;
+  max-height: 65vh;
   overflow-y: auto;
   border-radius: 12px;
 }
