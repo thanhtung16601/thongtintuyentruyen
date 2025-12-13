@@ -43,6 +43,65 @@ h2 {
   background-color: #006be0;
 }
 
+.manager-details {
+  margin-top: 2em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.manager-details .manager-details-item {
+  margin: 0 2em;
+}
+
+.manager-details {
+  display: flex;
+  gap: 16px;
+  margin: 20px 0;
+  font-family: Arial, sans-serif;
+}
+
+.manager-details-item {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.manager-details-item span:first-child {
+  font-size: 14px;
+  color: #555;
+}
+
+.manager-details-item span:last-child {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Màu theo trạng thái */
+#tk-confirm {
+  color: #2ecc71; /* xanh */
+}
+
+#tk-wait {
+  color: #f39c12; /* cam */
+}
+
+#tk-total {
+  color: #3498db; /* xanh dương */
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 768px) {
+  .manager-details {
+    flex-direction: column;
+  }
+}
+
 /* Bảng */
 table {
   width: 100%;
@@ -55,10 +114,10 @@ table {
 }
 
 th {
-  background: #9fbfe8;
+  background: #701a1adb;
+  color: #d8a014;
   padding: 12px;
   font-weight: 600;
-  color: #333;
 }
 
 td {
