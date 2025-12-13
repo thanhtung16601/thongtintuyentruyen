@@ -194,7 +194,7 @@ function showPopup(message, iCode = "") {
     btnCopy.classList.add("d-none");
   }
 
-  document.getElementById("popupMessage").textContent = message;
+  document.getElementById("popupMessage").innerHTML = message;
   document.getElementById("codeText").textContent = iCode || "";
   document.getElementById("popup").style.display = "flex";
 }
@@ -216,6 +216,63 @@ function copyCode() {
     document.getElementById("popupMessage").innerText =
       "Đã sao chép mã vào clipboard ✅";
   });
+}
+
+/**
+ * Kiểm tra mã visitCode người dùng nhập
+ * - Tìm trong mảng data (đã load từ API)
+ * - Thông báo kết quả
+ */
+document.getElementById("btnCheck").addEventListener("click", checkVisitCode);
+function checkVisitCode() {
+  const codeInput = document.getElementById("searchCode").value.trim();
+
+  if (!codeInput) {
+    showPopup("Vui lòng nhập mã kiểm tra!");
+    return;
+  }
+
+  fetch(API_URL)
+    .then((res) => res.json())
+    .then((data) => {
+      // 🔍 Tìm theo visitCode
+      const found = data.find(
+        (item) => String(item.visitCode).trim() === codeInput
+      );
+
+      if (!found) {
+        showPopup("❌ Không tìm thấy mã kiểm tra!");
+        return;
+      }
+
+      const message = `
+        <div style="line-height:1.8; text-align:left">
+          <div style="font-size:16px; font-weight:600; color:#16a34a; margin-bottom:8px">
+            ✔️ Tìm thấy đăng ký
+          </div>
+
+          <div>👤 <b>Họ tên:</b> ${found.hoten}</div>
+          <div>🪖 <b>Quân nhân:</b> ${found.quannhan}</div>
+          <div>🏢 <b>Đơn vị:</b> ${found.donvi}</div>
+          <div>📅 <b>Ngày thăm:</b> ${formatDateTimeVN(found.ngaytham)}</div>
+
+          <div>
+            📌 <b>Trạng thái:</b>
+            <span style="color:${
+              found.trangthai === "đã xác nhận" ? "green" : "orange"
+            }; font-weight:600">
+              ${found.trangthai || "đăng ký"}
+            </span>
+          </div>
+        </div>
+      `;
+
+      showPopup(message, found.visitCode);
+    })
+    .catch((err) => {
+      console.error("Lỗi fetch data:", err);
+      showPopup("⚠️ Lỗi hệ thống, vui lòng thử lại!");
+    });
 }
 
 /**
