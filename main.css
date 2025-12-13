@@ -390,3 +390,6 @@ iframe {
 .popup-btn-copy:hover {
   background: #055ec4;
 }
+.d-none {
+  display: none;
+}

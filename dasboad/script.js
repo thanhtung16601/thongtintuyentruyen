@@ -66,28 +66,58 @@ function renderTable() {
     body.innerHTML += `
       <tr id="${row.visitCode}">
         <td>${row.hoten || ""}</td>
+
         <td>${row.cccd || ""}</td>
-        <td>${row.quanhe || ""}</td>
-        <td>${row.quannhan || ""}</td>
+
         <td>${row.sdt || ""}</td>
-        <td>${row.tinhthanhpho || ""}</td>
-        <td>${row.xahuyen || ""}</td>
-        <td>${row.donvi || ""}</td>
-        <td>${formatDateTimeVN(row.ngaytham) || ""}</td>
-        <td>${row.trangthai || "đăng ký"}</td>
+
+        <td>
+          ${row.tinhthanhpho || ""} <br>
+          <small>${row.xahuyen || ""}</small>
+        </td>
+
+        <td>${row.quanhe || ""}</td>
+
+        <td>${row.quannhan || ""}</td>
+
+        <!-- GỘP: ĐƠN VỊ + NGÀY THĂM + TRẠNG THÁI -->
+        <td>
+          <div><b>Đơn vị:</b> ${row.donvi || ""}</div>
+          <div><b>Ngày thăm:</b> ${formatDateTimeVN(row.ngaytham) || ""}</div>
+          <div>
+            <b>Trạng thái:</b>
+            <span style="color:${
+              row.trangthai === "đã xác nhận" ? "green" : "orange"
+            }">
+              ${row.trangthai || "đăng ký"}
+            </span>
+          </div>
+          <div style="margin-top:4px;">
+            <b>Mã:</b>
+            <span style="font-weight:600; color:#0a7cff;">
+              ${row.visitCode || ""}
+            </span>
+          </div>
+        </td>
+
         <td>
           ${
-            row.trangthai == "đã xác nhận"
-              ? `<button class="btn-xoa" style="width:100%" onclick="showPopup(${index})">Loại bỏ</button>`
-              : `<button class="btn-duyet" style="width:100%" onclick="duyet(${index})">Xác nhận</button>`
+            row.trangthai === "đã xác nhận"
+              ? `<button class="btn-xoa" style="width:100%" onclick="showPopup(${index})">
+                  Loại bỏ
+                </button>`
+              : `<button class="btn-duyet" style="width:100%" onclick="duyet(${index})">
+                  Xác nhận
+                </button>`
           }
         </td>
       </tr>
     `;
   });
 
-  totalVisiter(); // Cập nhật thống kê
+  totalVisiter();
 }
+
 /**
  * ==============================
  * THỐNG KÊ SỐ LƯỢNG
@@ -178,6 +208,106 @@ function confirmPopup() {
   iDelete(i);
   document.getElementById("popup").style.display = "none";
 }
+
+/**
+ * Tìm kiếm dữ liệu trong bảng admin
+ * @param {string} keyword - Từ khóa tìm kiếm
+ */
+function searchTable(keyword = "") {
+  const body = document.getElementById("adminBody");
+  body.innerHTML = "";
+
+  const key = keyword.toLowerCase();
+
+  const filteredData = data.filter((row) => {
+    return (
+      String(row.hoten || "")
+        .toLowerCase()
+        .includes(key) ||
+      String(row.cccd || "")
+        .toLowerCase()
+        .includes(key) ||
+      String(row.sdt || "")
+        .toLowerCase()
+        .includes(key) ||
+      String(row.quannhan || "")
+        .toLowerCase()
+        .includes(key) ||
+      String(row.donvi || "")
+        .toLowerCase()
+        .includes(key) ||
+      String(row.trangthai || "")
+        .toLowerCase()
+        .includes(key) ||
+      String(row.visitCode || "")
+        .toLowerCase()
+        .includes(key)
+    );
+  });
+
+  if (filteredData.length === 0) {
+    body.innerHTML = `<tr><td colspan="8">Không tìm thấy kết quả</td></tr>`;
+    return;
+  }
+
+  filteredData.forEach((row, index) => {
+    body.innerHTML += `
+      <tr id="${row.visitCode}">
+        <td>${row.hoten || ""}</td>
+        <td>${row.cccd || ""}</td>
+        <td>${row.sdt || ""}</td>
+        <td>${row.tinhthanhpho || ""} - ${row.xahuyen || ""}</td>
+        <td>${row.quanhe || ""}</td>
+        <td>${row.quannhan || ""}</td>
+
+        <td>
+          <div><b>Đơn vị:</b> ${row.donvi || ""}</div>
+          <div><b>Ngày thăm:</b> ${formatDateTimeVN(row.ngaytham) || ""}</div>
+          <div>
+            <b>Trạng thái:</b>
+            <span style="color:${
+              row.trangthai === "đã xác nhận" ? "green" : "orange"
+            }">
+              ${row.trangthai || "đăng ký"}
+            </span>
+          </div>
+          <div style="margin-top:4px;">
+            <b>Mã:</b>
+            <span style="font-weight:600; color:#0a7cff;">
+              ${row.visitCode || ""}
+            </span>
+          </div>
+        </td>
+
+        <td>
+          ${
+            row.trangthai === "đã xác nhận"
+              ? `<button class="btn-xoa" style="width:100%" onclick="showPopup(${index})">Loại bỏ</button>`
+              : `<button class="btn-duyet" style="width:100%" onclick="duyet(${index})">Xác nhận</button>`
+          }
+        </td>
+      </tr>
+    `;
+  });
+
+  totalVisiter();
+}
+
+document.getElementById("searchInput").addEventListener("input", function () {
+  searchTable(this.value);
+});
+document.getElementById("searchBtn").addEventListener("click", function () {
+  const keyword = document.getElementById("searchInput").value;
+  searchTable(keyword);
+});
+document
+  .getElementById("searchInput")
+  .addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      searchTable(this.value);
+    }
+  });
+
 /**
  * ==============================
  * KHỞI CHẠY KHI LOAD TRANG

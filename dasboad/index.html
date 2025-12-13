@@ -15,26 +15,35 @@
     <div class="container">
       <div id="manager-table">
         <h2>Quản lý Đơn Đăng Ký</h2>
-        <button id="reloadBtn">Danh sách mới</button>
+        <div class="toolbar">
+          <button id="reloadBtn" class="btn-reload">🔄 Danh sách mới</button>
+
+          <div class="search-group">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Tìm theo tên, CCCD, SĐT, đơn vị, trạng thái..."
+            />
+            <button id="searchBtn">🔍</button>
+          </div>
+        </div>
         <table id="adminTable">
           <thead>
             <tr>
               <th>Họ tên</th>
               <th>CCCD</th>
+              <th>SĐT</th>
+              <th>Tỉnh/Thành - Xã/Phường</th>
               <th>Quan hệ</th>
               <th>Quân nhân</th>
-              <th>SĐT</th>
-              <th>Tỉnh/Thành</th>
-              <th>Xã/Phường</th>
-              <th>Đơn vị</th>
-              <th>ngày thăm</th>
-              <th>Trạng thái</th>
+              <th>Thông tin</th>
               <th>Hành động</th>
             </tr>
           </thead>
+
           <tbody id="adminBody">
             <tr>
-              <td colspan="10">Đang tải...</td>
+              <td colspan="8">Đang tải...</td>
             </tr>
           </tbody>
         </table>

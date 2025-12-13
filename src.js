@@ -185,6 +185,15 @@ ngayThamInput.addEventListener("change", () => {
  * @param {string} [iCode] - Mã kiểm tra (nếu có)
  */
 function showPopup(message, iCode = "") {
+  const btnCopy = document.getElementById("btnCopy");
+
+  // Nếu có mã → hiện nút copy
+  if (iCode) {
+    btnCopy.classList.remove("d-none");
+  } else {
+    btnCopy.classList.add("d-none");
+  }
+
   document.getElementById("popupMessage").textContent = message;
   document.getElementById("codeText").textContent = iCode || "";
   document.getElementById("popup").style.display = "flex";

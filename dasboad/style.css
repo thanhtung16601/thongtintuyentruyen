@@ -18,6 +18,7 @@ body {
 /* Khung chính */
 .container {
   max-width: 80vw;
+  min-height: 5vh;
   margin: 25px auto;
   background: white;
   padding: 25px;
@@ -133,6 +134,62 @@ button {
 .btn-group a:hover {
   background: #e84148;
   transform: translateY(-2px);
+}
+
+/* Thanh công cụ */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+/* Nút reload */
+.btn-reload {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #0a7cff;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-reload:hover {
+  background: #095ec2;
+}
+
+/* Group search */
+.search-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* Input search */
+.search-group input {
+  border: none;
+  padding: 8px 12px;
+  outline: none;
+  width: 260px;
+  font-size: 14px;
+}
+
+/* Button search */
+.search-group button {
+  border: none;
+  background: transparent;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.search-group button:hover {
+  background: #f0f0f0;
 }
 
 .popup {
