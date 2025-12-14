@@ -183,6 +183,23 @@ function iConfirm(visitCode) {
 }
 
 /**
+ * Duyệt đăng ký (chuyển trạng thái sang "đã xác nhận")
+ * @param {number} visitCode - index của dòng dữ liệu
+ */
+function iRefuse(visitCode) {
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      action: "update",
+      visitCode,
+      trangthai: "đã từ chối",
+    }),
+  })
+    .then(() => loadData())
+    .catch((err) => console.error("Lỗi duyệt:", err));
+}
+
+/**
  * Xoá đăng ký khỏi hệ thống
  * @param {number} visitCode - index của dòng dữ liệu
  */
@@ -225,7 +242,7 @@ function closePopup() {
  * Xác nhận xoá và đóng popup
  */
 function confirmPopup() {
-  iDelete(i);
+  iRefuse(i);
   document.getElementById("popup").style.display = "none";
 }
 
