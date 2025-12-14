@@ -244,30 +244,75 @@ function checkVisitCode() {
         showPopup("❌ Không tìm thấy mã kiểm tra!");
         return;
       }
-      const message = `
-  <div style="line-height:1.8; text-align:left">
-    <div style="font-size:16px; font-weight:600; color:#16a34a; margin-bottom:8px">
-      ✔️ Tìm thấy đăng ký
-    </div>
+      let message = "";
 
-    <div>👤 <b>Họ tên:</b> ${found.hoten}</div>
-    <div>🪖 <b>Quân nhân:</b> ${found.quannhan}</div>
-    <div>🏢 <b>Đơn vị:</b> ${found.donvi}</div>
-    <div>📅 <b>Ngày thăm:</b> ${formatDateTimeVN(found.ngaytham)}</div>
+      switch (found.trangthai) {
+        case "đã từ chối":
+          message = `
+      <div style="line-height:1.8; text-align:left">
+        <div style="font-size:16px; font-weight:600; color:#dc2626; margin-bottom:8px">
+          ❌ Đăng ký bị từ chối
+        </div>
 
-    <div>
-      📌 <b>Trạng thái:</b>
-      <span style="
-        color:${found.trangthai === "đã xác nhận" ? "#16a34a" : "#f59e0b"};
-        font-weight:600
-      ">
-        ${found.trangthai === "đã xác nhận" ? "Đã xác nhận" : "Chờ xác nhận"}
-      </span>
-    </div>
-  </div>
-`;
+        <div>👤 <b>Họ tên:</b> ${found.hoten}</div>
+        <div>🪖 <b>Quân nhân:</b> ${found.quannhan}</div>
+        <div>🏢 <b>Đơn vị:</b> ${found.donvi}</div>
+        <div>📅 <b>Ngày thăm:</b> ${formatDateTimeVN(found.ngaytham)}</div>
 
-      showPopup(message, found.visitCode);
+        <div>
+          📌 <b>Trạng thái:</b>
+          <span style="font-weight:600; color:red">
+            Hiện đơn vị chưa tổ chức Thăm thân.
+          </span>
+        </div>
+      </div>
+    `;
+          break;
+
+        case "đăng ký":
+          message = `
+      <div style="line-height:1.8; text-align:left">
+        <div style="font-size:16px; font-weight:600; color:#f59e0b; margin-bottom:8px">
+          ⏳ Đang chờ xác nhận
+        </div>
+
+        <div>👤 <b>Họ tên:</b> ${found.hoten}</div>
+        <div>🪖 <b>Quân nhân:</b> ${found.quannhan}</div>
+        <div>🏢 <b>Đơn vị:</b> ${found.donvi}</div>
+        <div>📅 <b>Ngày thăm:</b> ${formatDateTimeVN(found.ngaytham)}</div>
+
+        <div>
+          <span style="font-weight:600; color:orange">
+            ⏳ <i>Đang chờ trực ban kiểm duyệt. Vui lòng thử lại sau.</i>
+          </span>
+      </div>
+    `;
+          break;
+
+        default: // đã xác nhận
+          message = `
+      <div style="line-height:1.8; text-align:left">
+        <div style="font-size:16px; font-weight:600; color:#16a34a; margin-bottom:8px">
+          ✅ Đăng ký đã được xác nhận
+        </div>
+
+        <div>👤 <b>Họ tên:</b> ${found.hoten}</div>
+        <div>🪖 <b>Quân nhân:</b> ${found.quannhan}</div>
+        <div>🏢 <b>Đơn vị:</b> ${found.donvi}</div>
+        <div>📅 <b>Ngày thăm:</b> ${formatDateTimeVN(found.ngaytham)}</div>
+
+        <div>
+          📌 <b>Trạng thái:</b>
+          <span style="font-weight:600; color:green">
+            ✅ Đã xác nhận
+          </span>
+        </div>
+      </div>
+    `;
+          break;
+      }
+
+      showPopup(message);
     })
     .catch((err) => {
       console.error("Lỗi fetch data:", err);

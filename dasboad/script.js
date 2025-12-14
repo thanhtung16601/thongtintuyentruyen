@@ -125,6 +125,16 @@ function renderTable() {
               Loại bỏ
             </button>
           `
+              : row.trangthai !== "đăng ký"
+              ? `
+            <button 
+              class="btn-xoa d-none"
+              style="width:100%"
+              onclick="showPopup('${row.visitCode}')"
+            >
+              Loại bỏ
+            </button>
+          `
               : `
             <button 
               class="btn-duyet"
@@ -165,11 +175,15 @@ function renderTable() {
  */
 function totalVisiter() {
   const daDuyet = data.filter((x) => x.trangthai === "đã xác nhận").length;
-  const chuaDuyet = data.filter((x) => x.trangthai !== "đã xác nhận").length;
+  const tuChoi = data.filter((x) => x.trangthai === "đã từ chối").length;
+  const chuaDuyet = data.filter(
+    (x) => x.trangthai !== "đã xác nhận" && x.trangthai !== "đã từ chối"
+  ).length;
   const tong = data.length;
 
   document.getElementById("tk-confirm").textContent = daDuyet;
   document.getElementById("tk-wait").textContent = chuaDuyet;
+  document.getElementById("tk-refuse").textContent = tuChoi;
   document.getElementById("tk-total").textContent = tong;
 }
 /**

@@ -87,6 +87,9 @@ h2 {
   color: #2ecc71; /* xanh */
 }
 
+#tk-refuse {
+  color: tomato; /* cam */
+}
 #tk-wait {
   color: #f39c12; /* cam */
 }
