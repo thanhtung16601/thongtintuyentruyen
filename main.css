@@ -64,7 +64,6 @@ header h1 {
 section {
   max-width: 900px;
   margin: 30px auto 30px;
-  padding: 10px;
 }
 
 .card {
@@ -392,4 +391,17 @@ iframe {
 }
 .d-none {
   display: none;
+}
+@media (min-width: 600px) and (max-width: 1024px) {
+  header {
+    height: 20vh;
+  }
+  .login-btn {
+    top: 6em;
+    width: 15em;
+    height: 2em;
+  }
+  .container {
+    flex-direction: column;
+  }
 }
