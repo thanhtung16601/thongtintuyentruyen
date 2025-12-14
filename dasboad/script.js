@@ -86,10 +86,23 @@ function renderTable() {
           <div><b>Ngày thăm:</b> ${formatDateTimeVN(row.ngaytham) || ""}</div>
           <div>
             <b>Trạng thái:</b>
-            <span style="color:${
-              row.trangthai === "đã xác nhận" ? "green" : "orange"
-            }">
-              ${row.trangthai || "đăng ký"}
+            <span style="
+              font-weight:600;
+              color:${
+                row.trangthai === "đã xác nhận"
+                  ? "green"
+                  : row.trangthai === "đăng ký"
+                  ? "orange"
+                  : "red"
+              };
+            ">
+              ${
+                row.trangthai === "đã xác nhận"
+                  ? "✅ Đã xác nhận"
+                  : row.trangthai === "đăng ký"
+                  ? "⏳ Chờ xác nhận"
+                  : "❌ Đã từ chối"
+              }
             </span>
           </div>
           <div style="margin-top:4px;">
@@ -314,10 +327,23 @@ function searchTable(keyword = "") {
           <div><b>Ngày thăm:</b> ${formatDateTimeVN(row.ngaytham) || ""}</div>
           <div>
             <b>Trạng thái:</b>
-            <span style="color:${
-              row.trangthai === "đã xác nhận" ? "green" : "orange"
-            }">
-              ${row.trangthai || "đăng ký"}
+            <span style="
+              font-weight:600;
+              color:${
+                row.trangthai === "đã xác nhận"
+                  ? "green"
+                  : row.trangthai === "đăng ký"
+                  ? "orange"
+                  : "red"
+              };
+            ">
+              ${
+                row.trangthai === "đã xác nhận"
+                  ? "✅ Đã xác nhận"
+                  : row.trangthai === "đăng ký"
+                  ? "⏳ Chờ xác nhận"
+                  : "❌ Đã từ chối"
+              }
             </span>
           </div>
           <div style="margin-top:4px;">
