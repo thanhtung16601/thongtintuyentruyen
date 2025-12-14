@@ -113,7 +113,7 @@ function renderTable() {
           </div>
         </td>
 
-        <td>
+        <td style="text-align: center;">
           ${
             row.trangthai === "đã xác nhận"
               ? `
@@ -129,7 +129,6 @@ function renderTable() {
               ? `
             <button 
               class="btn-xoa d-none"
-              style="width:100%"
               onclick="showPopup('${row.visitCode}')"
             >
               Loại bỏ
@@ -138,7 +137,6 @@ function renderTable() {
               : `
             <button 
               class="btn-duyet"
-              style="width:100%"
               onclick="iConfirm('${row.visitCode}')"
             >
               Xác nhận
@@ -146,7 +144,6 @@ function renderTable() {
 
             <button 
               class="btn-xoa"
-              style="width:100%; margin-top: 1rem;"
               onclick="showPopup('${row.visitCode}')"
             >
               Từ chối
@@ -368,12 +365,11 @@ function searchTable(keyword = "") {
           </div>
         </td>
 
-        <td>${
+        <td style="text-align: center;">${
           row.trangthai === "đã xác nhận"
             ? `
             <button 
               class="btn-xoa d-none"
-              style="width:100%"
               onclick="showPopup('${row.visitCode}')"
             >
               Loại bỏ
@@ -382,7 +378,6 @@ function searchTable(keyword = "") {
             : `
             <button 
               class="btn-duyet"
-              style="width:100%"
               onclick="iConfirm('${row.visitCode}')"
             >
               Xác nhận
@@ -390,7 +385,6 @@ function searchTable(keyword = "") {
 
             <button 
               class="btn-xoa"
-              style="width:100%; margin-top: 1rem;"
               onclick="showPopup('${row.visitCode}')"
             >
               Từ chối
