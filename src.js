@@ -262,7 +262,10 @@ function checkVisitCode() {
         <div>
           📌 <b>Trạng thái:</b>
           <span style="font-weight:600; color:red">
-            Hiện đơn vị chưa tổ chức Thăm thân.
+            Căn cứ vào tình hình thực hiện nhiệm vụ của đơn vị, nên tuần này đơn vị không giải quyết thăm thâm đối
+            với đồng chí ${
+              found.quannhan
+            }. Kính mong gia đình thông cảm và sắp xếp vào thời gian khác.
           </span>
         </div>
       </div>
