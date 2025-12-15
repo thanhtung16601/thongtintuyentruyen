@@ -5,12 +5,6 @@
  */
 
 /**
- * Danh sách dữ liệu lấy từ API (Google Apps Script)
- * @type {Array}
- */
-let data = [];
-
-/**
  * Biến tạm dùng cho popup xác nhận xoá
  * Lưu index của dòng đang thao tác
  */
@@ -27,6 +21,11 @@ let i = 0;
 document.getElementById("reloadBtn").addEventListener("click", loadData);
 
 /**
+ * Danh sách dữ liệu lấy từ API (Google Apps Script)
+ * @type {Array}
+ */
+let DATA_STORE = [];
+/**
  * Lấy dữ liệu từ API
  * - Fetch danh sách người đăng ký
  * - Render bảng admin
@@ -36,7 +35,7 @@ function loadData() {
   fetch(API_URL)
     .then((res) => res.json())
     .then((d) => {
-      data = d;
+      DATA_STORE = d;
       renderTable([]);
       renderPostman(DATA_POST);
     })
@@ -62,7 +61,7 @@ function renderTable(paramData) {
   const body = document.getElementById("adminBody");
   body.innerHTML = "";
 
-  let renderData = paramData.length === 0 ? data : paramData;
+  let renderData = paramData.length === 0 ? DATA_STORE : paramData;
 
   renderData.forEach((row, index) => {
     body.innerHTML += `
@@ -167,12 +166,14 @@ function renderTable(paramData) {
  * - Tổng số lượt đăng ký
  */
 function totalVisiter() {
-  const daDuyet = data.filter((x) => x.trangthai === "đã xác nhận").length;
-  const tuChoi = data.filter((x) => x.trangthai === "đã từ chối").length;
-  const chuaDuyet = data.filter(
+  const daDuyet = DATA_STORE.filter(
+    (x) => x.trangthai === "đã xác nhận"
+  ).length;
+  const tuChoi = DATA_STORE.filter((x) => x.trangthai === "đã từ chối").length;
+  const chuaDuyet = DATA_STORE.filter(
     (x) => x.trangthai !== "đã xác nhận" && x.trangthai !== "đã từ chối"
   ).length;
-  const tong = data.length;
+  const tong = DATA_STORE.length;
 
   document.getElementById("tk-confirm").textContent = daDuyet;
   document.getElementById("tk-wait").textContent = chuaDuyet;
@@ -193,6 +194,7 @@ function iConfirm(visitCode) {
   fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({
+      indexGUI: "manager",
       action: "update",
       visitCode,
       trangthai: "đã xác nhận",
@@ -203,13 +205,14 @@ function iConfirm(visitCode) {
 }
 
 /**
- * Duyệt đăng ký (chuyển trạng thái sang "đã xác nhận")
+ * Duyệt đăng ký (chuyển trạng thái sang "đã từ chối")
  * @param {number} visitCode - index của dòng dữ liệu
  */
 function iRefuse(visitCode) {
   fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({
+      indexGUI: "manager",
       action: "update",
       visitCode,
       trangthai: "đã từ chối",
@@ -227,6 +230,7 @@ function iDelete(visitCode) {
   fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({
+      indexGUI: "manager",
       action: "delete",
       visitCode,
     }),
@@ -276,7 +280,7 @@ function searchTable(keyword = "") {
 
   const key = keyword.toLowerCase();
 
-  const filteredData = data.filter((row) => {
+  const filteredData = DATA_STORE.filter((row) => {
     return (
       String(row.hoten || "")
         .toLowerCase()
