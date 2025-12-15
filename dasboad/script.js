@@ -37,7 +37,7 @@ function loadData() {
     .then((res) => res.json())
     .then((d) => {
       data = d;
-      renderTable();
+      renderTable([]);
       renderPostman(DATA_POST);
     })
     .catch((err) => {
@@ -58,28 +58,24 @@ function loadData() {
  * - Hiển thị trạng thái
  * - Nút duyệt / loại bỏ
  */
-function renderTable() {
+function renderTable(paramData) {
   const body = document.getElementById("adminBody");
   body.innerHTML = "";
 
-  data.forEach((row, index) => {
+  let renderData = paramData.length === 0 ? data : paramData;
+
+  renderData.forEach((row, index) => {
     body.innerHTML += `
-      <tr id="${row.visitCode}">
+      <tr key="${index}" id="${row.visitCode}">
         <td>${row.hoten || ""}</td>
-
         <td>${row.cccd || ""}</td>
-
         <td>${row.sdt || ""}</td>
-
         <td>
           ${row.tinhthanhpho || ""} <br>
           <small>${row.xahuyen || ""}</small>
         </td>
-
         <td>${row.quanhe || ""}</td>
-
         <td>${row.quannhan || ""}</td>
-
         <!-- GỘP: ĐƠN VỊ + NGÀY THĂM + TRẠNG THÁI -->
         <td>
           <div><b>Đơn vị:</b> ${row.donvi || ""}</div>
@@ -314,89 +310,7 @@ function searchTable(keyword = "") {
     return;
   }
 
-  filteredData.forEach((row, index) => {
-    body.innerHTML += `
-      <tr id="${row.visitCode}">
-        <td>${row.hoten || ""}</td>
-
-        <td>${row.cccd || ""}</td>
-
-        <td>${row.sdt || ""}</td>
-
-        <td>
-          ${row.tinhthanhpho || ""} <br>
-          <small>${row.xahuyen || ""}</small>
-        </td>
-
-        <td>${row.quanhe || ""}</td>
-
-        <td>${row.quannhan || ""}</td>
-
-        <!-- GỘP: ĐƠN VỊ + NGÀY THĂM + TRẠNG THÁI -->
-        <td>
-          <div><b>Đơn vị:</b> ${row.donvi || ""}</div>
-          <div><b>Ngày thăm:</b> ${formatDateTimeVN(row.ngaytham) || ""}</div>
-          <div>
-            <b>Trạng thái:</b>
-            <span style="
-              font-weight:600;
-              color:${
-                row.trangthai === "đã xác nhận"
-                  ? "green"
-                  : row.trangthai === "đăng ký"
-                  ? "orange"
-                  : "red"
-              };
-            ">
-              ${
-                row.trangthai === "đã xác nhận"
-                  ? "✅ Đã xác nhận"
-                  : row.trangthai === "đăng ký"
-                  ? "⏳ Chờ xác nhận"
-                  : "❌ Đã từ chối"
-              }
-            </span>
-          </div>
-          <div style="margin-top:4px;">
-            <b>Mã:</b>
-            <span style="font-weight:600; color:#0a7cff;">
-              ${row.visitCode || ""}
-            </span>
-          </div>
-        </td>
-
-        <td style="text-align: center;">${
-          row.trangthai === "đã xác nhận"
-            ? `
-            <button 
-              class="btn-xoa d-none"
-              onclick="showPopup('${row.visitCode}')"
-            >
-              Loại bỏ
-            </button>
-          `
-            : `
-            <button 
-              class="btn-duyet"
-              onclick="iConfirm('${row.visitCode}')"
-            >
-              Xác nhận
-            </button>
-
-            <button 
-              class="btn-xoa"
-              onclick="showPopup('${row.visitCode}')"
-            >
-              Từ chối
-            </button>
-          `
-        }
-        </td>
-      </tr>
-    `;
-  });
-
-  data = filteredData;
+  renderTable(filteredData);
   totalVisiter();
 }
 
