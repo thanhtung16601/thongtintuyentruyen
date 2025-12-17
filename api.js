@@ -12,8 +12,7 @@
  *
  * @constant {string}
  * @author NgocKhanh
- */
-const API_URL =
+ */ const API_URL_CRUD =
   "https://script.google.com/macros/s/AKfycbwVMgYMWdfAbnHj_dxbSguvrOH7wI42qXS79AUW0srVnkjnDz_AZ5-bGSHUUag6a2cuZA/exec";
 
 /**

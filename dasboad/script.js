@@ -32,7 +32,7 @@ let DATA_STORE = [];
  * - Render danh sách bài viết (postman)
  */
 function loadData() {
-  fetch(API_URL)
+  fetch(API_URL_CRUD)
     .then((res) => res.json())
     .then((d) => {
       DATA_STORE = d;
@@ -189,7 +189,7 @@ function totalVisiter(iData) {
  * @param {number} visitCode - index của dòng dữ liệu
  */
 function iConfirm(visitCode) {
-  fetch(API_URL, {
+  fetch(API_URL_CRUD, {
     method: "POST",
     body: JSON.stringify({
       indexGUI: "manager",
@@ -207,7 +207,7 @@ function iConfirm(visitCode) {
  * @param {number} visitCode - index của dòng dữ liệu
  */
 function iRefuse(visitCode) {
-  fetch(API_URL, {
+  fetch(API_URL_CRUD, {
     method: "POST",
     body: JSON.stringify({
       indexGUI: "manager",
@@ -225,7 +225,7 @@ function iRefuse(visitCode) {
  * @param {number} visitCode - index của dòng dữ liệu
  */
 function iDelete(visitCode) {
-  fetch(API_URL, {
+  fetch(API_URL_CRUD, {
     method: "POST",
     body: JSON.stringify({
       indexGUI: "manager",

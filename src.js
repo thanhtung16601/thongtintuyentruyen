@@ -76,9 +76,14 @@ document.getElementById("visitForm").addEventListener("submit", function (e) {
  * @param {Object} formData - Dữ liệu đăng ký thăm thân
  */
 function addPeople(formData) {
-  fetch(API_URL, {
+  fetch(API_URL_CRUD, {
     method: "POST",
-    body: JSON.stringify(formData),
+    body: JSON.stringify({
+      indexGUI: "manager",
+      action: "create",
+      formData,
+      trangthai: "đăng ký",
+    }),
   })
     .then(() => {
       showPopup("Đăng ký thành công! Chờ phê duyệt.", formData.visitCode);
@@ -232,7 +237,7 @@ function checkVisitCode() {
     return;
   }
 
-  fetch(API_URL)
+  fetch(API_URL_CRUD)
     .then((res) => res.json())
     .then((data) => {
       // 🔍 Tìm theo visitCode
