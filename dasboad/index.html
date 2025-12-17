@@ -21,6 +21,19 @@
 
           <div class="search-group">
             <input
+              type="date"
+              id="startTime"
+              class="manager-details-item"
+              placeholder="Thời gian bắt đầu"
+            />
+
+            <input
+              type="date"
+              id="endTime"
+              class="manager-details-item"
+              placeholder="Thời gian kết thúc"
+            />
+            <input
               type="text"
               id="searchInput"
               class="manager-details-item"
@@ -81,10 +94,18 @@
       <h3>Thông báo</h3>
       <p id="popupMessage">Nội dung popup...</p>
 
-      <button onclick="confirmPopup()" class="popup-btn popup-btn-confirm">
+      <button
+        id="popup-btn-confirm"
+        onclick="confirmPopup()"
+        class="popup-btn popup-btn-confirm"
+      >
         Xác nhận
       </button>
-      <button onclick="closePopup()" class="popup-btn popup-btn-close">
+      <button
+        id="popup-btn-close"
+        onclick="closePopup()"
+        class="popup-btn popup-btn-close"
+      >
         Thoát
       </button>
     </div>

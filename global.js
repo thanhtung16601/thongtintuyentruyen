@@ -64,3 +64,26 @@ function random6Chars() {
   }
   return result;
 }
+/**
+ * Chuyển dd/mm/yyyy -> Date (00:00:00)
+ */
+function parseVNDate(dateStr) {
+  if (!dateStr) return null;
+
+  const [dd, mm, yyyy] = dateStr.split("/");
+  if (!dd || !mm || !yyyy) return null;
+
+  return new Date(yyyy, mm - 1, dd, 0, 0, 0);
+}
+/**
+ * Lấy Date chỉ theo ngày từ field ngaytham
+ */
+function getRowDate(row) {
+  if (!row.ngaytham) return null;
+
+  // row.ngaytham có thể là ISO hoặc dd/mm/yyyy hh:mm
+  const d = new Date(row.ngaytham);
+  if (isNaN(d)) return null;
+
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}

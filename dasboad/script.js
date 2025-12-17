@@ -150,7 +150,7 @@ function renderTable(paramData) {
     `;
   });
 
-  totalVisiter();
+  totalVisiter(renderData);
 }
 
 /**
@@ -165,15 +165,13 @@ function renderTable(paramData) {
  * - Số đang chờ
  * - Tổng số lượt đăng ký
  */
-function totalVisiter() {
-  const daDuyet = DATA_STORE.filter(
-    (x) => x.trangthai === "đã xác nhận"
-  ).length;
-  const tuChoi = DATA_STORE.filter((x) => x.trangthai === "đã từ chối").length;
-  const chuaDuyet = DATA_STORE.filter(
+function totalVisiter(iData) {
+  const daDuyet = iData.filter((x) => x.trangthai === "đã xác nhận").length;
+  const tuChoi = iData.filter((x) => x.trangthai === "đã từ chối").length;
+  const chuaDuyet = iData.filter(
     (x) => x.trangthai !== "đã xác nhận" && x.trangthai !== "đã từ chối"
   ).length;
-  const tong = DATA_STORE.length;
+  const tong = iData.length;
 
   document.getElementById("tk-confirm").textContent = daDuyet;
   document.getElementById("tk-wait").textContent = chuaDuyet;
@@ -269,45 +267,71 @@ function confirmPopup() {
   iRefuse(i);
   document.getElementById("popup").style.display = "none";
 }
-
 /**
- * Tìm kiếm dữ liệu trong bảng admin
- * @param {string} keyword - Từ khóa tìm kiếm
+ * Tìm kiếm dữ liệu
+ * - Theo keyword
+ * - Theo khoảng ngày (dd/mm/yyyy)
  */
-function searchTable(keyword = "") {
-  const body = document.getElementById("adminBody");
-  body.innerHTML = "";
+function searchTable() {
+  const keyword = document
+    .getElementById("searchInput")
+    .value.trim()
+    .toLowerCase();
 
-  const key = keyword.toLowerCase();
+  const startInput = document.getElementById("startTime").value;
+  const endInput = document.getElementById("endTime").value;
+
+  const startDate = startInput ? new Date(startInput) : null;
+  const endDate = endInput ? new Date(endInput) : null;
+
+  // Reset giờ để chỉ so ngày
+  if (startDate) startDate.setHours(0, 0, 0, 0);
+  if (endDate) endDate.setHours(23, 59, 59, 999);
+
+  // Validate ngày
+  if (startDate && endDate && startDate > endDate) {
+    showPopup("❌ Ngày bắt đầu không được lớn hơn ngày kết thúc!");
+    return;
+  }
 
   const filteredData = DATA_STORE.filter((row) => {
-    return (
+    /* ===== KEYWORD FILTER ===== */
+    const keywordMatch =
+      !keyword ||
       String(row.hoten || "")
         .toLowerCase()
-        .includes(key) ||
+        .includes(keyword) ||
       String(row.cccd || "")
         .toLowerCase()
-        .includes(key) ||
+        .includes(keyword) ||
       String(row.sdt || "")
         .toLowerCase()
-        .includes(key) ||
+        .includes(keyword) ||
       String(row.quannhan || "")
         .toLowerCase()
-        .includes(key) ||
+        .includes(keyword) ||
       String(row.donvi || "")
         .toLowerCase()
-        .includes(key) ||
+        .includes(keyword) ||
       String(row.trangthai || "")
         .toLowerCase()
-        .includes(key) ||
-      String(formatDateTimeVN(row.ngaytham) || "")
-        .toLowerCase()
-        .includes(key) ||
+        .includes(keyword) ||
       String(row.visitCode || "")
         .toLowerCase()
-        .includes(key)
-    );
+        .includes(keyword);
+
+    /* ===== DATE FILTER (dd/mm/yyyy) ===== */
+    let dateMatch = true;
+    const rowDate = getRowDate(row);
+
+    if (startDate && rowDate < startDate) dateMatch = false;
+    if (endDate && rowDate > endDate) dateMatch = false;
+
+    return keywordMatch && dateMatch;
   });
+
+  const body = document.getElementById("adminBody");
+  body.innerHTML = "";
 
   if (filteredData.length === 0) {
     body.innerHTML = `<tr><td colspan="8">Không tìm thấy kết quả</td></tr>`;
@@ -315,7 +339,20 @@ function searchTable(keyword = "") {
   }
 
   renderTable(filteredData);
-  totalVisiter();
+  totalVisiter(filteredData);
+}
+
+/**
+ * Chuyển dd/mm/yyyy hh:mm → Date object
+ */
+function parseVNDateTime(str) {
+  if (!str) return null;
+
+  const [datePart, timePart = "00:00"] = str.split(" ");
+  const [dd, mm, yyyy] = datePart.split("/");
+  const [hh, mi] = timePart.split(":");
+
+  return new Date(yyyy, mm - 1, dd, hh, mi);
 }
 
 document.getElementById("searchInput").addEventListener("input", function () {
@@ -334,19 +371,6 @@ document
   });
 
 /**
- * ==============================
- * KHỞI CHẠY KHI LOAD TRANG
- * ==============================
- */
-
-/**
  * Load dữ liệu lần đầu
  */
 loadData();
-
-/**
- * (Tuỳ chọn) Auto reload mỗi 2 giây
- */
-// setInterval(() => {
-//   loadData();
-// }, 2000);
