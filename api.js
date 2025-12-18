@@ -14,7 +14,6 @@
  * @author NgocKhanh
  */ const API_URL_CRUD =
   "https://script.google.com/macros/s/AKfycbwVMgYMWdfAbnHj_dxbSguvrOH7wI42qXS79AUW0srVnkjnDz_AZ5-bGSHUUag6a2cuZA/exec";
-
 /**
  * Danh sách bài đăng / thông báo nội bộ
  * - Dùng để hiển thị bảng quản lý bài viết

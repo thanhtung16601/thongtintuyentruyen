@@ -81,8 +81,7 @@ function addPeople(formData) {
     body: JSON.stringify({
       indexGUI: "manager",
       action: "create",
-      formData,
-      trangthai: "đăng ký",
+      ...formData,
     }),
   })
     .then(() => {
