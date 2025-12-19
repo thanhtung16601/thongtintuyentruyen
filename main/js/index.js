@@ -326,8 +326,47 @@ function checkVisitCode() {
     });
 }
 
+function renderLocation() {
+  const tinhSelect = document.getElementById("tinhthanh");
+  const xaSelect = document.getElementById("xahuyen");
+
+  fetch("https://34tinhthanh.com/api/provinces")
+    .then((res) => res.json())
+    .then((provinces) => {
+      provinces.forEach((tinh) => {
+        const opt = document.createElement("option");
+        opt.value = tinh.name; // ✅ LƯU TÊN TỈNH
+        opt.textContent = tinh.name; // hiển thị tên
+        opt.dataset.code = tinh.province_code; // giữ code để dùng nội bộ
+        tinhSelect.appendChild(opt);
+      });
+
+      tinhSelect.addEventListener("change", () => {
+        xaSelect.innerHTML = '<option value="">-- Chọn xã/phường --</option>';
+
+        const selectedOption = tinhSelect.selectedOptions[0];
+        if (!selectedOption) return;
+
+        const provinceCode = selectedOption.dataset.code; // lấy code từ dataset
+
+        fetch(`https://34tinhthanh.com/api/wards?province_code=${provinceCode}`)
+          .then((res) => res.json())
+          .then((wards) => {
+            wards.forEach((xa) => {
+              const opt = document.createElement("option");
+              opt.value = xa.ward_name; // ✅ tên xã
+              opt.textContent = xa.ward_name;
+              xaSelect.appendChild(opt);
+            });
+          });
+      });
+    })
+    .catch((err) => console.error("Lỗi tải tỉnh/thành:", err));
+}
+
 /**
  * Khởi tạo khi load trang
  */
 setDateTimeRules();
 setMinDateTime();
+renderLocation();

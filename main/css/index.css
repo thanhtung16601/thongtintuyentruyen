@@ -1,0 +1,30 @@
+.payroll-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.payroll-table th,
+.payroll-table td {
+  border: 1px solid #e5e7eb;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.payroll-table th {
+  background: #f3f4f6;
+  font-weight: 600;
+}
+
+.payroll-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.payroll-table {
+  background: #fff;
+  color: black;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}

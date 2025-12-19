@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trang Thông Tin Đơn Vị</title>  
   <link rel="icon" href="../imgs/Logo_QĐNDVN.png" type="image/x-icon" />
-  <link rel="stylesheet" href="./main.css">
+  <link rel="stylesheet" href="./main/css/main.css">
+  <link rel="stylesheet" href="./main/css/index.css">
 </head>
 
 <body>
@@ -15,7 +16,7 @@
   <div id="background"></div>
 
   <header>
-    <h1>Trang thông tin tuyên truyền Trung Đoàn 6 <br> Bộ Chỉ Huy Quân Sự Thành phố Huế</h1>
+    <h1>Trang thông tin tuyên truyền Trung Đoàn 6 <br> Bộ Chỉ huy Quân sự Thành phố Huế</h1>
     <button class="login-btn" onclick="window.location.href='login.html'">Đăng nhập quản lý</button>
   </header>
 
@@ -68,15 +69,49 @@
         </ul>
       </div>
       <div class="check-container">
-  <input type="text" id="searchCode" placeholder="Nhập mã kiểm tra..." />
-  <button id="btnCheck">Kiểm tra</button>
-</div>
+        <input type="text" id="searchCode" placeholder="Nhập mã kiểm tra..." />
+        <button id="btnCheck">Kiểm tra</button>
+      </div>
 
-<div class="dangKyThamThan-info" id="info-thamthan"></div>
+    <div class="dangKyThamThan-info" id="info-thamthan"></div>
     </div>
   </div>
 
-  <section>
+  <section><!-- Card danh sách biên chế -->
+<div class="card" id="list-payroll">
+  <h2>Danh sách biên chế</h2>
+      <div class="check-container">
+        <input type="text" id="searchPayroll" placeholder="Nhập tên quân nhân.." />
+        <button id="btnCheckPayroll">Kiểm tra</button>
+      </div>
+
+  <table class="payroll-table">
+    <thead>
+      <tr>
+        <th>CODE</th>
+        <th>QUÂN NHÂN</th>
+        <th>SĐT</th>
+        <th>TỈNH/THÀNH</th>
+        <th>XÃ/PHƯỜNG</th>
+        <th>ĐƠN VỊ</th>
+        <th>CHIA SẺ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>..</td>
+        <td>..</td>
+        <td>..</td>
+        <td>..</td>
+        <td>..</td>
+        <td>..</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
     <!-- Card Giới thiệu -->
     <div class="card" id="gth">
       <h2>Giới thiệu</h2>
@@ -122,48 +157,9 @@
 
   </section>
 </body>
-<script>
-  const tinhSelect = document.getElementById("tinhthanh");
-  const xaSelect = document.getElementById("xahuyen");
-
-  fetch("https://34tinhthanh.com/api/provinces")
-    .then(res => res.json())
-    .then(provinces => {
-
-      provinces.forEach(tinh => {
-        const opt = document.createElement("option");
-        opt.value = tinh.name;        // ✅ LƯU TÊN TỈNH
-        opt.textContent = tinh.name; // hiển thị tên
-        opt.dataset.code = tinh.province_code; // giữ code để dùng nội bộ
-        tinhSelect.appendChild(opt);
-      });
-
-      tinhSelect.addEventListener("change", () => {
-        xaSelect.innerHTML = '<option value="">-- Chọn xã/phường --</option>';
-
-        const selectedOption = tinhSelect.selectedOptions[0];
-        if (!selectedOption) return;
-
-        const provinceCode = selectedOption.dataset.code; // lấy code từ dataset
-
-        fetch(`https://34tinhthanh.com/api/wards?province_code=${provinceCode}`)
-          .then(res => res.json())
-          .then(wards => {
-            wards.forEach(xa => {
-              const opt = document.createElement("option");
-              opt.value = xa.ward_name;      // ✅ tên xã
-              opt.textContent = xa.ward_name;
-              xaSelect.appendChild(opt);
-            });
-          });
-      });
-    })
-    .catch(err => console.error("Lỗi tải tỉnh/thành:", err));
-</script>
-
   <script src="./global.js"></script>
   <script src="./api.js"></script>
-  <script src="./src.js"></script>
+  <script src="./main/js/index.js"></script>
 
 </html>
 <!-- Popup -->
