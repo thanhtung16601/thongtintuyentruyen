@@ -76,10 +76,9 @@ document.getElementById("visitForm").addEventListener("submit", function (e) {
  * @param {Object} formData - Dữ liệu đăng ký thăm thân
  */
 function addPeople(formData) {
-  fetch(API_URL_CRUD, {
+  fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({
-      indexGUI: "manager",
       action: "create",
       ...formData,
     }),
@@ -236,7 +235,7 @@ function checkVisitCode() {
     return;
   }
 
-  fetch(API_URL_CRUD)
+  fetch(API_URL)
     .then((res) => res.json())
     .then((data) => {
       // 🔍 Tìm theo visitCode

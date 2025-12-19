@@ -32,7 +32,7 @@ let DATA_STORE = [];
  * - Render danh sách bài viết (postman)
  */
 function loadData() {
-  fetch(API_URL_CRUD)
+  fetch(API_URL)
     .then((res) => res.json())
     .then((d) => {
       DATA_STORE = d;
@@ -189,10 +189,10 @@ function totalVisiter(iData) {
  * @param {number} visitCode - index của dòng dữ liệu
  */
 function iConfirm(visitCode) {
-  fetch(API_URL_CRUD, {
+  fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({
-      indexGUI: "manager",
+      token: localStorage.getItem("token"),
       action: "update",
       visitCode,
       trangthai: "đã xác nhận",
@@ -207,10 +207,10 @@ function iConfirm(visitCode) {
  * @param {number} visitCode - index của dòng dữ liệu
  */
 function iRefuse(visitCode) {
-  fetch(API_URL_CRUD, {
+  fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({
-      indexGUI: "manager",
+      token: localStorage.getItem("token"),
       action: "update",
       visitCode,
       trangthai: "đã từ chối",
@@ -225,10 +225,10 @@ function iRefuse(visitCode) {
  * @param {number} visitCode - index của dòng dữ liệu
  */
 function iDelete(visitCode) {
-  fetch(API_URL_CRUD, {
+  fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({
-      indexGUI: "manager",
+      token: localStorage.getItem("token"),
       action: "delete",
       visitCode,
     }),

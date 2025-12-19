@@ -9,7 +9,7 @@ async function checkAuth(allowRoles = []) {
     return;
   }
 
-  const res = await fetch(API_URL_CRUD, {
+  const res = await fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({
       action: "verify",

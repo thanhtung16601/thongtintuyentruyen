@@ -1,23 +1,19 @@
-async function login() {
-  const user = document.getElementById("username");
-  const pass = document.getElementById("password");
+function login() {
+  const user = document.getElementById("username").value.trim();
+  const pass = document.getElementById("password").value.trim();
 
-  const res = await fetch(API_URL_CRUD, {
+  fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({
       action: "login",
-      user: user.value,
-      pass: pass.value,
+      user,
+      pass,
     }),
-  });
-
-  const data = await res.json();
-  if (data.ok) {
-    document.cookie = `token=${data.token}; max-age=1800; path=/`;
-    window.location.href = "dasboad/";
-  } else {
-    showPopup("Sai tên đăng nhập hoặc mật khẩu!");
-  }
+  })
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((err) => console.error("Lỗi duyệt:", err));
 }
 
 /**
