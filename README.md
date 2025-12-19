@@ -42,88 +42,70 @@ return ContentService.createTextOutput(JSON.stringify(ketQua))
 }
 
 function doPost(e) {
-/\*_Manager Application_/
 var jsonData = JSON.parse(e.postData.contents);
+var result;
+
+// Checking role
+if(!security_Database(e)){
+return jsonResponse({ error: "Page does't exsit!" });
+}
 
 switch (jsonData.indexGUI) {
-case "login":
-managerAccount(e, jsonData);
-break;
 case "manager":
-CRUD_Database(e, jsonData);
+result = CRUD_Database(jsonData);
 break;
 default:
-//code here
-break;
+result = { error: "Invalid indexGUI" };
 }
 
+return jsonResponse(result);
 }
 
-function managerAccount(e, jsonData){
+function security_Database(e) {
+const body = JSON.parse(e.postData.contents);
+
+if (body.action === "login") {
+if (body.user === "admin" && body.pass === "123") {
+const token = Utilities.getUuid();
+
+      // lưu token (demo: Cache 30 phút)
+      CacheService.getScriptCache().put(
+        token,
+        JSON.stringify({ role: "admin" }),
+        1800
+      );
+
+      return json({ ok: true, token });
+    }
+
+    return json({ ok: false });
 
 }
 
-/\*\*
+if (body.action === "verify") {
+const cache = CacheService.getScriptCache().get(body.token);
+if (!cache) return json({ ok: false });
 
-- \*/
-  function CRUD_Database(e, jsonData) {
-  var sheetDatabase = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
-  var dataUpload = jsonData;
+    const data = JSON.parse(cache);
+    return json({ ok: true, role: data.role });
 
-var lastRow = sheetDatabase.getLastRow();
-var visitCodeCol = 1; // cột A
-var trangThaiCol = 10; // cột J
-
-var visitCode = String(dataUpload.visitCode).trim();
-
-// ===== CHƯA CÓ DỮ LIỆU =====
-if (lastRow < 2 && dataUpload.action !== "add") {
-return ContentService.createTextOutput(
-JSON.stringify({ error: "Sheet chưa có dữ liệu" })
-).setMimeType(ContentService.MimeType.JSON);
+}
 }
 
-// ===== LẤY visitCode =====
-var visitCodes = [];
-if (lastRow >= 2) {
-visitCodes = sheetDatabase
-.getRange(2, visitCodeCol, lastRow - 1, 1)
-.getValues()
-.map(r => String(r[0]).trim());
-}
+function CRUD_Database(dataUpload) {
+var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
 
-var index = visitCodes.indexOf(visitCode);
+var lastRow = sheet.getLastRow();
+var visitCodeCol = 1;
+var trangThaiCol = 10;
 
-// ================= UPDATE =================
-if (dataUpload.action === "update") {
-if (index === -1) {
-return ContentService.createTextOutput(
-JSON.stringify({ error: "Không tìm thấy visitCode" })
-).setMimeType(ContentService.MimeType.JSON);
-}
+var visitCode = String(dataUpload.visitCode || "").trim();
 
-    sheetDatabase.getRange(index + 2, trangThaiCol)
-      .setValue(dataUpload.trangthai);
+// ADD
+if (dataUpload.action === "create") {
+sheet.insertRowBefore(2);
 
-    // ================= DELETE =================
-
-} else if (dataUpload.action === "delete") {
-if (index === -1) {
-return ContentService.createTextOutput(
-JSON.stringify({ error: "Không tìm thấy visitCode" })
-).setMimeType(ContentService.MimeType.JSON);
-}
-
-    sheetDatabase.deleteRow(index + 2);
-
-    // ================= ADD NEW =================
-
-} else {
-// Thêm 1 dòng mới ngay dưới header
-sheetDatabase.insertRowBefore(2);
-
-    // Ghi dữ liệu vào dòng 2
-    sheetDatabase.getRange(2, 1, 1, 12).setValues([[
+    sheet.getRange(2, 1, 1, 12).setValues([[
       dataUpload.visitCode,
       dataUpload.hoten,
       dataUpload.cccd,
@@ -138,11 +120,42 @@ sheetDatabase.insertRowBefore(2);
       dataUpload.thoigian || formatDate()
     ]]);
 
+    return { status: "created" };
+
 }
 
-return ContentService.createTextOutput(
-JSON.stringify({ status: "ok" })
-).setMimeType(ContentService.MimeType.JSON);
+// Lấy visitCode list
+if (lastRow < 2) return { error: "Sheet trống" };
+
+var visitCodes = sheet
+.getRange(2, visitCodeCol, lastRow - 1, 1)
+.getValues()
+.map(r => String(r[0]).trim());
+
+var index = visitCodes.indexOf(visitCode);
+
+if (index === -1) return { error: "Không tìm thấy visitCode" };
+
+// UPDATE
+if (dataUpload.action === "update") {
+sheet.getRange(index + 2, trangThaiCol)
+.setValue(dataUpload.trangthai);
+return { status: "updated" };
+}
+
+// DELETE
+if (dataUpload.action === "delete") {
+sheet.deleteRow(index + 2);
+return { status: "deleted" };
+}
+
+return { error: "Action không hợp lệ" };
+}
+
+function jsonResponse(data) {
+return ContentService
+.createTextOutput(JSON.stringify(data))
+.setMimeType(ContentService.MimeType.JSON);
 }
 
 function formatDate() {
