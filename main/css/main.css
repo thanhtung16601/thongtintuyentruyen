@@ -248,7 +248,6 @@ iframe {
   padding: 12px;
   background: #007bff;
   border: none;
-  font-size: 1.2rem;
   color: #fff;
   border-radius: 12px;
   cursor: pointer;
@@ -356,7 +355,7 @@ iframe {
   padding: 10px 14px;
   border: 2px solid #0077ff;
   border-right: none;
-  border-radius: 12px 0 0 12px;
+  border-radius: 50px 0 0 50px;
   outline: none;
   font-size: 14px;
 }
@@ -371,7 +370,7 @@ iframe {
   border: 2px solid #0077ff;
   color: white;
   font-weight: bold;
-  border-radius: 0 12px 12px 0;
+  border-radius: 0 50px 50px 0;
   cursor: pointer;
   transition: 0.2s;
 }
