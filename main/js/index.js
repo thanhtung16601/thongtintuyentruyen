@@ -326,6 +326,25 @@ function checkVisitCode() {
     });
 }
 
+document.getElementById("feedbackForm").addEventListener("submit", sendComment);
+function sendComment(e) {
+  e.preventDefault(); // ⛔ chặn reload form
+
+  const form = document.getElementById("feedbackForm");
+  const formData = new FormData(form);
+
+  const data = {
+    hoten: formData.get("hoten"),
+    sdt: formData.get("sdt"),
+    donvi: formData.get("donvi"),
+    noidung: formData.get("noidung"),
+  };
+
+  console.log("Dữ liệu góp ý:", data);
+  showPopup("Đã gửi ý kiến lên đơn vị.");
+  form.reset();
+}
+
 function renderLocation() {
   const tinhSelect = document.getElementById("tinhthanh");
   const xaSelect = document.getElementById("xahuyen");
