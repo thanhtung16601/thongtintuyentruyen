@@ -1,183 +1,238 @@
 <!DOCTYPE html>
 <html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trang Thông Tin Đơn Vị</title>
+    <link rel="icon" href="../imgs/Logo_QĐNDVN.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./main/css/main.css" />
+    <link rel="stylesheet" href="./main/css/index.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trang Thông Tin Đơn Vị</title>  
-  <link rel="icon" href="../imgs/Logo_QĐNDVN.png" type="image/x-icon" />
-  <link rel="stylesheet" href="./main/css/main.css">
-  <link rel="stylesheet" href="./main/css/index.css">
-</head>
+  <body>
+    <!-- DIV nền -->
+    <div id="background"></div>
 
-<body>
+    <header>
+      <h1>
+        Trang thông tin tuyên truyền Trung Đoàn 6 <br />
+        Bộ Chỉ huy Quân sự Thành phố Huế
+      </h1>
+      <button class="login-btn" onclick="window.location.href='login.html'">
+        Đăng nhập quản lý
+      </button>
+    </header>
 
-  <!-- DIV nền -->
-  <div id="background"></div>
+    <div class="container">
+      <div class="dangKyTham">
+        <h2>Đăng ký vào thăm Quân nhân</h2>
+        <form id="visitForm">
+          <label>Họ tên khách:</label>
+          <input type="text" id="hoten" placeholder="Nhập họ tên" />
 
-  <header>
-    <h1>Trang thông tin tuyên truyền Trung Đoàn 6 <br> Bộ Chỉ huy Quân sự Thành phố Huế</h1>
-    <button class="login-btn" onclick="window.location.href='login.html'">Đăng nhập quản lý</button>
-  </header>
+          <label>Số CCCD:</label>
+          <input type="text" id="cccd" placeholder="Nhập CCCD" />
 
-  
-  <div class="container">
-    <div class="dangKyTham">
-      <h2>Đăng ký vào thăm Quân nhân</h2>
-      <form id="visitForm">
-        <label>Họ tên khách:</label>
-        <input type="text" id="hoten" placeholder="Nhập họ tên" />
+          <label>Số điện thoại:</label>
+          <input type="text" id="sdt" placeholder="Nhập số điện thoại" />
 
-        <label>Số CCCD:</label>
-        <input type="text" id="cccd" placeholder="Nhập CCCD" />
+          <label>Tỉnh/Thành phố:</label>
+          <select id="tinhthanh">
+            <option value="">-- Chọn tỉnh/thành phố --</option>
+          </select>
 
-        <label>Số điện thoại:</label>
-        <input type="text" id="sdt" placeholder="Nhập số điện thoại" />
+          <label>Xã/Phường:</label>
+          <select id="xahuyen">
+            <option value="">-- Chọn xã/phường --</option>
+          </select>
 
-        <label>Tỉnh/Thành phố:</label>
-        <select id="tinhthanh" >
-          <option value="">-- Chọn tỉnh/thành phố --</option>
-        </select>
+          <label>Tên quân nhân muốn thăm:</label>
+          <input type="text" id="quannhan" placeholder="Nhập tên quân nhân" />
 
-        <label>Xã/Phường:</label>
-        <select id="xahuyen">
-          <option value="">-- Chọn xã/phường --</option>
-        </select>
+          <label>Mối quan hệ:</label>
+          <input type="text" id="quanhe" placeholder="Nhập quan hệ" />
 
-        <label>Tên quân nhân muốn thăm:</label>
-        <input type="text" id="quannhan" placeholder="Nhập tên quân nhân"  />
+          <label>Đơn vị:</label>
+          <input type="text" id="donvi" placeholder="Nhập đơn vị" />
 
-        <label>Mối quan hệ:</label>
-        <input type="text" id="quanhe" placeholder="Nhập quan hệ"  />
+          <label>Ngày giờ thăm:</label>
+          <input type="datetime-local" id="ngaytham" />
 
-        <label>Đơn vị:</label>
-        <input type="text" id="donvi" placeholder="Nhập đơn vị" />
-
-        <label>Ngày giờ thăm:</label>
-        <input type="datetime-local" id="ngaytham" />
-
-        <button type="submit">Gửi đăng ký</button>
-      </form>
-    </div>
-    <!-- Card Quy định thăm gặp -->
-    <div class="info-quyDinh" id="qd">
-      <div class="quyDinh card" style="height: 50%;">
-        <h2>Quy định thăm gặp</h2>
-        <ul>
-          <li>Mang CCCD/định danh hợp lệ.</li>
-          <li>Tuân thủ hướng dẫn của cán bộ trực.</li>
-          <li>Không chụp ảnh tại khu vực cấm.</li>
-        </ul>
+          <button type="submit">Gửi đăng ký</button>
+        </form>
       </div>
-      <div class="check-container">
-        <input type="text" id="searchCode" placeholder="Nhập mã kiểm tra..." />
-        <button id="btnCheck">Kiểm tra</button>
-      </div>
-
-    <div class="dangKyThamThan-info" id="info-thamthan"></div>
-    </div>
-  </div>
-
-  <section><!-- Card danh sách biên chế -->
-<div class="card" id="list-payroll">
-  <h2>Danh sách biên chế</h2>
-      <div class="check-container">
-        <input type="text" id="searchPayroll" placeholder="Nhập tên quân nhân.." />
-        <button id="btnCheckPayroll">Kiểm tra</button>
-      </div>
-
-<div class="militaryDetail">
-  <p>
-    <span class="label">Tên quân nhân:</span>
-    <span class="value">Nguyễn Văn C</span>
-  </p>
-
-  <p>
-    <span class="label">Trung đội trưởng:</span>
-    <span class="value">Nguyễn Văn A</span>
-  </p>
-
-  <p>
-    <span class="label">Đại đội trưởng:</span>
-    <span class="value">Nguyễn Văn B</span>
-  </p>
-
-  <div class="work-status">
-    <span class="label">Tình hình công tác:</span>
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-      Fuga amet in impedit itaque.
-    </p>
-  </div>
-</div>
-
-</div>
-
-
-    <!-- Card Giới thiệu -->
-    <div class="card" id="gth">
-      <h2>Giới thiệu</h2>
-      <p>Trung đoàn 6, thuộc Bộ Chỉ huy Quân sự Thành phố Huế, có tên truyền thống là “Đoàn Phú Xuân anh hùng”,
-        được thành lập năm 1965. Trong kháng chiến chống Mỹ, đơn vị tham gia nhiều trận đánh lớn, đặc biệt là Chiến dịch
-        Mậu Thân 1968 tại Huế. Sau giải phóng, Trung đoàn 6 tham gia huấn luyện, sẵn sàng chiến đấu, giúp dân xây dựng
-        nông thôn mới và các hoạt động dân sinh. Đơn vị nhiều lần được tặng Huân chương Quân công và danh hiệu “Đơn vị
-        Quyết thắng”, là biểu tượng tinh thần dũng cảm, kiên cường và phục vụ đất nước.
-      </p>
-    </div>
-
-    <!-- Card Ảnh Đơn Vị -->
-    <div class="card" id="anh">
-      <h2>Hình ảnh đơn vị</h2>
-      <div class="image-row">
-        <div class="image-item">
-          <img src="./imgs/anh1.jpg" alt="Ảnh 1">
-          <p>Lao động giúp dân</p>
+      <!-- Card Quy định thăm gặp -->
+      <div class="info-quyDinh" id="qd">
+        <div class="quyDinh card" style="height: 50%">
+          <h2>Quy định thăm gặp</h2>
+          <ul>
+            <li>Mang CCCD/định danh hợp lệ.</li>
+            <li>Tuân thủ hướng dẫn của cán bộ trực.</li>
+            <li>Không chụp ảnh tại khu vực cấm.</li>
+          </ul>
         </div>
-        <div class="image-item">
-          <img src="./imgs/anh2.jpg" alt="Ảnh 2">
-          <p>Kiểm tra đánh thuốc nổ</p>
+        <div class="check-container">
+          <input
+            type="text"
+            id="searchCode"
+            placeholder="Nhập mã kiểm tra..."
+          />
+          <button id="btnCheck">Kiểm tra</button>
         </div>
-        <div class="image-item">
-          <img src="./imgs/anh3.jpg" alt="Ảnh 3">
-          <p>Đồng hành cùng chiến sĩ</p>
-        </div>
-        <div class="image-item">
-          <img src="./imgs/anh4.jpg" alt="Ảnh 4">
-          <p>Mô hình <br> "Bát nước thao trường"</p>
-        </div>
-        <div class="image-item">
-          <img src="./imgs/anh5.jpg" alt="Ảnh 5">
-          <p>Công tác dân vận</p>
-        </div>
-        <div class="image-item">
-          <img src="./imgs/anh6.jpg" alt="Ảnh 6">
-          <p>Lễ tuyên thệ Chiến sĩ mới</p>
-        </div>
+
+        <div class="dangKyThamThan-info" id="info-thamthan"></div>
       </div>
     </div>
-    </div>
 
-  </section>
-</body>
+    <section>
+      <!-- Card danh sách biên chế -->
+      <div class="card" id="list-payroll">
+        <h2>Danh sách biên chế</h2>
+        <div class="check-container">
+          <input
+            type="text"
+            id="searchPayroll"
+            placeholder="Nhập tên quân nhân.."
+          />
+          <button id="btnCheckPayroll">Kiểm tra</button>
+        </div>
+
+        <div class="militaryDetail">
+          <p>
+            <span class="label">Tên quân nhân:</span>
+            <span class="value">Nguyễn Văn C</span>
+          </p>
+
+          <p>
+            <span class="label">Trung đội trưởng:</span>
+            <span class="value">Nguyễn Văn A</span>
+          </p>
+
+          <p>
+            <span class="label">Đại đội trưởng:</span>
+            <span class="value">Nguyễn Văn B</span>
+          </p>
+
+          <div class="work-status">
+            <span class="label">Tình hình công tác:</span>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga amet
+              in impedit itaque.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Giới thiệu -->
+      <div class="card" id="gth">
+        <h2>Giới thiệu</h2>
+        <p>
+          Trung đoàn 6, thuộc Bộ Chỉ huy Quân sự Thành phố Huế, có tên truyền
+          thống là “Đoàn Phú Xuân anh hùng”, được thành lập năm 1965. Trong
+          kháng chiến chống Mỹ, đơn vị tham gia nhiều trận đánh lớn, đặc biệt là
+          Chiến dịch Mậu Thân 1968 tại Huế. Sau giải phóng, Trung đoàn 6 tham
+          gia huấn luyện, sẵn sàng chiến đấu, giúp dân xây dựng nông thôn mới và
+          các hoạt động dân sinh. Đơn vị nhiều lần được tặng Huân chương Quân
+          công và danh hiệu “Đơn vị Quyết thắng”, là biểu tượng tinh thần dũng
+          cảm, kiên cường và phục vụ đất nước.
+        </p>
+      </div>
+
+      <!-- Card Ảnh Đơn Vị -->
+      <div class="card" id="anh">
+        <h2>Hình ảnh đơn vị</h2>
+        <div class="image-row">
+          <div class="image-item">
+            <img src="./imgs/anh1.jpg" alt="Ảnh 1" />
+            <p>Lao động giúp dân</p>
+          </div>
+          <div class="image-item">
+            <img src="./imgs/anh2.jpg" alt="Ảnh 2" />
+            <p>Kiểm tra đánh thuốc nổ</p>
+          </div>
+          <div class="image-item">
+            <img src="./imgs/anh3.jpg" alt="Ảnh 3" />
+            <p>Đồng hành cùng chiến sĩ</p>
+          </div>
+          <div class="image-item">
+            <img src="./imgs/anh4.jpg" alt="Ảnh 4" />
+            <p>
+              Mô hình <br />
+              "Bát nước thao trường"
+            </p>
+          </div>
+          <div class="image-item">
+            <img src="./imgs/anh5.jpg" alt="Ảnh 5" />
+            <p>Công tác dân vận</p>
+          </div>
+          <div class="image-item">
+            <img src="./imgs/anh6.jpg" alt="Ảnh 6" />
+            <p>Lễ tuyên thệ Chiến sĩ mới</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card feedback-card">
+        <h2>📩 Ý kiến đóng góp</h2>
+
+        <form id="feedbackForm">
+          <div class="form-group">
+            <label>Họ và tên</label>
+            <input
+              type="text"
+              name="hoten"
+              placeholder="Nhập họ tên..."
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Số điện thoại</label>
+            <input type="tel" name="sdt" placeholder="Nhập số điện thoại..." />
+          </div>
+
+          <div class="form-group">
+            <label>Đơn vị / Phòng ban</label>
+            <input type="text" name="donvi" placeholder="Nhập đơn vị..." />
+          </div>
+
+          <div class="form-group">
+            <label>Nội dung góp ý</label>
+            <textarea
+              name="noidung"
+              rows="4"
+              placeholder="Nhập ý kiến đóng góp của bạn..."
+              required
+            ></textarea>
+          </div>
+
+          <button type="submit">📤 Gửi ý kiến</button>
+        </form>
+      </div>
+    </section>
+  </body>
   <script src="./global.js"></script>
   <script src="./api.js"></script>
   <script src="./main/js/index.js"></script>
-
 </html>
 <!-- Popup -->
- <div id="popup" class="popup">
+<div id="popup" class="popup">
   <div class="popup-content">
     <h3>Thông báo</h3>
 
     <p id="popupMessage"></p>
 
-    <p style="font-weight: bold; color: #0a7cff;">
+    <p style="font-weight: bold; color: #0a7cff">
       <span id="popupMessage-code"></span>
       <i id="codeText"></i>
     </p>
 
-    <div style="display: flex; gap: 10px; justify-content: center;">
-      <button id="btnCopy" onclick="copyCode()" class="popup-btn popup-btn-copy">
+    <div style="display: flex; gap: 10px; justify-content: center">
+      <button
+        id="btnCopy"
+        onclick="copyCode()"
+        class="popup-btn popup-btn-copy"
+      >
         Sao chép code
       </button>
 
@@ -187,4 +242,3 @@
     </div>
   </div>
 </div>
-
