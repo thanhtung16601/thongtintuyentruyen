@@ -5,13 +5,22 @@
   max-width: 100%;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   font-family: "Segoe UI", system-ui, sans-serif;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 0 3em;
+}
+
+.militaryDetail-relationship {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 3em;
 }
 
 .militaryDetail p {
   margin: 0 0 12px;
-  display: flex;
   gap: 8px;
-  align-items: center;
+  display: flex;
+  justify-content: space-between;
 }
 
 .militaryDetail .label {
@@ -103,4 +112,10 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
   background: #1e40af;
+}
+
+@media (max-width: 600px) {
+  .militaryDetail-relationship {
+    grid-template-columns: 1fr;
+  }
 }

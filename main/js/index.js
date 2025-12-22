@@ -326,6 +326,32 @@ function checkVisitCode() {
     });
 }
 
+document
+  .getElementById("btnCheckMilitary")
+  .addEventListener("click", checkedMilitary);
+
+function checkedMilitary() {
+  const txtKeypress = document.getElementById("txtCheckMilitary").value.trim();
+  if (!txtKeypress) showPopup("Vui lòng nhập tên quân nhân!");
+
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      action: "search",
+      txtKeypress,
+    }),
+  })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch(() => {
+      showPopup("Vui lòng thử lại!");
+    })
+    .finally(() => {
+      document.getElementById("visitForm").reset();
+    });
+}
+
 document.getElementById("feedbackForm").addEventListener("submit", sendComment);
 function sendComment(e) {
   e.preventDefault(); // ⛔ chặn reload form

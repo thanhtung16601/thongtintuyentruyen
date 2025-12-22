@@ -157,7 +157,6 @@ iframe {
   }
 
   .card {
-    padding: 15px;
     margin: 15px 10px;
   }
 
@@ -290,6 +289,7 @@ iframe {
   }
   .info-quyDinh {
     height: fit-content;
+    width: 100%;
   }
 }
 
