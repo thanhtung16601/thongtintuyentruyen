@@ -326,29 +326,46 @@ function checkVisitCode() {
     });
 }
 
-document
-  .getElementById("btnCheckMilitary")
-  .addEventListener("click", checkedMilitary);
+// document
+//   .getElementById("btnCheckMilitary")
+//   .addEventListener("click", checkedMilitary);
 
 function checkedMilitary() {
-  const txtKeypress = document.getElementById("txtCheckMilitary").value.trim();
-  if (!txtKeypress) showPopup("Vui lòng nhập tên quân nhân!");
+  const keyword = document.getElementById("txtCheckMilitary").value.trim();
+
+  if (!keyword) {
+    showPopup("Vui lòng nhập CCCD hoặc tên quân nhân!");
+    return;
+  }
 
   fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({
-      action: "search",
-      txtKeypress,
+      action: "searchMilitary",
+      keyword: keyword,
     }),
   })
-    .then((res) => {
-      console.log(res);
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.error) {
+        showPopup("❌ Không tìm thấy quân nhân!");
+        return;
+      }
+
+      // gán giá trị vào GUI
+      document.getElementById("txtMilitary_name").innerText = data[0].hoten;
+      document.getElementById("txtMilitary_ct").innerText = data[0].ct;
+      document.getElementById("txtMilitary_pct").innerText = data[0].pct;
+      document.getElementById("txtMilitary_cctv").innerText = data[0].cctv;
+      document.getElementById("txtMilitary_cpctv").innerText = data[0].cpctv;
+      document.getElementById("txtMilitary_bt").innerText = data[0].bt;
+      document.getElementById("txtMilitary_comments").innerText =
+        data[0].chiase;
+      showPopup(`✅ Tìm thấy ${data.length} quân nhân`);
     })
-    .catch(() => {
-      showPopup("Vui lòng thử lại!");
-    })
-    .finally(() => {
-      document.getElementById("visitForm").reset();
+    .catch((err) => {
+      console.log(err);
+      showPopup("⚠️ Lỗi hệ thống, vui lòng thử lại!");
     });
 }
 

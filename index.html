@@ -94,7 +94,9 @@
             id="txtCheckMilitary"
             placeholder="Nhập số CCCD quân nhân.."
           />
-          <button id="btnCheckMilitary">Kiểm tra</button>
+          <button id="btnCheckMilitary" onclick="checkedMilitary();">
+            Kiểm tra
+          </button>
         </div>
 
         <div class="militaryDetail">
@@ -102,37 +104,37 @@
             <div class="militaryDetail-item">
               <p>
                 <span class="label">Tên quân nhân:</span>
-                <span class="value">tên quân nhân</span>
+                <span id="txtMilitary_name" class="value">tên quân nhân</span>
               </p>
               <p>
                 <span class="label">Đại đội trưởng:</span>
-                <span class="value">tên quân nhân</span>
+                <span id="txtMilitary_ct" class="value">tên quân nhân</span>
               </p>
               <p>
                 <span class="label">Phó Đại đội trưởng:</span>
-                <span class="value">tên quân nhân</span>
+                <span id="txtMilitary_pct" class="value">tên quân nhân</span>
               </p>
             </div>
 
             <div class="militaryDetail-item">
               <p>
                 <span class="label">Chính trị viên Đại đội:</span>
-                <span class="value">tên quân nhân</span>
+                <span id="txtMilitary_cctv" class="value">tên quân nhân</span>
               </p>
               <p>
                 <span class="label">Chính trị viên phó Đại đội:</span>
-                <span class="value">tên quân nhân</span>
+                <span id="txtMilitary_cpctv" class="value">tên quân nhân</span>
               </p>
 
               <p>
                 <span class="label">Trung đội trưởng:</span>
-                <span class="value">tên quân nhân</span>
+                <span id="txtMilitary_bt" class="value">tên quân nhân</span>
               </p>
             </div>
           </div>
           <div class="work-status">
             <span class="label">Tình hình công tác:</span>
-            <p>
+            <p id="txtMilitary_comments">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga amet
               in impedit itaque.
             </p>
