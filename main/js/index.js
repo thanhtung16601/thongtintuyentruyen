@@ -326,10 +326,6 @@ function checkVisitCode() {
     });
 }
 
-// document
-//   .getElementById("btnCheckMilitary")
-//   .addEventListener("click", checkedMilitary);
-
 function checkedMilitary() {
   const keyword = document.getElementById("txtCheckMilitary").value.trim();
 
@@ -384,7 +380,33 @@ function sendComment(e) {
   };
 
   console.log("Dữ liệu góp ý:", data);
-  showPopup("Đã gửi ý kiến lên đơn vị.");
+
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      action: "sendMessage",
+      ...data,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.error) {
+        console.log(data.err);
+        showPopup("⚠️ Lỗi hệ thống, vui lòng thử lại!");
+        return;
+      }
+
+      if (data.status) {
+        showPopup("Đã gửi ý kiến lên đơn vị.");
+      } else {
+        showPopup("Ý kiến chưa gửi được, vui lòng thử lại.");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      showPopup("⚠️ Lỗi hệ thống, vui lòng thử lại!");
+    });
+
   form.reset();
 }
 
