@@ -267,6 +267,16 @@ function confirmPopup() {
   iRefuse(i);
   document.getElementById("popup").style.display = "none";
 }
+
+/**
+ * Hiển thị popup post
+ */
+function showPostPopup() {
+  const postHTML = `<h2>viết ở đây!!</h2>`;
+
+  document.getElementById("popupMessage").innerHTML = postHTML;
+  document.getElementById("popup").style.display = "flex";
+}
 /**
  * Tìm kiếm dữ liệu
  * - Theo keyword
@@ -369,6 +379,13 @@ document
       searchTable(this.value);
     }
   });
+
+/**
+ * Hiện form viết bài
+ */
+function btnPostShow() {
+  showPostPopup("hiện post");
+}
 
 /**
  * Load dữ liệu lần đầu

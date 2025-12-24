@@ -33,8 +33,7 @@ const API_URL =
 const DATA_POST = [
   {
     id: 1,
-    image:
-      "https://drive.google.com/uc?export=view&id=13lWiJb4XyvH3awbPkpSJq6UwF0vMZO75",
+    image: "https://drive.google.com/uc?id=1IZLQx3QvR0vkAcCvpBsDdvN2FC4_WGhj",
     content: "Thông báo huấn luyện cấp đơn vị.",
     date: "11/02/2025 10:15",
   },

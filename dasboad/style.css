@@ -361,3 +361,26 @@ button {
 .d-none {
   display: none;
 }
+
+.container-manager-posts {
+  margin-top: 15em;
+}
+
+.formPost > button {
+  float: right;
+  width: 10em;
+  height: 2.7em;
+  margin: 0.5em;
+  box-shadow: #222222c4 0px 0px 6px 0px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #0a7cff;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.formPost > button:hover {
+  background-color: #095ec2;
+}
