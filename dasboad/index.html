@@ -96,10 +96,61 @@
   </body>
 
   <!-- Popup -->
+  <div id="popup-comment" class="popup popup-comment">
+    <div class="popup-content">
+      <h3 id="header-popup" class="header-popup">Bài viết</h3>
+      <div id="popupMessage" class="toggleShowMesage">
+        <textarea
+          placeholder="Nội dung bài viết.."
+          name="txtPost"
+          id="txtPost"
+          class="txtPost"
+          rows="5"
+        ></textarea>
+        <div class="btn-group">
+          <button
+            id="btnSelectImage"
+            class="btnSelectImage"
+            onclick="btnPushImage();"
+          >
+            📷 Thêm ảnh
+          </button>
+          <button
+            id="btnDeleteImage"
+            class="btnDeleteImage"
+            onclick="btnDeleteImage()"
+          >
+            xoá ảnh
+          </button>
+        </div>
+        <input type="file" id="imgPost" accept="image/*" hidden />
+      </div>
+
+      <div class="popup-footer-comment">
+        <div id="preview" class="preview-image"></div>
+
+        <button
+          id="popup-btn-confirm"
+          onclick="uploadPoster()"
+          class="popup-btn popup-btn-confirm"
+        >
+          Xong
+        </button>
+        <button
+          id="popup-btn-close"
+          onclick="closePopup()"
+          class="popup-btn popup-btn-close"
+        >
+          Xoá
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Popup -->
   <div id="popup" class="popup">
     <div class="popup-content">
-      <h3>Thông báo</h3>
-      <p id="popupMessage">Nội dung popup...</p>
+      <h3 id="header-popup" class="header-popup">Thông báo</h3>
+      <div id="popupMessage" class="toggleShowMesage"></div>
 
       <button
         id="popup-btn-confirm"

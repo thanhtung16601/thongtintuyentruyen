@@ -272,11 +272,55 @@ function confirmPopup() {
  * Hiển thị popup post
  */
 function showPostPopup() {
-  const postHTML = `<h2>viết ở đây!!</h2>`;
+  const mess = `Viết thành công!`;
 
-  document.getElementById("popupMessage").innerHTML = postHTML;
+  document.getElementById("popupMessage").textContent = mess;
   document.getElementById("popup").style.display = "flex";
 }
+
+/**
+ * Hiện form viết bài
+ */
+function btnPostShow() {
+  const postHTML = `
+
+  `;
+
+  document.getElementById("popup-comment").style.display = "flex";
+}
+
+/**
+ * Thực hiện xoá hình ảnh đã được chọn trước đó
+ */
+function btnDeleteImage() {
+  document.getElementById("imgPost").value = "";
+  document.getElementById("preview").innerHTML = "";
+}
+
+/**
+ * Khi hình ảnh được chọn, sẽ tự động gọi sự kiện
+ * và hiển thị hình ảnh được chọn
+ */
+document.getElementById("imgPost").addEventListener("change", function () {
+  const file = this.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    document.getElementById(
+      "preview"
+    ).innerHTML = `<img src="${reader.result}" width="100%">`;
+  };
+  reader.readAsDataURL(file);
+});
+
+/**
+ * Chọn hình ảnh và đưa vào input:image
+ */
+function btnPushImage() {
+  document.getElementById("imgPost").click();
+}
+
 /**
  * Tìm kiếm dữ liệu
  * - Theo keyword
@@ -379,13 +423,6 @@ document
       searchTable(this.value);
     }
   });
-
-/**
- * Hiện form viết bài
- */
-function btnPostShow() {
-  showPostPopup("hiện post");
-}
 
 /**
  * Load dữ liệu lần đầu
