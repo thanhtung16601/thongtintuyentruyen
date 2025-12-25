@@ -394,6 +394,9 @@ button {
   grid-template-rows: 1fr 5em;
   overflow: hidden;
 }
+.popup-comment > .popup-content {
+  width: 50em;
+}
 
 .toggleShowMesage > .btn-group {
   margin-top: 0.3em;

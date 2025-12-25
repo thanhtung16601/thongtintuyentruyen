@@ -301,17 +301,25 @@ function btnDeleteImage() {
  * Khi hình ảnh được chọn, sẽ tự động gọi sự kiện
  * và hiển thị hình ảnh được chọn
  */
-document.getElementById("imgPost").addEventListener("change", function () {
-  const file = this.files[0];
-  if (!file) return;
 
-  const reader = new FileReader();
-  reader.onload = () => {
-    document.getElementById(
-      "preview"
-    ).innerHTML = `<img src="${reader.result}" width="100%">`;
-  };
-  reader.readAsDataURL(file);
+const imgInput = document.getElementById("imgPost");
+const previewBox = document.getElementById("previewImages");
+
+imgInput.addEventListener("change", () => {
+  previewBox.innerHTML = ""; // reset preview
+  const files = imgInput.files;
+
+  Array.from(files).forEach((file) => {
+    if (!file.type.startsWith("image/")) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = document.createElement("img");
+      img.src = reader.result;
+      previewBox.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  });
 });
 
 /**
