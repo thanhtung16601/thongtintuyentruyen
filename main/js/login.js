@@ -2,18 +2,18 @@ function login() {
   const user = document.getElementById("username").value.trim();
   const pass = document.getElementById("password").value.trim();
 
-  fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify({
-      action: "login",
-      user,
-      pass,
-    }),
-  })
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((err) => console.error("Lỗi duyệt:", err));
+  // fetch(API_URL, {
+  //   method: "POST",
+  //   body: JSON.stringify({
+  //     action: "login",
+  //     user,
+  //     pass,
+  //   }),
+  // })
+  //   .then((result) => {
+  window.location.href = "/dasboad/";
+  //   })
+  //   .catch((err) => console.error("Lỗi duyệt:", err));
 }
 
 /**
