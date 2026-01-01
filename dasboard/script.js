@@ -248,7 +248,7 @@ function iDelete(visitCode) {
  */
 function showPopup(index) {
   i = index;
-  document.getElementById("popupMessage").textContent =
+  document.getElementById("showMesage").textContent =
     "Bạn có muốn từ chối không?";
   document.getElementById("popup").style.display = "flex";
 }
@@ -295,6 +295,16 @@ function btnPostShow() {
 function btnDeleteImage() {
   document.getElementById("imgPost").value = "";
   document.getElementById("preview").innerHTML = "";
+}
+
+/**
+ * Thưc hiện xóa/thoát popup đăng bài
+ */
+function clearPoster() {
+  document.getElementById("previewImages").innerHTML = "";
+  document.getElementById("txtPost").value = "";
+  document.getElementById("imgPost").value = "";
+  document.getElementById("popup-comment").style.display = "none";
 }
 
 /**

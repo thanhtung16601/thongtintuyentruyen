@@ -3,6 +3,33 @@
  * XỬ LÝ BÀI VIẾT (POST)
  * =========================================================
  */
+function showPostmans(data) {
+  const container = document.getElementById("container-posmans");
+  if (!container) container.innerHTML = "";
+
+  data
+    .slice(0, 5)
+    .reverse()
+    .forEach((post) => {
+      const item = document.createElement("div");
+      item.className = `poster ${post.states}`;
+
+      item.innerHTML = `
+      <div class="poster-date">${post.date}</div>
+      <div class="poster-content">
+        <div class="poster-img">
+          <img src="${post.image}" />
+        </div>
+        <div class="poster-para">${post.content}</div>
+      </div>
+    `;
+
+      container.appendChild(item);
+    });
+}
+
+// gọi
+showPostmans(DATA_POST);
 
 /**
  * Mở popup sửa bài viết

@@ -134,14 +134,14 @@
           onclick="uploadPoster()"
           class="popup-btn popup-btn-confirm"
         >
-          Xong
+          Đăng bài
         </button>
         <button
           id="popup-btn-close"
-          onclick="closePopup()"
+          onclick="clearPoster()"
           class="popup-btn popup-btn-close"
         >
-          Xoá
+          Thoát
         </button>
       </div>
     </div>
@@ -150,7 +150,7 @@
   <div id="popup" class="popup">
     <div class="popup-content">
       <h3 id="header-popup" class="header-popup">Thông báo</h3>
-      <div id="popupMessage" class="toggleShowMesage"></div>
+      <p id="showMesage" class="showMesage"></p>
 
       <button
         id="popup-btn-confirm"
