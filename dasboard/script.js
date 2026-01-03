@@ -11,7 +11,6 @@ let DATA_STORE = [];
  * KHỞI TẠO SỰ KIỆN
  * ==============================
  */
-document.getElementById("reloadBtn").addEventListener("click", loadData);
 document.getElementById("searchInput").addEventListener("input", function () {
   searchTable(this.value);
 });

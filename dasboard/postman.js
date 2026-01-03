@@ -195,11 +195,8 @@ function renderPostman() {
   `;
 
   // Hiển thị các bài viết (mới nhất đầu tiên)
-  posts
-    .slice(1, 5)
-    .reverse()
-    .forEach((p, i) => {
-      html += `
+  posts.reverse().forEach((p, i) => {
+    html += `
       <tr>
         <td>${i + 1}</td>
 
@@ -223,7 +220,7 @@ function renderPostman() {
         </td>
       </tr>
       `;
-    });
+  });
 
   html += `</tbody></table>`;
   box.innerHTML = html;
