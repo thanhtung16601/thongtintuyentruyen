@@ -387,3 +387,151 @@ button {
     flex-direction: column;
   }
 }
+
+/* ==============================
+   MOBILE RESPONSIVE (dưới 768px)
+============================== */
+@media (max-width: 768px) {
+  /* Container chính */
+  .container {
+    max-width: 90vw !important;
+    padding: 15px;
+    margin: 15px auto;
+    border-radius: 12px;
+  }
+
+  /* Tiêu đề */
+  h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  /* Manager details (thống kê) */
+  .manager-details {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .manager-details-item {
+    padding: 12px 15px;
+    font-size: 12px;
+  }
+
+  .manager-details-item span:last-child {
+    font-size: 20px;
+  }
+
+  /* Toolbar / search */
+  .toolbar {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .search-group {
+    width: 100%;
+  }
+
+  .search-group input {
+    width: 70%;
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  .search-group button {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
+  /* Table */
+  .table-wrapper {
+    max-height: 50vh;
+  }
+
+  table,
+  #adminTable {
+    font-size: 12px !important;
+  }
+
+  th,
+  td {
+    padding: 6px 8px;
+  }
+
+  #adminBody tr:hover {
+    background-color: #33333329;
+  }
+
+  /* Buttons */
+  button,
+  .refresh,
+  .btn-reload,
+  .btn-group a {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  /* Popup */
+  .popup-content {
+    width: 90%;
+    padding: 15px 20px;
+    border-radius: 16px;
+  }
+
+  .popup-comment > .popup-content {
+    width: 95%;
+  }
+
+  .toggleShowMesage {
+    grid-template-rows: 1fr 6em;
+  }
+
+  .formPost > button {
+    width: 100%;
+    font-size: 13px;
+    height: 2.5em;
+  }
+
+  /* Preview image nhỏ lại */
+  .preview-image img {
+    width: 2.5em;
+    height: 100%;
+  }
+
+  /* Buttons nhóm nhỏ lại */
+  .toggleShowMesage > .btn-group {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.3em;
+  }
+}
+
+/* ==============================
+   MOBILE ULTRA SMALL (<480px)
+============================== */
+@media (max-width: 480px) {
+  h2 {
+    font-size: 18px;
+  }
+
+  .manager-details-item span:first-child {
+    font-size: 12px;
+  }
+
+  .manager-details-item span:last-child {
+    font-size: 18px;
+  }
+
+  .search-group input {
+    width: 65%;
+  }
+
+  th,
+  td {
+    font-size: 11px;
+    padding: 4px 6px;
+  }
+
+  .formPost > button {
+    font-size: 12px;
+    height: 2.3em;
+  }
+}
