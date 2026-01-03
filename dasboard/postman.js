@@ -3,34 +3,6 @@
  * XỬ LÝ BÀI VIẾT (POST)
  * =========================================================
  */
-function showPostmans(data) {
-  const container = document.getElementById("container-posmans");
-  if (!container) container.innerHTML = "";
-
-  data
-    .slice(0, 5)
-    .reverse()
-    .forEach((post) => {
-      const item = document.createElement("div");
-      item.className = `poster ${post.states}`;
-
-      item.innerHTML = `
-      <div class="poster-date">${post.date}</div>
-      <div class="poster-content">
-        <div class="poster-img">
-          <img src="${post.image}" />
-        </div>
-        <div class="poster-para">${post.content}</div>
-      </div>
-    `;
-
-      container.appendChild(item);
-    });
-}
-
-// gọi
-showPostmans(DATA_POST);
-
 /**
  * Mở popup sửa bài viết
  * @param {number} id - ID bài viết
@@ -121,12 +93,87 @@ function iPopupMess(mess) {
  * =========================================================
  */
 
+var CONTAINER_POST = [];
+
 /**
- * Render danh sách bài viết ra table
- * @param {Array} posts - Danh sách bài viết
+ * Load data
+ * @return arr Post
  */
-function renderPostman(posts) {
+loadDataPost();
+function loadDataPost() {
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      action: "routerPost",
+      status: "get",
+    }),
+  })
+    .then((response) => response.json())
+    .then((res) => {
+      // Render data
+      CONTAINER_POST = res;
+
+      showPostmans();
+      renderPostman();
+      return res;
+    })
+    .catch((err) => {
+      console.log(err);
+      console.log("⚠️ Lỗi hệ thống, vui lòng thử lại!");
+    });
+}
+
+/**
+ * Render GUI index
+ * @return arr Post
+ */
+function showPostmans() {
+  const container = document.getElementById("container-posmans");
+  var posts = CONTAINER_POST;
+
+  if (container == null) return;
+  if (container) container.innerHTML = "";
+
+  posts
+    .reverse()
+    .slice(1, 5)
+    .forEach((post) => {
+      const item = document.createElement("div");
+      item.id = `posterHasId- ${post.idPost}`;
+      item.className = `poster ${post.states}`;
+
+      item.innerHTML = `
+      <div class="poster-date">${post.date}</div>
+      <div class="poster-content">
+        <div class="poster-img">
+          <img src="${post.img}" />
+        </div>
+        <div class="poster-para">${post.content}</div>
+      </div>
+    `;
+
+      container.appendChild(item);
+    });
+}
+
+/**
+ * Danh sách bài đăng / thông báo nội bộ tại page manager
+ * - Dùng để hiển thị bảng quản lý bài viết
+ *
+ * @typedef {Object} Post
+ * @property {number} id       - ID bài đăng
+ * @property {string} image    - URL hình ảnh minh họa
+ * @property {string} content  - Nội dung bài đăng
+ * @property {string} date     - Ngày đăng (dd/mm/yyyy hh:mm)
+ *
+ * @type {Post[]}
+ * @author NgocKhanh
+ */
+function renderPostman() {
+  posts = CONTAINER_POST;
   const box = document.getElementById("postmans");
+
+  if (box == null) return;
 
   if (!posts || posts.length === 0) {
     box.innerHTML = "<p>Không có bài viết nào.</p>";
@@ -148,13 +195,16 @@ function renderPostman(posts) {
       <tbody>
   `;
 
-  posts.forEach((p, i) => {
-    html += `
+  posts
+    .slice(1, 5)
+    .reverse()
+    .forEach((p, i) => {
+      html += `
       <tr>
         <td>${i + 1}</td>
 
         <td>
-          <img src="${p.image}"
+          <img src="${p.img}"
             style="width: 80px; height: 80px;
             object-fit: cover; border-radius: 6px;">
         </td>
@@ -172,7 +222,7 @@ function renderPostman(posts) {
         </td>
       </tr>
     `;
-  });
+    });
 
   html += `</tbody></table>`;
   box.innerHTML = html;

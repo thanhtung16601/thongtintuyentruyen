@@ -37,7 +37,7 @@ function loadData() {
     .then((d) => {
       DATA_STORE = d;
       renderTable([]);
-      renderPostman(DATA_POST);
+      renderPostman();
     })
     .catch((err) => {
       console.error("Lỗi fetch data:", err);

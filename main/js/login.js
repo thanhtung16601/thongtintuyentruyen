@@ -11,7 +11,7 @@ function login() {
   //   }),
   // })
   //   .then((result) => {
-  window.location.href = "/dasboad/";
+  window.location.href = "/dasboard/";
   //   })
   //   .catch((err) => console.error("Lỗi duyệt:", err));
 }
