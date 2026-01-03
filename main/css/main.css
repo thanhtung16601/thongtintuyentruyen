@@ -1,7 +1,16 @@
+/* ==============================
+   RESET & BASE
+============================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  color: #000;
+  min-height: 100vh;
 }
 
 /* DIV nền */
@@ -16,11 +25,9 @@
   z-index: -1;
 }
 
-body {
-  font-family: "Arial", sans-serif;
-  color: #000;
-}
-
+/* ==============================
+   HEADER
+============================== */
 header {
   padding: 20px;
   text-align: center;
@@ -38,9 +45,11 @@ header {
 header h1 {
   font-size: 2rem;
   margin-bottom: 10px;
-  color: #ffe9c7;
 }
 
+/* ==============================
+   LOGIN BUTTON
+============================== */
 .login-btn {
   position: fixed;
   top: 0.5cm;
@@ -61,6 +70,9 @@ header h1 {
   background: #0055aa;
 }
 
+/* ==============================
+   SECTION & CARD
+============================== */
 section {
   max-width: 900px;
   margin: 30px auto 30px;
@@ -68,7 +80,6 @@ section {
 
 .card {
   background: rgba(0, 33, 33, 0.4);
-  /* nền mờ xanh đen */
   backdrop-filter: blur(15px);
   padding: 25px;
   margin: 20px 0;
@@ -76,21 +87,20 @@ section {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease;
   color: #fff;
-  /* chữ nội dung sáng màu */
 }
 
 .card:hover {
   transform: translateY(-5px);
 }
 
-/* Chỉ đổi màu chữ tiêu đề 3 card chính */
+/* Tiêu đề card chính */
 #gth h2,
 #anh h2,
 #qd h2 {
   color: #f5f5dc;
-  /* trắng ngà */
 }
 
+/* Text và list */
 p,
 ul {
   line-height: 1.6;
@@ -101,13 +111,16 @@ ul li {
   margin-bottom: 8px;
 }
 
+/* iframe */
 iframe {
   border-radius: 12px;
   width: 100%;
   height: 315px;
 }
 
-/* CSS cho 6 ảnh trong card "Ảnh Đơn Vị" */
+/* ==============================
+   IMAGE GRID
+============================== */
 .image-row {
   display: flex;
   gap: 10px;
@@ -137,57 +150,9 @@ iframe {
   font-size: 0.9rem;
 }
 
-.image-item p {
-  margin-top: 5px;
-  text-align: center;
-  color: #fff;
-  font-size: 0.9rem;
-}
-
-.image-item p {
-  margin-top: 5px;
-  text-align: center;
-  color: #fff;
-  font-size: 0.9rem;
-}
-
-@media (max-width: 600px) {
-  header h1 {
-    font-size: 1.4rem;
-  }
-
-  .card {
-    margin: 15px 10px;
-  }
-
-  iframe {
-    height: 200px;
-  }
-
-  .image-item {
-    width: 48%;
-    margin-bottom: 10px;
-  }
-}
-
-.container {
-  width: 90%;
-  max-width: 1100px;
-  margin: 130px auto 40px;
-  padding: 25px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  transition: 0.3s ease;
-}
-
-.container:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
-}
-
-/* Container tổng */
+/* ==============================
+   CONTAINER FORM
+============================== */
 .container {
   width: 90%;
   max-width: 900px;
@@ -198,10 +163,18 @@ iframe {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
   color: #fff;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 15px;
+  margin: 130px auto 40px;
+  transition: 0.3s ease;
 }
 
-/* Tiêu đề */
+.container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+/* H2 trong container */
 .container h2 {
   text-align: center;
   margin-bottom: 20px;
@@ -216,7 +189,6 @@ iframe {
   gap: 15px 20px;
 }
 
-/* Label */
 .container label {
   font-weight: 600;
   margin-bottom: 5px;
@@ -224,7 +196,6 @@ iframe {
   align-items: center;
 }
 
-/* Input + Select */
 .container input,
 .container select {
   width: 100%;
@@ -233,6 +204,7 @@ iframe {
   border: 1px solid #ccc;
   font-size: 1rem;
   outline: none;
+  transition: 0.2s;
 }
 
 .container input:focus,
@@ -264,85 +236,9 @@ iframe {
   font-weight: bold;
 }
 
-/* Responsive mobile */
-@media (max-width: 600px) {
-  header {
-    position: relative;
-    overflow: hidden;
-  }
-  .login-btn {
-    position: relative;
-    width: 100vw;
-  }
-
-  .container {
-    padding: 20px;
-    flex-wrap: wrap;
-    margin-top: 50px;
-  }
-
-  .container button {
-    grid-column: span 1;
-  }
-  .container form {
-    grid-template-columns: none;
-  }
-  .info-quyDinh {
-    height: fit-content;
-    width: 100%;
-  }
-}
-
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.popup-content {
-  padding: 20px 25px;
-  border-radius: 10px;
-  width: 320px;
-  text-align: center;
-  animation: popupShow 0.3s ease;
-  border-radius: 20px;
-  background: rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-  color: #fff;
-}
-
-.popup-btn {
-  margin-top: 15px;
-  padding: 8px 15px;
-  background: #3498db;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.popup-btn-close {
-  background-color: #e74c3c;
-}
-
-@keyframes popupShow {
-  from {
-    transform: scale(0.7);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
+/* ==============================
+   CHECK-CONTAINER
+============================== */
 .check-container {
   display: flex;
   width: 100%;
@@ -380,6 +276,48 @@ iframe {
   border-color: #005fcc;
 }
 
+/* ==============================
+   POPUP
+============================== */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  padding: 20px 25px;
+  border-radius: 20px;
+  width: 320px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  animation: popupShow 0.3s ease;
+}
+
+.popup-btn {
+  margin-top: 15px;
+  padding: 8px 15px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.popup-btn-close {
+  background-color: #e74c3c;
+}
+
 .popup-btn-copy {
   background: #0a7cff;
   color: #fff;
@@ -388,9 +326,69 @@ iframe {
 .popup-btn-copy:hover {
   background: #055ec4;
 }
-.d-none {
-  display: none;
+
+/* ==============================
+   ANIMATION
+============================== */
+@keyframes popupShow {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
+
+/* ==============================
+   RESPONSIVE
+============================== */
+@media (max-width: 600px) {
+  header {
+    position: relative;
+    overflow: hidden;
+  }
+
+  header h1 {
+    font-size: 1.4rem;
+  }
+
+  .login-btn {
+    position: relative;
+    width: 100vw;
+    height: auto;
+  }
+
+  .container {
+    padding: 20px;
+    flex-wrap: wrap;
+    margin-top: 50px;
+  }
+
+  .container button {
+    grid-column: span 1;
+  }
+
+  .container form {
+    grid-template-columns: none;
+  }
+
+  .info-quyDinh {
+    height: fit-content;
+    width: 100%;
+  }
+
+  iframe {
+    height: 200px;
+  }
+
+  .image-item {
+    width: 48%;
+    margin-bottom: 10px;
+  }
+}
+
 @media (min-width: 600px) and (max-width: 1024px) {
   header {
     height: 20vh;
@@ -400,7 +398,15 @@ iframe {
     width: 15em;
     height: 2em;
   }
+
   .container {
     flex-direction: column;
   }
+}
+
+/* ==============================
+   UTILITIES
+============================== */
+.d-none {
+  display: none;
 }

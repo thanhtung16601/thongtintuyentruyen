@@ -1,44 +1,17 @@
+/* ==============================
+   BASE & BODY
+============================== */
 body {
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   background: url("../../imgs/background.jpg") no-repeat center/cover fixed;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   color: #000;
+  margin: 0;
 }
 
-form {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  width: 300px;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-button {
-  width: 100%;
-  padding: 10px;
-  background: #003366;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 5px 0;
-}
-
-button:hover {
-  background: #0055aa;
-}
 #background {
   position: fixed;
   top: 0;
@@ -50,6 +23,54 @@ button:hover {
   z-index: -1;
 }
 
+/* ==============================
+   FORM
+============================== */
+form {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.2s;
+}
+
+input:focus {
+  border-color: #003366;
+  box-shadow: 0 0 0 2px rgba(0, 51, 102, 0.2);
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  background: #003366;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #0055aa;
+}
+
+/* ==============================
+   POPUP
+============================== */
 .popup {
   position: fixed;
   top: 0;
@@ -65,15 +86,14 @@ button:hover {
 
 .popup-content {
   padding: 20px 25px;
-  border-radius: 10px;
+  border-radius: 20px;
   width: 320px;
   text-align: center;
-  animation: popupShow 0.3s ease;
-  border-radius: 20px;
   background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(10px);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
   color: #fff;
+  animation: popupShow 0.3s ease;
 }
 
 .popup-btn {
@@ -84,12 +104,16 @@ button:hover {
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 .popup-btn-close {
   background-color: #e74c3c;
 }
 
+/* ==============================
+   ANIMATION
+============================== */
 @keyframes popupShow {
   from {
     transform: scale(0.7);

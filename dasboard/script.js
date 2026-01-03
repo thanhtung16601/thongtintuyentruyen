@@ -3,33 +3,51 @@
  * BIẾN & DỮ LIỆU TOÀN CỤC
  * ==============================
  */
+let i = 0; // Biến tạm cho popup
+let DATA_STORE = [];
 
 /**
- * Biến tạm dùng cho popup xác nhận xoá
- * Lưu index của dòng đang thao tác
- */
-let i = 0;
-/**
  * ==============================
- * LOAD & FETCH DATA
+ * KHỞI TẠO SỰ KIỆN
  * ==============================
- */
-
-/**
- * Gán sự kiện reload dữ liệu thủ công
  */
 document.getElementById("reloadBtn").addEventListener("click", loadData);
+document.getElementById("searchInput").addEventListener("input", function () {
+  searchTable(this.value);
+});
+document.getElementById("searchBtn").addEventListener("click", function () {
+  const keyword = document.getElementById("searchInput").value;
+  searchTable(keyword);
+});
+document
+  .getElementById("searchInput")
+  .addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      searchTable(this.value);
+    }
+  });
+
+const imgInput = document.getElementById("imgPost");
+const previewBox = document.getElementById("previewImages");
+imgInput.addEventListener("change", () => {
+  previewBox.innerHTML = "";
+  const files = imgInput.files;
+  Array.from(files).forEach((file) => {
+    if (!file.type.startsWith("image/")) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = document.createElement("img");
+      img.src = reader.result;
+      previewBox.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  });
+});
 
 /**
- * Danh sách dữ liệu lấy từ API (Google Apps Script)
- * @type {Array}
- */
-let DATA_STORE = [];
-/**
- * Lấy dữ liệu từ API
- * - Fetch danh sách người đăng ký
- * - Render bảng admin
- * - Render danh sách bài viết (postman)
+ * ==============================
+ * FETCH & LOAD DỮ LIỆU
+ * ==============================
  */
 function loadData() {
   fetch(API_URL)
@@ -45,24 +63,16 @@ function loadData() {
         '<tr><td colspan="9">Lỗi tải dữ liệu</td></tr>';
     });
 }
-/**
- * ==============================
- * RENDER BẢNG QUẢN LÝ ĐĂNG KÝ
- * ==============================
- */
 
 /**
- * Render bảng danh sách người đăng ký thăm
- * - Hiển thị thông tin cá nhân
- * - Hiển thị trạng thái
- * - Nút duyệt / loại bỏ
+ * ==============================
+ * RENDER GIAO DIỆN
+ * ==============================
  */
 function renderTable(paramData) {
   const body = document.getElementById("adminBody");
   body.innerHTML = "";
-
   let renderData = paramData.length === 0 ? DATA_STORE : paramData;
-
   renderData.forEach((row, index) => {
     body.innerHTML += `
       <tr key="${index}" id="${row.visitCode}">
@@ -75,7 +85,6 @@ function renderTable(paramData) {
         </td>
         <td>${row.quanhe || ""}</td>
         <td>${row.quannhan || ""}</td>
-        <!-- GỘP: ĐƠN VỊ + NGÀY THĂM + TRẠNG THÁI -->
         <td>
           <div><b>Đơn vị:</b> ${row.donvi || ""}</div>
           <div><b>Ngày thăm:</b> ${formatDateTimeVN(row.ngaytham) || ""}</div>
@@ -107,7 +116,6 @@ function renderTable(paramData) {
             </span>
           </div>
         </td>
-
         <td style="text-align: center;">
           ${
             row.trangthai === "đã xác nhận"
@@ -136,7 +144,6 @@ function renderTable(paramData) {
             >
               Xác nhận
             </button>
-
             <button 
               class="btn-xoa"
               onclick="showPopup('${row.visitCode}')"
@@ -149,22 +156,9 @@ function renderTable(paramData) {
       </tr>
     `;
   });
-
   totalVisiter(renderData);
 }
 
-/**
- * ==============================
- * THỐNG KÊ SỐ LƯỢNG
- * ==============================
- */
-
-/**
- * Tính và hiển thị:
- * - Số đã xác nhận
- * - Số đang chờ
- * - Tổng số lượt đăng ký
- */
 function totalVisiter(iData) {
   const daDuyet = iData.filter((x) => x.trangthai === "đã xác nhận").length;
   const tuChoi = iData.filter((x) => x.trangthai === "đã từ chối").length;
@@ -172,21 +166,16 @@ function totalVisiter(iData) {
     (x) => x.trangthai !== "đã xác nhận" && x.trangthai !== "đã từ chối"
   ).length;
   const tong = iData.length;
-
   document.getElementById("tk-confirm").textContent = daDuyet;
   document.getElementById("tk-wait").textContent = chuaDuyet;
   document.getElementById("tk-refuse").textContent = tuChoi;
   document.getElementById("tk-total").textContent = tong;
 }
-/**
- * ==============================
- * DUYỆT & XOÁ ĐĂNG KÝ
- * ==============================
- */
 
 /**
- * Duyệt đăng ký (chuyển trạng thái sang "đã xác nhận")
- * @param {number} visitCode - index của dòng dữ liệu
+ * ==============================
+ * XỬ LÝ DUYỆT, TỪ CHỐI, XOÁ
+ * ==============================
  */
 function iConfirm(visitCode) {
   fetch(API_URL, {
@@ -202,10 +191,6 @@ function iConfirm(visitCode) {
     .catch((err) => console.error("Lỗi duyệt:", err));
 }
 
-/**
- * Duyệt đăng ký (chuyển trạng thái sang "đã từ chối")
- * @param {number} visitCode - index của dòng dữ liệu
- */
 function iRefuse(visitCode) {
   fetch(API_URL, {
     method: "POST",
@@ -220,10 +205,6 @@ function iRefuse(visitCode) {
     .catch((err) => console.error("Lỗi duyệt:", err));
 }
 
-/**
- * Xoá đăng ký khỏi hệ thống
- * @param {number} visitCode - index của dòng dữ liệu
- */
 function iDelete(visitCode) {
   fetch(API_URL, {
     method: "POST",
@@ -236,15 +217,11 @@ function iDelete(visitCode) {
     .then(() => loadData())
     .catch((err) => console.error("Lỗi xóa:", err));
 }
-/**
- * ==============================
- * POPUP XÁC NHẬN XOÁ
- * ==============================
- */
 
 /**
- * Hiển thị popup xác nhận xoá
- * @param {number} index - index của dòng cần xoá
+ * ==============================
+ * XỬ LÝ POPUP
+ * ==============================
  */
 function showPopup(index) {
   i = index;
@@ -253,53 +230,31 @@ function showPopup(index) {
   document.getElementById("popup").style.display = "flex";
 }
 
-/**
- * Đóng popup
- */
 function closePopup() {
   document.getElementById("popup").style.display = "none";
 }
 
-/**
- * Xác nhận xoá và đóng popup
- */
 function confirmPopup() {
   iRefuse(i);
-  document.getElementById("popup").style.display = "none";
+  closePopup();
 }
 
-/**
- * Hiển thị popup post
- */
 function showPostPopup() {
   const mess = `Viết thành công!`;
-
   document.getElementById("popupMessage").textContent = mess;
   document.getElementById("popup").style.display = "flex";
 }
 
-/**
- * Hiện form viết bài
- */
 function btnPostShow() {
-  const postHTML = `
-
-  `;
-
+  // code html cho popup comment có thể được thêm vào đây
   document.getElementById("popup-comment").style.display = "flex";
 }
 
-/**
- * Thực hiện xoá hình ảnh đã được chọn trước đó
- */
 function btnDeleteImage() {
   document.getElementById("imgPost").value = "";
   document.getElementById("preview").innerHTML = "";
 }
 
-/**
- * Thưc hiện xóa/thoát popup đăng bài
- */
 function clearPoster() {
   document.getElementById("previewImages").innerHTML = "";
   document.getElementById("txtPost").value = "";
@@ -307,42 +262,14 @@ function clearPoster() {
   document.getElementById("popup-comment").style.display = "none";
 }
 
-/**
- * Khi hình ảnh được chọn, sẽ tự động gọi sự kiện
- * và hiển thị hình ảnh được chọn
- */
-
-const imgInput = document.getElementById("imgPost");
-const previewBox = document.getElementById("previewImages");
-
-imgInput.addEventListener("change", () => {
-  previewBox.innerHTML = ""; // reset preview
-  const files = imgInput.files;
-
-  Array.from(files).forEach((file) => {
-    if (!file.type.startsWith("image/")) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const img = document.createElement("img");
-      img.src = reader.result;
-      previewBox.appendChild(img);
-    };
-    reader.readAsDataURL(file);
-  });
-});
-
-/**
- * Chọn hình ảnh và đưa vào input:image
- */
 function btnPushImage() {
   document.getElementById("imgPost").click();
 }
 
 /**
- * Tìm kiếm dữ liệu
- * - Theo keyword
- * - Theo khoảng ngày (dd/mm/yyyy)
+ * ==============================
+ * HÀM HỖ TRỢ, PHỤ TRỢ
+ * ==============================
  */
 function searchTable() {
   const keyword = document
@@ -356,18 +283,15 @@ function searchTable() {
   const startDate = startInput ? new Date(startInput) : null;
   const endDate = endInput ? new Date(endInput) : null;
 
-  // Reset giờ để chỉ so ngày
   if (startDate) startDate.setHours(0, 0, 0, 0);
   if (endDate) endDate.setHours(23, 59, 59, 999);
 
-  // Validate ngày
   if (startDate && endDate && startDate > endDate) {
     showPopup("❌ Ngày bắt đầu không được lớn hơn ngày kết thúc!");
     return;
   }
 
   const filteredData = DATA_STORE.filter((row) => {
-    /* ===== KEYWORD FILTER ===== */
     const keywordMatch =
       !keyword ||
       String(row.hoten || "")
@@ -392,7 +316,6 @@ function searchTable() {
         .toLowerCase()
         .includes(keyword);
 
-    /* ===== DATE FILTER (dd/mm/yyyy) ===== */
     let dateMatch = true;
     const rowDate = getRowDate(row);
 
@@ -414,35 +337,17 @@ function searchTable() {
   totalVisiter(filteredData);
 }
 
-/**
- * Chuyển dd/mm/yyyy hh:mm → Date object
- */
 function parseVNDateTime(str) {
   if (!str) return null;
-
   const [datePart, timePart = "00:00"] = str.split(" ");
   const [dd, mm, yyyy] = datePart.split("/");
   const [hh, mi] = timePart.split(":");
-
   return new Date(yyyy, mm - 1, dd, hh, mi);
 }
 
-document.getElementById("searchInput").addEventListener("input", function () {
-  searchTable(this.value);
-});
-document.getElementById("searchBtn").addEventListener("click", function () {
-  const keyword = document.getElementById("searchInput").value;
-  searchTable(keyword);
-});
-document
-  .getElementById("searchInput")
-  .addEventListener("keypress", function (e) {
-    if (e.key === "Enter") {
-      searchTable(this.value);
-    }
-  });
-
 /**
- * Load dữ liệu lần đầu
+ * ==============================
+ * KHỞI ĐẦU
+ * ==============================
  */
 loadData();

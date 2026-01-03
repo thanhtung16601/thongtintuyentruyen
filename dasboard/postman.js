@@ -1,8 +1,10 @@
 /**
  * =========================================================
  * XỬ LÝ BÀI VIẾT (POST)
+ * Tác giả: Hồ Ngọc Khánh
  * =========================================================
  */
+
 /**
  * Mở popup sửa bài viết
  * @param {number} id - ID bài viết
@@ -73,7 +75,7 @@ function confirmPopup() {
 
 /**
  * Hiển thị / ẩn popup
- * @param {string} display - css display (flex | none)
+ * @param {string} display - CSS display (flex | none)
  */
 function iPopup(display) {
   document.getElementById("popup").style.display = display;
@@ -96,8 +98,9 @@ function iPopupMess(mess) {
 var CONTAINER_POST = [];
 
 /**
- * Load data
- * @return arr Post
+ * Load dữ liệu bài viết từ API
+ * Gán dữ liệu vào biến toàn cục CONTAINER_POST
+ * Và gọi các hàm hiển thị dữ liệu
  */
 loadDataPost();
 function loadDataPost() {
@@ -110,11 +113,15 @@ function loadDataPost() {
   })
     .then((response) => response.json())
     .then((res) => {
-      // Render data
+      // Lưu dữ liệu vào biến toàn cục
       CONTAINER_POST = res;
 
+      // Hiển thị dữ liệu dưới dạng block
       showPostmans();
+
+      // Hiển thị dữ liệu dạng bảng quản lý
       renderPostman();
+
       return res;
     })
     .catch((err) => {
@@ -124,53 +131,45 @@ function loadDataPost() {
 }
 
 /**
- * Render GUI index
- * @return arr Post
+ * Hiển thị bài viết dưới dạng các block nhỏ (GUI index)
+ * Lấy dữ liệu từ CONTAINER_POST
  */
 function showPostmans() {
   const container = document.getElementById("container-posmans");
   var posts = CONTAINER_POST;
 
   if (container == null) return;
-  if (container) container.innerHTML = "";
+  container.innerHTML = "";
 
+  // Lấy các bài viết mới nhất, bỏ bài đầu tiên
   posts
-    .reverse()
     .slice(1, 5)
+    .reverse()
     .forEach((post) => {
       const item = document.createElement("div");
-      item.id = `posterHasId- ${post.idPost}`;
+      item.id = `posterHasId-${post.idPost}`;
       item.className = `poster ${post.states}`;
 
       item.innerHTML = `
-      <div class="poster-date">${post.date}</div>
-      <div class="poster-content">
-        <div class="poster-img">
-          <img src="${post.img}" />
+        <div class="poster-date">${post.date}</div>
+        <div class="poster-content">
+          <div class="poster-img">
+            <img src="${post.img}" alt="Ảnh bài viết"/>
+          </div>
+          <div class="poster-para">${post.content}</div>
         </div>
-        <div class="poster-para">${post.content}</div>
-      </div>
-    `;
+      `;
 
       container.appendChild(item);
     });
 }
 
 /**
- * Danh sách bài đăng / thông báo nội bộ tại page manager
- * - Dùng để hiển thị bảng quản lý bài viết
- *
- * @typedef {Object} Post
- * @property {number} id       - ID bài đăng
- * @property {string} image    - URL hình ảnh minh họa
- * @property {string} content  - Nội dung bài đăng
- * @property {string} date     - Ngày đăng (dd/mm/yyyy hh:mm)
- *
- * @type {Post[]}
- * @author NgocKhanh
+ * Render bảng quản lý bài viết ở trang manager
+ * Hiển thị các bài viết trong bảng với nút thao tác
  */
 function renderPostman() {
-  posts = CONTAINER_POST;
+  var posts = CONTAINER_POST;
   const box = document.getElementById("postmans");
 
   if (box == null) return;
@@ -195,6 +194,7 @@ function renderPostman() {
       <tbody>
   `;
 
+  // Hiển thị các bài viết (mới nhất đầu tiên)
   posts
     .slice(1, 5)
     .reverse()
@@ -206,7 +206,8 @@ function renderPostman() {
         <td>
           <img src="${p.img}"
             style="width: 80px; height: 80px;
-            object-fit: cover; border-radius: 6px;">
+            object-fit: cover; border-radius: 6px;"
+            alt="Ảnh bài viết"/>
         </td>
 
         <td style="max-width: 350px;">
@@ -216,12 +217,12 @@ function renderPostman() {
         <td>${p.date}</td>
 
         <td>
-          <button onclick="updatePopupPost(${p.id})">Sửa</button>
-          <button onclick="deletePopupPost(${p.id})">Xóa</button>
-          <button onclick="uploadPopupPost(${p.id})">Đẩy lên</button>
+          <button onclick="updatePopupPost(${p.idPost})">Sửa</button>
+          <button onclick="deletePopupPost(${p.idPost})">Xóa</button>
+          <button onclick="uploadPopupPost(${p.idPost})">Đẩy lên</button>
         </td>
       </tr>
-    `;
+      `;
     });
 
   html += `</tbody></table>`;
