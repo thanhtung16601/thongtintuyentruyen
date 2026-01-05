@@ -1,55 +1,205 @@
 /**
  * =========================================================
- * XỬ LÝ FORM ĐĂNG KÝ THĂM THÂN – OPTIMIZED
+ * XỬ LÝ FORM ĐĂNG KÝ THĂM THÂN
  * - Validate dữ liệu người dùng
- * - Sinh mã định danh (visitCode) duy nhất
+ * - Sinh mã định danh (visitCode)
  * - Gửi dữ liệu lên API
  * - Hiển thị popup thông báo
+ *
+ * @author NgocKhanh
  * =========================================================
  */
 
-const visitForm = document.getElementById("visitForm");
-const ngayThamInput = document.getElementById("ngaytham");
+/**
+ * Lắng nghe sự kiện submit form đăng ký
+ * - Validate toàn bộ dữ liệu
+ * - Kiểm tra giờ thăm hợp lệ (10:00 – 16:00)
+ * - Không cho chọn thời gian quá khứ
+ * - Tạo mã visitCode
+ * - Gửi dữ liệu lên server
+ */
+document.getElementById("visitForm").addEventListener("submit", function (e) {
+  e.preventDefault();
 
-// ================= HÀM HỖ TRỢ =================
+  const hoten = document.getElementById("hoten").value.trim();
+  const cccd = document.getElementById("cccd").value.trim();
+  const quanhe = document.getElementById("quanhe").value.trim();
+  const quannhan = document.getElementById("quannhan").value.trim();
+  const sdt = document.getElementById("sdt").value.trim();
+  const tinh = document.getElementById("tinhthanh").value;
+  const xa = document.getElementById("xahuyen").value;
+  const donvi = document.getElementById("donvi").value.trim();
+  const ngayThamValue = document.getElementById("ngaytham").value;
+
+  const date = new Date(ngayThamValue);
+  const hour = date.getHours();
+  const visitCode = generateVisitCode(cccd, date);
+
+  // ================= VALIDATE =================
+  if (!hoten) return showPopup("Vui lòng nhập họ tên!");
+  if (!cccd) return showPopup("Vui lòng nhập số CCCD!");
+  if (!/^\d{12}$/.test(cccd)) return showPopup("CCCD phải gồm đúng 12 chữ số!");
+  if (!quanhe) return showPopup("Vui lòng nhập mối quan hệ!");
+  if (!quannhan) return showPopup("Vui lòng nhập tên quân nhân!");
+  if (!sdt) return showPopup("Vui lòng nhập số điện thoại!");
+  if (!/^0\d{9}$/.test(sdt))
+    return showPopup("Số điện thoại không hợp lệ (10 số, bắt đầu bằng 0)!");
+  if (!tinh) return showPopup("Vui lòng chọn tỉnh/thành phố!");
+  if (!xa) return showPopup("Vui lòng chọn xã/phường!");
+  if (!donvi) return showPopup("Vui lòng nhập đơn vị!");
+  if (!ngayThamValue) return showPopup("Vui lòng chọn ngày giờ thăm!");
+  if (hour < 10 || hour >= 16)
+    return showPopup("Giờ thăm hợp lệ: 10:00 – 16:00");
+  if (date.getTime() < Date.now())
+    return showPopup("Không được chọn thời gian trong quá khứ!");
+
+  // ================= DỮ LIỆU GỬI =================
+  const formData = {
+    visitCode,
+    hoten,
+    cccd,
+    quanhe,
+    quannhan,
+    sdt,
+    tinhthanhpho: tinh,
+    xahuyen: xa,
+    donvi,
+    ngaytham: formatDateTimeVN(date),
+    thoigian: new Date().toLocaleString(),
+  };
+
+  addPeople(formData);
+});
 
 /**
- * Sinh mã visitCode dựa trên 4 số cuối CCCD + timestamp
- * @param {string} cccd - Số CCCD
- * @param {Date} date - Ngày giờ thăm
- * @returns {string} Mã visitCode
+ * Gửi dữ liệu đăng ký lên API (Google Apps Script)
+ * @param {Object} formData - Dữ liệu đăng ký thăm thân
  */
-function generateVisitCode(cccd, date) {
-  // Lấy 4 chữ số cuối CCCD + 6 chữ số cuối timestamp
-  return `${cccd.slice(-4)}-${date.getTime().toString().slice(-6)}`;
+function addPeople(formData) {
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      action: "create",
+      ...formData,
+    }),
+  })
+    .then(() => {
+      showPopup("Đăng ký thành công! Chờ phê duyệt.", formData.visitCode);
+    })
+    .catch(() => {
+      showPopup("Đăng ký thất bại! Vui lòng thử lại.");
+    })
+    .finally(() => {
+      document.getElementById("visitForm").reset();
+    });
 }
 
 /**
- * Format Date sang dd/mm/yyyy hh:mm
- * @param {Date} date
+ * =========================================================
+ * XỬ LÝ NGÀY GIỜ THĂM
+ * =========================================================
+ */
+
+/**
+ * Format Date sang định dạng dd/mm/yyyy hh:mm (VN)
+ * @param {Date | string} isoString
  * @returns {string}
  */
-function formatDateTimeVN(date) {
-  const pad = (n) => String(n).padStart(2, "0");
-  return `${pad(date.getDate())}/${pad(
-    date.getMonth() + 1
-  )}/${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+const ngayThamInput = document.getElementById("ngaytham");
+function formatDateTimeVN(isoString) {
+  const d = new Date(isoString);
+  return `${String(d.getDate()).padStart(2, "0")}/${String(
+    d.getMonth() + 1
+  ).padStart(2, "0")}/${d.getFullYear()} ${String(d.getHours()).padStart(
+    2,
+    "0"
+  )}:${String(d.getMinutes()).padStart(2, "0")}`;
 }
+
+/**
+ * Đặt thời gian nhỏ nhất cho input datetime-local
+ * (Không cho chọn quá khứ)
+ */
+function setMinDateTime() {
+  const now = new Date();
+  ngayThamInput.min = `${now.getFullYear()}-${String(
+    now.getMonth() + 1
+  ).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}T${String(
+    now.getHours()
+  ).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+}
+
+/**
+ * Giới hạn giờ thăm trong ngày:
+ * - Chỉ cho phép từ 10:00 đến 16:00
+ * - Sau 16:00 sẽ tự động chuyển sang ngày hôm sau
+ *
+ * @author NgocKhanh
+ */
+function setDateTimeRules() {
+  const now = new Date();
+  const START_HOUR = 10;
+  const END_HOUR = 16;
+
+  let minHour = now.getHours();
+  let minMinute = now.getMinutes();
+
+  if (minHour < START_HOUR) {
+    minHour = START_HOUR;
+    minMinute = 0;
+  }
+
+  if (minHour >= END_HOUR) {
+    const tomorrow = new Date(now);
+    tomorrow.setDate(now.getDate() + 1);
+    ngayThamInput.min = `${tomorrow.getFullYear()}-${String(
+      tomorrow.getMonth() + 1
+    ).padStart(2, "0")}-${String(tomorrow.getDate()).padStart(2, "0")}T10:00`;
+  } else {
+    ngayThamInput.min = `${now.getFullYear()}-${String(
+      now.getMonth() + 1
+    ).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}T${String(
+      minHour
+    ).padStart(2, "0")}:${String(minMinute).padStart(2, "0")}`;
+  }
+}
+
+/**
+ * Kiểm tra giờ khi người dùng thay đổi input
+ * - Nếu ngoài khung giờ cho phép → reset
+ */
+ngayThamInput.addEventListener("change", () => {
+  const hour = new Date(ngayThamInput.value).getHours();
+  if (hour < 10 || hour >= 16) {
+    showPopup("⛔ Giờ thăm chỉ từ 10:00 đến 16:00!");
+    ngayThamInput.value = "";
+  }
+});
+
+/**
+ * =========================================================
+ * POPUP THÔNG BÁO
+ * =========================================================
+ */
 
 /**
  * Hiển thị popup thông báo
- * @param {string} message - Nội dung
- * @param {string} [code] - Mã kiểm tra, nếu có sẽ hiển thị nút copy
+ * @param {string} message - Nội dung thông báo
+ * @param {string} [iCode] - Mã kiểm tra (nếu có)
  */
-function showPopup(message, code = "") {
-  const popup = document.getElementById("popup");
+function showPopup(message, iCode = "") {
   const btnCopy = document.getElementById("btnCopy");
 
-  document.getElementById("popupMessage").innerHTML = message;
-  document.getElementById("codeText").textContent = code;
+  // Nếu có mã → hiện nút copy
+  if (iCode) {
+    btnCopy.classList.remove("d-none");
+  } else {
+    btnCopy.classList.add("d-none");
+  }
 
-  btnCopy.classList.toggle("d-none", !code); // ẩn nếu không có code
-  popup.style.display = "flex";
+  document.getElementById("popupMessage").innerHTML = message;
+  document.getElementById("codeText").textContent = iCode || "";
+  document.getElementById("popup").style.display = "flex";
 }
 
 /**
@@ -60,134 +210,247 @@ function closePopup() {
 }
 
 /**
- * Sao chép mã visitCode vào clipboard
+ * Sao chép mã kiểm tra vào clipboard
  */
 function copyCode() {
-  const code = document.getElementById("codeText").innerText;
-  if (!code) return showPopup("Không có mã để sao chép!");
-  navigator.clipboard.writeText(code).then(() => {
-    showPopup("✅ Đã sao chép mã vào clipboard!", code);
+  const codeText = document.getElementById("codeText").innerText;
+  if (!codeText) return showPopup("Không có mã để sao chép!");
+  navigator.clipboard.writeText(codeText).then(() => {
+    document.getElementById("popupMessage").innerText =
+      "Đã sao chép mã vào clipboard ✅";
   });
 }
 
 /**
- * Cập nhật min date/time cho input
- * - Không cho chọn quá khứ
- * - Giới hạn giờ thăm 10:00 – 16:00
+ * Kiểm tra mã visitCode người dùng nhập
+ * - Tìm trong mảng data (đã load từ API)
+ * - Thông báo kết quả
  */
-function setMinDateTime() {
-  const now = new Date();
-  let hour = now.getHours();
-  let minute = now.getMinutes();
+document.getElementById("btnCheck").addEventListener("click", checkVisitCode);
+function checkVisitCode() {
+  const codeInput = document.getElementById("searchCode").value.trim();
 
-  if (hour < 10) {
-    // Trước 10:00 → đặt min là 10:00 hôm nay
-    hour = 10;
-    minute = 0;
-  } else if (hour >= 16) {
-    // Sau 16:00 → đặt min là 10:00 ngày mai
-    const tomorrow = new Date(now);
-    tomorrow.setDate(now.getDate() + 1);
-    hour = 10;
-    minute = 0;
-    now.setFullYear(
-      tomorrow.getFullYear(),
-      tomorrow.getMonth(),
-      tomorrow.getDate()
-    );
+  if (!codeInput) {
+    showPopup("Vui lòng nhập mã kiểm tra!");
+    return;
   }
 
-  const pad = (n) => String(n).padStart(2, "0");
-  ngayThamInput.min = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(
-    now.getDate()
-  )}T${pad(hour)}:${pad(minute)}`;
+  fetch(API_URL)
+    .then((res) => res.json())
+    .then((data) => {
+      // 🔍 Tìm theo visitCode
+      const found = data.find(
+        (item) => String(item.visitCode).trim() === codeInput
+      );
+
+      if (!found) {
+        showPopup("❌ Không tìm thấy mã kiểm tra!");
+        return;
+      }
+      let message = "";
+
+      switch (found.trangthai) {
+        case "đã từ chối":
+          message = `
+      <div style="line-height:1.8; text-align:left">
+        <div style="font-size:16px; font-weight:600; color:#dc2626; margin-bottom:8px">
+          ❌ Đăng ký bị từ chối
+        </div>
+
+        <div>👤 <b>Họ tên:</b> ${found.hoten}</div>
+        <div>🪖 <b>Quân nhân:</b> ${found.quannhan}</div>
+        <div>🏢 <b>Đơn vị:</b> ${found.donvi}</div>
+        <div>📅 <b>Ngày thăm:</b> ${formatDateTimeVN(found.ngaytham)}</div>
+
+        <div>
+          📌 <b>Trạng thái:</b>
+          <span style="font-weight:600; color:red">
+            Căn cứ vào tình hình thực hiện nhiệm vụ của đơn vị, nên tuần này đơn vị không giải quyết thăm thâm đối
+            với đồng chí ${
+              found.quannhan
+            }. Kính mong gia đình thông cảm và sắp xếp vào thời gian khác.
+          </span>
+        </div>
+      </div>
+    `;
+          break;
+
+        case "đăng ký":
+          message = `
+      <div style="line-height:1.8; text-align:left">
+        <div style="font-size:16px; font-weight:600; color:#f59e0b; margin-bottom:8px">
+          ⏳ Đang chờ xác nhận
+        </div>
+
+        <div>👤 <b>Họ tên:</b> ${found.hoten}</div>
+        <div>🪖 <b>Quân nhân:</b> ${found.quannhan}</div>
+        <div>🏢 <b>Đơn vị:</b> ${found.donvi}</div>
+        <div>📅 <b>Ngày thăm:</b> ${formatDateTimeVN(found.ngaytham)}</div>
+
+        <div>
+          <span style="font-weight:600; color:orange">
+            ⏳ <i>Đang chờ trực ban kiểm duyệt. Vui lòng thử lại sau.</i>
+          </span>
+      </div>
+    `;
+          break;
+
+        default: // đã xác nhận
+          message = `
+      <div style="line-height:1.8; text-align:left">
+        <div style="font-size:16px; font-weight:600; color:#16a34a; margin-bottom:8px">
+          ✅ Đăng ký đã được xác nhận
+        </div>
+
+        <div>👤 <b>Họ tên:</b> ${found.hoten}</div>
+        <div>🪖 <b>Quân nhân:</b> ${found.quannhan}</div>
+        <div>🏢 <b>Đơn vị:</b> ${found.donvi}</div>
+        <div>📅 <b>Ngày thăm:</b> ${formatDateTimeVN(found.ngaytham)}</div>
+
+        <div>
+          📌 <b>Trạng thái:</b>
+          <span style="font-weight:600; color:green">
+            ✅ Đã xác nhận
+          </span>
+        </div>
+      </div>
+    `;
+          break;
+      }
+
+      showPopup(message);
+    })
+    .catch((err) => {
+      console.error("Lỗi fetch data:", err);
+      showPopup("⚠️ Lỗi hệ thống, vui lòng thử lại!");
+    });
 }
 
-// ================= VALIDATE FORM =================
+function checkedMilitary() {
+  const keyword = document.getElementById("txtCheckMilitary").value.trim();
 
-/**
- * Validate dữ liệu form
- * @param {Object} data - Dữ liệu form
- * @returns {string | null} - Thông báo lỗi, null nếu hợp lệ
- */
-function validateFormData(data) {
-  const phoneRegex = /^0\d{9}$/;
-  const cccdRegex = /^\d{12}$/;
-  const date = new Date(data.ngayTham);
+  if (!keyword) {
+    showPopup("Vui lòng nhập CCCD hoặc tên quân nhân!");
+    return;
+  }
 
-  if (!data.hoten) return "Vui lòng nhập họ tên!";
-  if (!data.cccd) return "Vui lòng nhập số CCCD!";
-  if (!cccdRegex.test(data.cccd)) return "CCCD phải gồm đúng 12 chữ số!";
-  if (!data.quanhe) return "Vui lòng nhập mối quan hệ!";
-  if (!data.quannhan) return "Vui lòng nhập tên quân nhân!";
-  if (!data.sdt) return "Vui lòng nhập số điện thoại!";
-  if (!phoneRegex.test(data.sdt))
-    return "Số điện thoại không hợp lệ (10 số, bắt đầu bằng 0)!";
-  if (!data.tinhthanhpho) return "Vui lòng chọn tỉnh/thành phố!";
-  if (!data.xahuyen) return "Vui lòng chọn xã/phường!";
-  if (!data.donvi) return "Vui lòng nhập đơn vị!";
-  if (!data.ngayTham) return "Vui lòng chọn ngày giờ thăm!";
-
-  const hour = date.getHours();
-  if (hour < 10 || hour >= 16) return "Giờ thăm hợp lệ: 10:00 – 16:00";
-  if (date.getTime() < Date.now())
-    return "Không được chọn thời gian trong quá khứ!";
-
-  return null; // Hợp lệ
-}
-
-// ================= XỬ LÝ SUBMIT =================
-
-visitForm.addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  // Lấy dữ liệu từ form
-  const formData = {
-    hoten: document.getElementById("hoten").value.trim(),
-    cccd: document.getElementById("cccd").value.trim(),
-    quanhe: document.getElementById("quanhe").value.trim(),
-    quannhan: document.getElementById("quannhan").value.trim(),
-    sdt: document.getElementById("sdt").value.trim(),
-    tinhthanhpho: document.getElementById("tinhthanh").value,
-    xahuyen: document.getElementById("xahuyen").value,
-    donvi: document.getElementById("donvi").value.trim(),
-    ngayTham: document.getElementById("ngaytham").value,
-  };
-
-  // Validate dữ liệu
-  const errorMsg = validateFormData(formData);
-  if (errorMsg) return showPopup(`⛔ ${errorMsg}`);
-
-  // Sinh visitCode
-  const visitCode = generateVisitCode(
-    formData.cccd,
-    new Date(formData.ngayTham)
-  );
-
-  // Chuẩn hóa ngày giờ VN
-  formData.ngaytham = formatDateTimeVN(new Date(formData.ngayTham));
-  formData.thoigian = new Date().toLocaleString();
-  formData.visitCode = visitCode;
-
-  // Gửi dữ liệu lên API
   fetch(API_URL, {
     method: "POST",
-    body: JSON.stringify({ action: "create", ...formData }),
+    body: JSON.stringify({
+      action: "searchMilitary",
+      keyword: keyword,
+    }),
   })
-    .then(() => showPopup("✅ Đăng ký thành công! Chờ phê duyệt.", visitCode))
-    .catch(() => showPopup("⚠️ Đăng ký thất bại! Vui lòng thử lại."))
-    .finally(() => visitForm.reset());
-});
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.error) {
+        showPopup("❌ Không tìm thấy quân nhân!");
+        return;
+      }
 
-// ================= SỰ KIỆN NGÀY GIỜ =================
+      // gán giá trị vào GUI
+      document.getElementById("txtMilitary_name").innerText = data[0].hoten;
+      document.getElementById("txtMilitary_ct").innerText = data[0].ct;
+      document.getElementById("txtMilitary_pct").innerText = data[0].pct;
+      document.getElementById("txtMilitary_cctv").innerText = data[0].cctv;
+      document.getElementById("txtMilitary_cpctv").innerText = data[0].cpctv;
+      document.getElementById("txtMilitary_bt").innerText = data[0].bt;
+      document.getElementById("txtMilitary_comments").innerText =
+        data[0].chiase;
+      showPopup(`✅ Tìm thấy ${data.length} quân nhân`);
+    })
+    .catch((err) => {
+      console.log(err);
+      showPopup("⚠️ Lỗi hệ thống, vui lòng thử lại!");
+    });
+}
 
-ngayThamInput.addEventListener("change", () => {
-  const hour = new Date(ngayThamInput.value).getHours();
-  if (hour < 10 || hour >= 16) {
-    showPopup("⛔ Giờ thăm chỉ từ 10:00 đến 16:00!");
-    ngayThamInput.value = "";
-  }
-});
+document.getElementById("feedbackForm").addEventListener("submit", sendComment);
+function sendComment(e) {
+  e.preventDefault(); // ⛔ chặn reload form
 
-// Khởi tạo min datetime khi load
+  const form = document.getElementById("feedbackForm");
+  const formData = new FormData(form);
+
+  const data = {
+    hoten: formData.get("hoten"),
+    sdt: formData.get("sdt"),
+    donvi: formData.get("donvi"),
+    noidung: formData.get("noidung"),
+  };
+
+  console.log("Dữ liệu góp ý:", data);
+
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      action: "sendMessage",
+      ...data,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.error) {
+        console.log(data.err);
+        showPopup("⚠️ Lỗi hệ thống, vui lòng thử lại!");
+        return;
+      }
+
+      if (data.status) {
+        showPopup("Đã gửi ý kiến lên đơn vị.");
+      } else {
+        showPopup("Ý kiến chưa gửi được, vui lòng thử lại.");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      showPopup("⚠️ Lỗi hệ thống, vui lòng thử lại!");
+    });
+
+  form.reset();
+}
+
+function renderLocation() {
+  const tinhSelect = document.getElementById("tinhthanh");
+  const xaSelect = document.getElementById("xahuyen");
+
+  fetch("https://34tinhthanh.com/api/provinces")
+    .then((res) => res.json())
+    .then((provinces) => {
+      provinces.forEach((tinh) => {
+        const opt = document.createElement("option");
+        opt.value = tinh.name; // ✅ LƯU TÊN TỈNH
+        opt.textContent = tinh.name; // hiển thị tên
+        opt.dataset.code = tinh.province_code; // giữ code để dùng nội bộ
+        tinhSelect.appendChild(opt);
+      });
+
+      tinhSelect.addEventListener("change", () => {
+        xaSelect.innerHTML = '<option value="">-- Chọn xã/phường --</option>';
+
+        const selectedOption = tinhSelect.selectedOptions[0];
+        if (!selectedOption) return;
+
+        const provinceCode = selectedOption.dataset.code; // lấy code từ dataset
+
+        fetch(`https://34tinhthanh.com/api/wards?province_code=${provinceCode}`)
+          .then((res) => res.json())
+          .then((wards) => {
+            wards.forEach((xa) => {
+              const opt = document.createElement("option");
+              opt.value = xa.ward_name; // ✅ tên xã
+              opt.textContent = xa.ward_name;
+              xaSelect.appendChild(opt);
+            });
+          });
+      });
+    })
+    .catch((err) => console.error("Lỗi tải tỉnh/thành:", err));
+}
+
+/**
+ * Khởi tạo khi load trang
+ */
+setDateTimeRules();
 setMinDateTime();
+renderLocation();
