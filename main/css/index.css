@@ -63,9 +63,12 @@ button {
   color: #1d4ed8;
 }
 
-.militaryDetail .work-status p {
-  margin: 0;
+.militaryDetail * {
   color: #374151;
+}
+.militaryDetail .work-status p,
+.txtMilitary_comments_infoReport {
+  margin: 0;
   line-height: 1.6;
 }
 .work-status .txtMilitary_comments_par {

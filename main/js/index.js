@@ -347,16 +347,25 @@ function checkedMilitary() {
         showPopup("❌ Không tìm thấy quân nhân!");
         return;
       }
+      document
+        .getElementsByClassName("txtMilitary_comments_infoReport")[0]
+        .classList.remove("d-none");
 
       // gán giá trị vào GUI
       document.getElementById("txtMilitary_name").innerText = data[0].hoten;
+      document.getElementById("txtMilitary_comments_name").innerText =
+        data[0].hoten;
+      document.getElementById("txtMilitary_comments_rank").innerText =
+        data[0].capbac;
+      document.getElementById("txtMilitary_comments_position").innerText =
+        data[0].chucvu;
+      document.getElementById("txtMilitary_comments_station").innerText =
+        data[0].donvi;
       document.getElementById("txtMilitary_ct").innerText = data[0].ct;
       document.getElementById("txtMilitary_pct").innerText = data[0].pct;
       document.getElementById("txtMilitary_cctv").innerText = data[0].cctv;
       document.getElementById("txtMilitary_cpctv").innerText = data[0].cpctv;
       document.getElementById("txtMilitary_bt").innerText = data[0].bt;
-      document.getElementById("txtMilitary_comments").innerText =
-        data[0].chiase;
       showPopup(`✅ Tìm thấy ${data.length} quân nhân`);
     })
     .catch((err) => {
