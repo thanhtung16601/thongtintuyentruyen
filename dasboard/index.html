@@ -98,12 +98,26 @@
   <!-- Popup -->
   <div id="popup-comment" class="popup popup-comment">
     <div class="popup-content">
-      <h3 id="header-popup" class="header-popup">Bài viết</h3>
+      <h2 id="header-popup" class="header-popup">
+        <strong>TẠO BÀI VIẾT</strong>
+      </h2>
       <div id="popupMessage" class="toggleShowMesage">
+        <div>
+          <input
+            placeholder="Tiêu đề bài viết"
+            id="content_txtHeader"
+            type="text"
+          />
+          <select name="content_position" id="content_position">
+            <option value="Nomal">Bình thường</option>
+            <option value="Warning">Khá quan trọng</option>
+            <option value="Danger">Quan trọng</option>
+          </select>
+        </div>
         <textarea
           placeholder="Nội dung bài viết.."
           name="txtPost"
-          id="txtPost"
+          id="content_txtPost"
           class="txtPost"
           rows="5"
         ></textarea>
@@ -123,7 +137,13 @@
             xoá ảnh
           </button>
         </div>
-        <input type="file" id="imgPost" accept="image/*" multiple hidden />
+        <input
+          type="file"
+          id="content_imgPost"
+          accept="image/*"
+          multiple
+          hidden
+        />
       </div>
 
       <div class="popup-footer-comment">

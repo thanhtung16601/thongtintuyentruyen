@@ -27,7 +27,7 @@ document
     }
   });
 
-const imgInput = document.getElementById("imgPost");
+const imgInput = document.getElementById("content_imgPost");
 const previewBox = document.getElementById("previewImages");
 imgInput.addEventListener("change", () => {
   previewBox.innerHTML = "";
@@ -243,27 +243,6 @@ function showPostPopup() {
   const mess = `Viết thành công!`;
   document.getElementById("popupMessage").textContent = mess;
   document.getElementById("popup").style.display = "flex";
-}
-
-function btnPostShow() {
-  // code html cho popup comment có thể được thêm vào đây
-  document.getElementById("popup-comment").style.display = "flex";
-}
-
-function btnDeleteImage() {
-  document.getElementById("imgPost").value = "";
-  document.getElementById("preview").innerHTML = "";
-}
-
-function clearPoster() {
-  document.getElementById("previewImages").innerHTML = "";
-  document.getElementById("txtPost").value = "";
-  document.getElementById("imgPost").value = "";
-  document.getElementById("popup-comment").style.display = "none";
-}
-
-function btnPushImage() {
-  document.getElementById("imgPost").click();
 }
 
 /**

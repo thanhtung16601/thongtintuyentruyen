@@ -67,6 +67,27 @@ function confirmPopup() {
   iPopup("none");
 }
 
+function btnPostShow() {
+  // code html cho popup comment có thể được thêm vào đây
+  document.getElementById("popup-comment").style.display = "flex";
+}
+
+function clearPoster() {
+  document.getElementById("previewImages").innerHTML = "";
+  document.getElementById("txtPost").value = "";
+  document.getElementById("imgPost").value = "";
+  document.getElementById("popup-comment").style.display = "none";
+}
+
+function btnPushImage() {
+  document.getElementById("content_imgPost").click();
+}
+
+function btnDeleteImage() {
+  document.getElementById("content_imgPost").value = "";
+  document.getElementById("preview").innerHTML = "";
+}
+
 /**
  * =========================================================
  * POPUP CONTROL
@@ -128,6 +149,34 @@ function loadDataPost() {
       console.log(err);
       console.log("⚠️ Lỗi hệ thống, vui lòng thử lại!");
     });
+}
+
+function uploadPoster() {
+  var txtHeader = document.getElementById("content_txtHeader").value;
+  var txtContent = document.getElementById("content_txtPost").value;
+  var txtPosition = document.getElementById("content_position").value;
+  var img = document.getElementById("content_imgPost").value;
+
+  console.log({
+    txtPosition,
+    txtHeader,
+    img,
+    txtContent,
+  });
+
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      action: "routerPost",
+      status: "save",
+      txtPosition,
+      txtHeader,
+      img,
+      txtContent,
+    }),
+  })
+    .then(() => loadData())
+    .catch((err) => console.error("Lỗi xóa:", err));
 }
 
 /**

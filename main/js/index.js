@@ -355,12 +355,20 @@ function checkedMilitary() {
       document.getElementById("txtMilitary_name").innerText = data[0].hoten;
       document.getElementById("txtMilitary_comments_name").innerText =
         data[0].hoten;
+      document.getElementById("txtMilitary_comments_name2").innerText =
+        data[0].hoten;
+      document.getElementById("txtMilitary_comments_times_repost").innerText =
+        formatDateTimeVN(data[0].thoigianbaocao);
       document.getElementById("txtMilitary_comments_rank").innerText =
         data[0].capbac;
       document.getElementById("txtMilitary_comments_position").innerText =
         data[0].chucvu;
       document.getElementById("txtMilitary_comments_station").innerText =
         data[0].donvi;
+      document.getElementById("txtMilitary_comments_rating").innerText =
+        data[0].hoctap;
+      document.getElementById("txtMilitary_comments_rating_end").innerText =
+        data[0].xeploai;
       document.getElementById("txtMilitary_ct").innerText = data[0].ct;
       document.getElementById("txtMilitary_pct").innerText = data[0].pct;
       document.getElementById("txtMilitary_cctv").innerText = data[0].cctv;

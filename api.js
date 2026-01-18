@@ -14,4 +14,4 @@
  * @author NgocKhanh
  */
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbwT4125QvfAqg57se3hzutLqu_h7AW1lctqCgu0ng1XNnwIEZ6ASXc_vkhtWQ36BK1h-g/exec";
+  "https://script.google.com/macros/s/AKfycbwItJVYJuuaXiufcaAMMMvhHTuAq2sDe-1VqpkMDNCWN7OWvGgOMF1QxoCRZpNGPHNBig/exec";
