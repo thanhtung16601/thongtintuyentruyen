@@ -13,6 +13,7 @@ let DATA_STORE = [];
 function logout() {
   localStorage.removeItem("token");
   localStorage.removeItem("token_exp");
+  window.location.href = "thongtintuyentruyen/";
 }
 /**
  * ==============================
