@@ -2,18 +2,26 @@ function login() {
   const user = document.getElementById("username").value.trim();
   const pass = document.getElementById("password").value.trim();
 
-  // fetch(API_URL, {
-  //   method: "POST",
-  //   body: JSON.stringify({
-  //     action: "login",
-  //     user,
-  //     pass,
-  //   }),
-  // })
-  //   .then((result) => {
-  window.location.href = "/dasboard/";
-  //   })
-  //   .catch((err) => console.error("Lỗi duyệt:", err));
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      action: "login",
+      user,
+      pass,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.ok) {
+        window.location.href = "/dashboard/";
+      } else {
+        showPopup("Tài khoản hoặc mật khẩu không đúng!");
+      }
+    })
+    .catch((err) => {
+      console.error("Lỗi duyệt:", err);
+      showPopup("Lỗi kết nối server!");
+    });
 }
 
 /**

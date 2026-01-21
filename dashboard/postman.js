@@ -37,6 +37,9 @@ function uploadPopupPost(index) {
  */
 function updatePopupPost(index) {
   i = index;
+  const post = CONTAINER_POST.find((p) => p.idPost === index);
+  console.log(post);
+
   iPopup("flex");
   iPopupMess("Update?");
 }
@@ -47,6 +50,8 @@ function updatePopupPost(index) {
  */
 function deletePopupPost(index) {
   i = index;
+  const post = CONTAINER_POST.find((p) => p.idPost === index);
+  console.log(post);
   iPopup("flex");
   iPopupMess("Bạn có muốn xoá không?");
 }
@@ -74,8 +79,8 @@ function btnPostShow() {
 
 function clearPoster() {
   document.getElementById("previewImages").innerHTML = "";
-  document.getElementById("txtPost").value = "";
-  document.getElementById("imgPost").value = "";
+  document.getElementById("content_txtPost").value = "";
+  document.getElementById("content_imgPost").value = "";
   document.getElementById("popup-comment").style.display = "none";
 }
 
@@ -150,33 +155,41 @@ function loadDataPost() {
       console.log("⚠️ Lỗi hệ thống, vui lòng thử lại!");
     });
 }
-
 function uploadPoster() {
-  var txtHeader = document.getElementById("content_txtHeader").value;
-  var txtContent = document.getElementById("content_txtPost").value;
-  var txtPosition = document.getElementById("content_position").value;
-  var img = document.getElementById("content_imgPost").value;
+  const txtHeaderEl = document.getElementById("content_txtHeader");
+  const txtContentEl = document.getElementById("content_txtPost");
+  const txtPositionEl = document.getElementById("content_position");
+  const imgEl = document.getElementById("content_imgPost");
 
-  console.log({
-    txtPosition,
-    txtHeader,
-    img,
-    txtContent,
-  });
+  const data = {
+    action: "routerPost",
+    status: "save",
+    txtPosition: txtPositionEl.value,
+    txtHeader: txtHeaderEl.value,
+    img: imgEl.value,
+    txtContent: txtContentEl.value,
+  };
+
+  console.log(data);
 
   fetch(API_URL, {
     method: "POST",
-    body: JSON.stringify({
-      action: "routerPost",
-      status: "save",
-      txtPosition,
-      txtHeader,
-      img,
-      txtContent,
-    }),
+    body: JSON.stringify(data),
   })
-    .then(() => loadData())
-    .catch((err) => console.error("Lỗi xóa:", err));
+    .then((res) => {
+      if (!res.ok) throw new Error("Upload thất bại");
+      return res.json(); // nếu API có trả JSON
+    })
+    .then(() => {
+      // reset form
+      txtHeaderEl.value = "";
+      txtContentEl.value = "";
+      txtPositionEl.value = "";
+      imgEl.value = "";
+
+      loadData();
+    })
+    .catch((err) => console.error("Lỗi upload:", err));
 }
 
 /**
@@ -235,6 +248,7 @@ function renderPostman() {
         <tr>
           <th>#</th>
           <th>Hình ảnh</th>
+          <th>Ảnh hưởng</th>
           <th>Nội dung</th>
           <th>Ngày đăng</th>
           <th>Thao tác</th>
@@ -246,22 +260,19 @@ function renderPostman() {
   // Hiển thị các bài viết (mới nhất đầu tiên)
   posts.reverse().forEach((p, i) => {
     html += `
-      <tr>
+      <tr key="${p.idPost}">
         <td>${i + 1}</td>
-
         <td>
           <img src="${p.img}"
             style="width: 80px; height: 80px;
             object-fit: cover; border-radius: 6px;"
             alt="Ảnh bài viết"/>
         </td>
-
+        <td>${p.states}</td>
         <td style="max-width: 350px;">
           ${p.content}
         </td>
-
         <td>${p.date}</td>
-
         <td>
           <button onclick="updatePopupPost(${p.idPost})">Sửa</button>
           <button onclick="deletePopupPost(${p.idPost})">Xóa</button>
