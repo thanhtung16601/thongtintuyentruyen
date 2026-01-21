@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
@@ -18,7 +18,7 @@
         Trang thông tin tuyên truyền Trung Đoàn 6 <br />
         Bộ Chỉ huy Quân sự Thành phố Huế
       </h1>
-      <button class="login-btn" onclick="window.location.href='login.html'">
+      <button class="login-btn" onclick="window.location.href = 'login.html'">
         Đăng nhập quản lý
       </button>
     </header>
@@ -94,7 +94,7 @@
             id="txtCheckMilitary"
             placeholder="Nhập số CCCD quân nhân.."
           />
-          <button id="btnCheckMilitary" onclick="checkedMilitary();">
+          <button id="btnCheckMilitary" onclick="checkedMilitary()">
             Kiểm tra
           </button>
         </div>
@@ -270,7 +270,15 @@
       <div class="card feedback-card">
         <h2>📩 Hòm thư góp ý</h2>
 
-        <form id="feedbackForm" method="post" onsubmit="{sendComment();}">
+        <form
+          id="feedbackForm"
+          method="post"
+          onsubmit="
+            {
+              sendComment();
+            }
+          "
+        >
           <div class="form-group">
             <label>Họ và tên</label>
             <input
@@ -309,7 +317,7 @@
   <script src="./global.js"></script>
   <script src="./api.js"></script>
   <script src="./main/js/index.js"></script>
-  <script src="./dasboard/postman.js"></script>
+  <script src="./dashboard/postman.js"></script>
 </html>
 <!-- Popup -->
 <div id="popup" class="popup">
