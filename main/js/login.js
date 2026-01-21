@@ -17,8 +17,7 @@ function login() {
 
         localStorage.setItem("token", data.token);
         localStorage.setItem("token_exp", now + data.expiresIn * 1000);
-
-        window.location.href = "/dashboard/";
+        window.location.href = "/thongtintuyentruyen/dashboard/";
       } else {
         showPopup("Tài khoản hoặc mật khẩu không đúng!");
       }
