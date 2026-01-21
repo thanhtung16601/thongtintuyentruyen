@@ -5,7 +5,16 @@
  */
 let i = 0; // Biến tạm cho popup
 let DATA_STORE = [];
-
+/**
+ * ==============================
+ * Logout brower
+ * ==============================
+ */
+function logout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("token_exp");
+  window.location.href = "/login.html";
+}
 /**
  * ==============================
  * KHỞI TẠO SỰ KIỆN
@@ -96,16 +105,16 @@ function renderTable(paramData) {
                 row.trangthai === "đã xác nhận"
                   ? "green"
                   : row.trangthai === "đăng ký"
-                  ? "orange"
-                  : "red"
+                    ? "orange"
+                    : "red"
               };
             ">
               ${
                 row.trangthai === "đã xác nhận"
                   ? "✅ Đã xác nhận"
                   : row.trangthai === "đăng ký"
-                  ? "⏳ Chờ xác nhận"
-                  : "❌ Đã từ chối"
+                    ? "⏳ Chờ xác nhận"
+                    : "❌ Đã từ chối"
               }
             </span>
           </div>
@@ -129,7 +138,7 @@ function renderTable(paramData) {
             </button>
           `
               : row.trangthai !== "đăng ký"
-              ? `
+                ? `
             <button 
               class="btn-xoa d-none"
               onclick="showPopup('${row.visitCode}')"
@@ -137,7 +146,7 @@ function renderTable(paramData) {
               Loại bỏ
             </button>
           `
-              : `
+                : `
             <button 
               class="btn-duyet"
               onclick="iConfirm('${row.visitCode}')"
@@ -163,7 +172,7 @@ function totalVisiter(iData) {
   const daDuyet = iData.filter((x) => x.trangthai === "đã xác nhận").length;
   const tuChoi = iData.filter((x) => x.trangthai === "đã từ chối").length;
   const chuaDuyet = iData.filter(
-    (x) => x.trangthai !== "đã xác nhận" && x.trangthai !== "đã từ chối"
+    (x) => x.trangthai !== "đã xác nhận" && x.trangthai !== "đã từ chối",
   ).length;
   const tong = iData.length;
   document.getElementById("tk-confirm").textContent = daDuyet;

@@ -13,6 +13,11 @@ function login() {
     .then((res) => res.json())
     .then((data) => {
       if (data.ok) {
+        const now = Date.now();
+
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("token_exp", now + data.expiresIn * 1000);
+
         window.location.href = "/dashboard/";
       } else {
         showPopup("Tài khoản hoặc mật khẩu không đúng!");
