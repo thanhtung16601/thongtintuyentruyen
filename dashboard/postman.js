@@ -133,6 +133,7 @@ function loadDataPost() {
   fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({
+      token: localStorage.getItem("token"),
       action: "routerPost",
       status: "get",
     }),
@@ -162,6 +163,7 @@ function uploadPoster() {
   const imgEl = document.getElementById("content_imgPost");
 
   const data = {
+    token: localStorage.getItem("token"),
     action: "routerPost",
     status: "save",
     txtPosition: txtPositionEl.value,

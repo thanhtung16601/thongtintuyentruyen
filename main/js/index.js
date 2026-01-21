@@ -109,10 +109,10 @@ const ngayThamInput = document.getElementById("ngaytham");
 function formatDateTimeVN(isoString) {
   const d = new Date(isoString);
   return `${String(d.getDate()).padStart(2, "0")}/${String(
-    d.getMonth() + 1
+    d.getMonth() + 1,
   ).padStart(2, "0")}/${d.getFullYear()} ${String(d.getHours()).padStart(
     2,
-    "0"
+    "0",
   )}:${String(d.getMinutes()).padStart(2, "0")}`;
 }
 
@@ -123,9 +123,9 @@ function formatDateTimeVN(isoString) {
 function setMinDateTime() {
   const now = new Date();
   ngayThamInput.min = `${now.getFullYear()}-${String(
-    now.getMonth() + 1
+    now.getMonth() + 1,
   ).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}T${String(
-    now.getHours()
+    now.getHours(),
   ).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
 }
 
@@ -153,13 +153,13 @@ function setDateTimeRules() {
     const tomorrow = new Date(now);
     tomorrow.setDate(now.getDate() + 1);
     ngayThamInput.min = `${tomorrow.getFullYear()}-${String(
-      tomorrow.getMonth() + 1
+      tomorrow.getMonth() + 1,
     ).padStart(2, "0")}-${String(tomorrow.getDate()).padStart(2, "0")}T10:00`;
   } else {
     ngayThamInput.min = `${now.getFullYear()}-${String(
-      now.getMonth() + 1
+      now.getMonth() + 1,
     ).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}T${String(
-      minHour
+      minHour,
     ).padStart(2, "0")}:${String(minMinute).padStart(2, "0")}`;
   }
 }
@@ -240,7 +240,7 @@ function checkVisitCode() {
     .then((data) => {
       // 🔍 Tìm theo visitCode
       const found = data.find(
-        (item) => String(item.visitCode).trim() === codeInput
+        (item) => String(item.visitCode).trim() === codeInput,
       );
 
       if (!found) {
