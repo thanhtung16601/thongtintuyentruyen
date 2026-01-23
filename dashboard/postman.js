@@ -10,18 +10,23 @@
  * @param {number} id - ID bài viết
  */
 function editPost(id) {
-  const post = CONTAINER_POST.find((p) => p.idPost === id);
-  console.log(post);
-  document.getElementById("header-popup").innerHTML =
-    "<strong>SỬA BÀI VIẾT</strong>";
+  const post = CONTAINER_POST.find((p) => p.idPost.toString() === id);
 
-  document.getElementById("previewImages").value = post.img;
+  document.getElementById("previewImages").value = post.img ? post.img : "";
   document.getElementById("content_txtHeader").value = post.title;
   document.getElementById("content_position").value = post.states;
   document.getElementById("content_txtPost").value = post.content;
-  document.getElementById("content_imgPost").value = post.img;
+  // reset file input (BẮT BUỘC)
+  document.getElementById("content_imgPost").value = "";
 
-  btnPostShow();
+  // show ảnh cũ
+  const imgPreview = document.getElementById("img-preview");
+  if (imgPreview && post.img) {
+    imgPreview.src = post.img;
+    imgPreview.classList.remove("d-none");
+  }
+
+  openPostShow("SỬA BÀI VIẾT");
 }
 
 /**
@@ -29,7 +34,26 @@ function editPost(id) {
  * @param {number} id - ID bài viết
  */
 function deletePost(id) {
-  alert("Xóa bài: " + id);
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      token: localStorage.getItem("token"),
+      action: "routerPost",
+      status: "delete",
+      idPost: id,
+    }),
+  })
+    .then((response) => response.json())
+    .then((res) => {
+      iPopup("flex");
+      iPopupMess("Bạn đã xoá thành công!");
+      document.getElementById("popup-btn-confirm").classList.add("d-none");
+      loadDataPost();
+    })
+    .catch((err) => {
+      console.log(err);
+      console.log("⚠️ Lỗi hệ thống, vui lòng thử lại!");
+    });
 }
 
 /**
@@ -80,15 +104,41 @@ function confirmPopup() {
   iPopup("none");
 }
 
-function btnPostShow() {
+function createPoster() {
+  openPostShow("TẠO BÀI VIẾT");
+  clearPoster(); // tự đóng popup
+
+  // mở lại popup
+  document.getElementById("popup-comment").style.display = "flex";
+}
+
+function openPostShow(txtHeader) {
   // code html cho popup comment có thể được thêm vào đây
+
+  document.getElementById("header-popup").innerHTML =
+    `<strong>${txtHeader}</strong>`;
   document.getElementById("popup-comment").style.display = "flex";
 }
 
 function clearPoster() {
-  document.getElementById("previewImages").innerHTML = "";
+  document.getElementById("previewImages").value = "";
+  document.getElementById("content_txtHeader").value = "";
+  document.getElementById("content_position").value = "";
   document.getElementById("content_txtPost").value = "";
-  document.getElementById("content_imgPost").value = "";
+
+  // reset file input (bắt buộc dùng chuỗi rỗng)
+  const fileInput = document.getElementById("content_imgPost");
+  if (fileInput) {
+    fileInput.value = "";
+  }
+
+  // nếu có ảnh preview thì ẩn luôn
+  const imgPreview = document.getElementById("img-preview");
+  if (imgPreview) {
+    imgPreview.src = "";
+    imgPreview.classList.add("d-none");
+  }
+
   document.getElementById("popup-comment").style.display = "none";
 }
 
@@ -265,6 +315,7 @@ function renderPostman() {
         <tr>
           <th>#</th>
           <th>Hình ảnh</th>
+          <th>Tiêu đề</th>
           <th>Ảnh hưởng</th>
           <th>Nội dung</th>
           <th>Ngày đăng</th>
@@ -285,6 +336,7 @@ function renderPostman() {
             object-fit: cover; border-radius: 6px;"
             alt="Ảnh bài viết"/>
         </td>
+        <td>${p.title}</td>
         <td>${p.states}</td>
         <td style="max-width: 350px;">
           ${p.content}
@@ -292,7 +344,7 @@ function renderPostman() {
         <td>${p.date}</td>
         <td>
           <button onclick="editPost('${p.idPost}')">Sửa</button>
-          <button onclick="deletePopupPost('${p.idPost}')">Xóa</button>
+          <button onclick="deletePost('${p.idPost}')">Xóa</button>
           <button onclick="togglePopupPost('${p.idPost}')">${
             p.status === true ? `Lấy xuống` : `Đẩy lên`
           }</button>

@@ -261,7 +261,11 @@ button {
   background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(10px);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-  color: #fff;
+  color: #fff !important;
+}
+
+.popup-content .header-popup strong {
+  color: #fff !important;
 }
 
 .popup-btn {
