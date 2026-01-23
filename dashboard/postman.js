@@ -10,7 +10,18 @@
  * @param {number} id - ID bài viết
  */
 function editPost(id) {
-  alert("Sửa bài: " + id);
+  const post = CONTAINER_POST.find((p) => p.idPost === id);
+  console.log(post);
+  document.getElementById("header-popup").innerHTML =
+    "<strong>SỬA BÀI VIẾT</strong>";
+
+  document.getElementById("previewImages").value = post.img;
+  document.getElementById("content_txtHeader").value = post.title;
+  document.getElementById("content_position").value = post.states;
+  document.getElementById("content_txtPost").value = post.content;
+  document.getElementById("content_imgPost").value = post.img;
+
+  btnPostShow();
 }
 
 /**
@@ -23,37 +34,34 @@ function deletePost(id) {
 
 /**
  * Hiển thị popup xác nhận upload bài viết
- * @param {number} index - ID bài viết
+ * @param {number} id - ID bài viết
  */
-function uploadPopupPost(index) {
-  i = index;
-  iPopup("flex");
-  iPopupMess("Upload?");
-}
+function togglePopupPost(id) {
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      token: localStorage.getItem("token"),
+      action: "routerPost",
+      status: "updateStatus",
+      idPost: id,
+    }),
+  })
+    .then((response) => response.json())
+    .then((res) => {
+      var mess = res.flagStatus
+        ? "Đẩy lên thành công?"
+        : "Lấy xuống thành công?";
 
-/**
- * Hiển thị popup xác nhận cập nhật bài viết
- * @param {number} index - ID bài viết
- */
-function updatePopupPost(index) {
-  i = index;
-  const post = CONTAINER_POST.find((p) => p.idPost === index);
-  console.log(post);
+      iPopup("flex");
+      iPopupMess(mess);
+      document.getElementById("popup-btn-confirm").classList.add("d-none");
 
-  iPopup("flex");
-  iPopupMess("Update?");
-}
-
-/**
- * Hiển thị popup xác nhận xoá bài viết
- * @param {number} index - ID bài viết
- */
-function deletePopupPost(index) {
-  i = index;
-  const post = CONTAINER_POST.find((p) => p.idPost === index);
-  console.log(post);
-  iPopup("flex");
-  iPopupMess("Bạn có muốn xoá không?");
+      loadDataPost();
+    })
+    .catch((err) => {
+      console.log(err);
+      console.log("⚠️ Lỗi hệ thống, vui lòng thử lại!");
+    });
 }
 
 /**
@@ -112,7 +120,7 @@ function iPopup(display) {
  * @param {string} mess - Nội dung thông báo
  */
 function iPopupMess(mess) {
-  document.getElementById("popupMessage").textContent = mess;
+  document.getElementById("showMesage").textContent = mess;
 }
 
 /**
@@ -156,6 +164,7 @@ function loadDataPost() {
       console.log("⚠️ Lỗi hệ thống, vui lòng thử lại!");
     });
 }
+
 function uploadPoster() {
   const txtHeaderEl = document.getElementById("content_txtHeader");
   const txtContentEl = document.getElementById("content_txtPost");
@@ -166,6 +175,7 @@ function uploadPoster() {
     token: localStorage.getItem("token"),
     action: "routerPost",
     status: "save",
+    txtStatus: "FALSE",
     txtPosition: txtPositionEl.value,
     txtHeader: txtHeaderEl.value,
     img: imgEl.value,
@@ -189,7 +199,11 @@ function uploadPoster() {
       txtPositionEl.value = "";
       imgEl.value = "";
 
-      loadData();
+      iPopup("flex");
+      iPopupMess("Bài đăng của bạn đã được tạo!");
+      document.getElementById("popup-btn-confirm").classList.add("d-none");
+      // render lại table
+      loadDataPost();
     })
     .catch((err) => console.error("Lỗi upload:", err));
 }
@@ -205,10 +219,11 @@ function showPostmans() {
   if (container == null) return;
   container.innerHTML = "";
 
-  // Lấy các bài viết mới nhất, bỏ bài đầu tiên
+  // Lấy các bài viết mới nhất
   posts
-    .slice(1, 5)
+    .filter((post) => post.status === true)
     .reverse()
+    .slice(0, 5)
     .forEach((post) => {
       const item = document.createElement("div");
       item.id = `posterHasId-${post.idPost}`;
@@ -276,9 +291,11 @@ function renderPostman() {
         </td>
         <td>${p.date}</td>
         <td>
-          <button onclick="updatePopupPost(${p.idPost})">Sửa</button>
-          <button onclick="deletePopupPost(${p.idPost})">Xóa</button>
-          <button onclick="uploadPopupPost(${p.idPost})">Đẩy lên</button>
+          <button onclick="editPost('${p.idPost}')">Sửa</button>
+          <button onclick="deletePopupPost('${p.idPost}')">Xóa</button>
+          <button onclick="togglePopupPost('${p.idPost}')">${
+            p.status === true ? `Lấy xuống` : `Đẩy lên`
+          }</button>
         </td>
       </tr>
       `;

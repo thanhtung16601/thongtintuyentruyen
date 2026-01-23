@@ -330,6 +330,25 @@ button {
   height: 100%;
 }
 
+.groupHeaderContent {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.content_txtHeader {
+  padding: 5px 13px;
+  border-radius: 15px;
+  outline: none;
+  border: none;
+}
+.content_position {
+  padding: 5px;
+  border-radius: 15px;
+  outline: none;
+  border: none;
+}
+
 .popup-footer-comment {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -478,7 +497,7 @@ button {
   }
 
   .popup-comment > .popup-content {
-    width: 95%;
+    width: 75%;
   }
 
   .toggleShowMesage {

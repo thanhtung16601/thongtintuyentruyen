@@ -110,14 +110,19 @@
       <h2 id="header-popup" class="header-popup">
         <strong>TẠO BÀI VIẾT</strong>
       </h2>
-      <div id="popupMessage" class="toggleShowMesage">
-        <div>
+      <div id="popupMessage" class="toggleShowMesage popupPosterContent">
+        <div class="groupHeaderContent">
           <input
             placeholder="Tiêu đề bài viết"
             id="content_txtHeader"
+            class="content_txtHeader"
             type="text"
           />
-          <select name="content_position" id="content_position">
+          <select
+            name="content_position"
+            id="content_position"
+            class="content_position"
+          >
             <option value="Bình thường">Bình thường</option>
             <option value="Khá quan trọng">Khá quan trọng</option>
             <option value="Quan trọng">Quan trọng</option>
@@ -159,9 +164,9 @@
         <div id="previewImages" class="preview-image"></div>
 
         <button
-          id="popup-btn-confirm"
+          id="popup-btn-upload"
           onclick="uploadPoster()"
-          class="popup-btn popup-btn-confirm"
+          class="popup-btn popup-btn-upload"
         >
           Đăng bài
         </button>

@@ -236,6 +236,8 @@ function showPopup(index) {
   i = index;
   document.getElementById("showMesage").textContent =
     "Bạn có muốn từ chối không?";
+
+  document.getElementById("popup-btn-confirm").classList.remove("d-none");
   document.getElementById("popup").style.display = "flex";
 }
 
